@@ -1,25 +1,36 @@
 """
 Module/Script Name: maincontainer.py
 Author: M. W. Hefner
-Created: 6/28/2023
-Last Modified: 6/28/2023
-Version: 1.0
 
-Defines the style, layout, and callback functionality of the main container of the application.
+Created: 6/28/2023
+Last Modified: 7/14/2023
+
+Project: CDIAC at AppState
+
+Script Description: This script defines the style, layout, and callback functionality of the maincontainer.
+
+Exceptional notes about this script:
+(none)
 
 Callback methods: 0
 
+~~~
+
+This Dash application component was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+
 """
+
+# Component ID (Should be the same as the title of this file)
+component_id = "maincontainer"
 
 # Import Dependencies
 import dash.html.Div
-import components.sidebar as sidebar
-import components.contentarea as contentarea
+import components.control_panel.panel_container as control_panel
+import components.content_display.content_display as content_display
 
-# STYLES (JSON CSS)
-
+# STYLES (CSS DICT)
 styles = {
-    'main-container': {
+    component_id : {
         # Flow, Size and Function
         'display': 'flex',
         'flex-flow' : 'row nowrap',
@@ -35,24 +46,23 @@ styles = {
 }
 
 # LAYOUT
-
 layout = dash.html.Div(
 
     # MAIN APPLICATION CONTAINER
 
-    className = 'main-container',
+    id = component_id,
     
-    style = styles['main-container'],
+    style = styles[component_id],
     
     children= [
 
-        # SIDEBAR
+        # control_panel
 
-        sidebar.layout,
+        control_panel.layout,
 
         # Content Area
 
-        contentarea.layout
+        content_display.layout
 
     ]
 )

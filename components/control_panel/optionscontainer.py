@@ -14,11 +14,11 @@ Callback methods: 0
 
 # Import Dependencies
 import dash.html.Div
-import components.navigationdropdown as navigationdropdown
-import components.fueltypedropdown as fueltypedropdown
-import components.sourcedropdown as sourcedropdown
-import components.nationdropdown as nationdropdown
-import components.backtodatadash as backtodatadash
+import components.control_panel.navigationdropdown as navigationdropdown
+import components.control_panel.fueltypedropdown as fueltypedropdown
+import components.control_panel.sourcedropdown as sourcedropdown
+import components.control_panel.nationdropdown as nationdropdown
+import components.control_panel.backtodatadash as backtodatadash
 
 # STYLES (JSON CSS)
 

@@ -472,13 +472,13 @@ def best_match_option(value, fuel_type):
 # Read Markdown Pages
 
 # About page
-with open("./components/staticData/markdown/about.md", "r") as file:
+with open("./assets/markdown/about.md", "r") as file:
     about_content = file.read()
 
 # About page
-with open("./components/staticData/markdown/methodology.md", "r") as file:
+with open("./assets/markdown/methodology.md", "r") as file:
     methodology_content = file.read()
 
 # Download page
-with open("./components/staticData/markdown/download.md", "r") as file:
+with open("./assets/markdown/download.md", "r") as file:
     download_content = file.read()

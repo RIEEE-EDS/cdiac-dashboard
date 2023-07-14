@@ -1,0 +1,23 @@
+/* TITLE */
+
+/* dynamic_styling.css */
+
+/* AUTHOR */
+
+/* m w hefner */
+
+/* DESCRIPTION */
+
+/* Styles are typically left in the python source. */
+/* This is to keep things a unilingual as possible */
+/* and for ease of access across development modes.*/
+
+/* Some things (like hover behavior) HAVE to be in */
+/* an actual CSS file, or would be much easier in */
+/* such a file.  Those things are handled here. */
+
+/* Notes */
+
+/* This comes from the Research Institute for Environment, */
+/* Energy, and Economics' DataDash application template.*/
+

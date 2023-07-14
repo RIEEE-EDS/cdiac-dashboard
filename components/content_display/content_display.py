@@ -1,5 +1,5 @@
 """
-Module/Script Name: contentarea.py
+Module/Script Name: content_display.py
 Author: M. W. Hefner
 Created: 6/28/2023
 Last Modified: 6/28/2023
@@ -15,7 +15,7 @@ Callback methods: 1
 # Import Dependencies
 import dash
 from components.staticdata import data as d
-from components import figures
+from components.content_display import figures
 
 # STYLES (JSON CSS)
 
@@ -36,7 +36,7 @@ layout = dash.html.Div(
 
     style=styles['content'],
     
-    id = "contentArea",
+    id = "content_display",
 
     children=[
 
@@ -47,7 +47,7 @@ layout = dash.html.Div(
 
 # CALLBACKS (1)
 @dash.callback(
-    dash.dependencies.Output('contentArea', 'children'),
+    dash.dependencies.Output('content_display', 'children'),
     dash.dependencies.Input('navigation-dropdown', 'value'),
     dash.dependencies.Input('fuel-type-dropdown', 'value'),
     dash.dependencies.Input('source-dropdown', 'value'),
