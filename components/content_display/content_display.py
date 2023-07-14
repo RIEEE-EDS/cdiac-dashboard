@@ -8,7 +8,7 @@ Version: 1.0
 Defines the style, layout, and callback functionality of the 
 compoent described by the title of this file.
 
-Callback methods: 1
+Callback methods: 2
 
 """
 
@@ -45,12 +45,12 @@ layout = dash.html.Div(
     ]
 )
 
-# CALLBACKS (1)
+# CALLBACKS (2)
 @dash.callback(
     dash.dependencies.Output('content_display', 'children'),
-    dash.dependencies.Input('navigation-dropdown', 'value'),
-    dash.dependencies.Input('fuel-type-dropdown', 'value'),
-    dash.dependencies.Input('source-dropdown', 'value'),
+    dash.dependencies.Input('navigation-dropdown-controler', 'value'),
+    dash.dependencies.Input('fuel-type-dropdown-controler', 'value'),
+    dash.dependencies.Input('source-dropdown-controler', 'value'),
 )
 def update_container(nav_opt, fuel_type, source):
 
@@ -109,10 +109,10 @@ def update_container(nav_opt, fuel_type, source):
 @dash.callback(
     dash.dependencies.Output('map-graph', 'figure'),
     dash.dependencies.Input('map-graph', 'figure'),
-    dash.dependencies.Input('navigation-dropdown', 'value'),
-    dash.dependencies.Input('source-dropdown', 'value'),
-    dash.dependencies.Input('fuel-type-dropdown', 'value'),
-    dash.dependencies.Input('nation-dropdown', 'value')
+    dash.dependencies.Input('navigation-dropdown-controler', 'value'),
+    dash.dependencies.Input('source-dropdown-controler', 'value'),
+    dash.dependencies.Input('fuel-type-dropdown-controler', 'value'),
+    dash.dependencies.Input('nation-dropdown-controler', 'value')
 )
 def update_map_or_graph(old_figue, nav_opt, source, fuel_type, nation):
 

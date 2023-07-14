@@ -1,50 +1,56 @@
 """
-Module/Script Name: nationdropdown.py
+Module/Script Name: nation_dropdown.py
 Author: M. W. Hefner
+
 Created: 6/28/2023
-Last Modified: 6/28/2023
-Version: 1.0
+Last Modified: 7/14/2023
 
-Defines the style, layout, and callback functionality of the 
-compoent described by the title of this file.
+Project: CDIAC at AppState
 
-Callback methods: 1
+Script Description: This script defines the style, layout, and callback functionality of the nation_dropdown.
+
+Exceptional notes about this script:
+(none)
+
+Callback methods: 0
+
+~~~
+
+This Dash application component was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
 
 """
 
+# Component ID (Should be the same as the title of this file)
+component_id = "nation_dropdown"
+
 # Import Dependencies
-import dash
+import dash.html.Div
 from components.staticdata import data as d
 
-# STYLES (JSON CSS)
-
+# STYLES (CSS DICT)
 styles = {
-    'dropdown-menu': {
+    component_id : {
         'margin-top': '20px',
         'margin-bottom': '20px',
         'color': '#000'
-    }
+    },
+
+    'h2' : {
+        'color' : '#fff'
+    },
 }
 
 # LAYOUT
-
 layout = dash.html.Div(
+    id = component_id,
+    style = styles[component_id],
+    children= [
 
-    className='dropdown-menu',
-
-    id='nation-selection-container',
-
-    style=styles['dropdown-menu'],
-
-    hidden = True,
-
-    children=[
-
-        dash.html.H2('Country', style={'color': '#fff'}),
+        dash.html.H2('Country', style=styles['h2']),
 
         dash.dcc.Dropdown(
 
-            id='nation-dropdown',
+            id='nation-dropdown-controler',
 
             value = [
                 'CHINA (MAINLAND)', 
@@ -59,15 +65,18 @@ layout = dash.html.Div(
             multi=True
 
         )
+
     ]
 )
 
 # CALLBACKS (1)
+
+# Updates whether to show the country selector, and whether it's multi- or single
 @dash.callback(
-    dash.dependencies.Output('nation-selection-container', 'hidden'),
-    dash.dependencies.Output('nation-dropdown', 'multi'),
-    dash.dependencies.Output('nation-dropdown', 'value'),
-    dash.dependencies.Input('navigation-dropdown', 'value')
+    dash.dependencies.Output(component_id, 'hidden'),
+    dash.dependencies.Output('nation-dropdown-controler', 'multi'),
+    dash.dependencies.Output('nation-dropdown-controler', 'value'),
+    dash.dependencies.Input('navigation-dropdown-controler', 'value')
 )
 def update_navigation_dropdown(nav_opt) :
 

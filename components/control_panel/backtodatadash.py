@@ -1,34 +1,44 @@
 """
-Module/Script Name: optionscontainer.py
+Module/Script Name: backtodatadash.py
 Author: M. W. Hefner
-Created: 6/29/2023
-Last Modified: 6/29/2023
-Version: 1.0
 
-Defines the style, layout, and callback functionality of the 
-compoent described by the title of this file.
+Created: 6/29/2023
+Last Modified: 7/14/2023
+
+Project: CDIAC at AppState
+
+Script Description: This script defines the style, layout, and callback functionality of the backtodatadash link area.
+
+Exceptional notes about this script:
+(none)
 
 Callback methods: 0
 
+~~~
+
+This Dash application component was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+
 """
 
-# Import Dependencies
-import dash
+# Component ID (Should be the same as the title of this file)
+component_id = "backtodatadash"
 
+# Import Dependencies
+import dash.html.Div
+# import components.examplesubcomponent as examplesubcomponent
+
+# STYLES (CSS DICT)
 styles = {
-    'datadash-link' : {
-        'padding': '0px',
-        'background' : '#222',
-        'color' : '#fff',
-        'border-radius' : '10px',
-        'text-align' : 'center',
-        'border': '1px solid #ffc900',
+    component_id : {
+
     }
 }
 
+# LAYOUT
 layout = dash.html.Div(
-
-    children = [
+    id = component_id,
+    style = styles[component_id],
+    children= [
 
         dash.html.P("This dashboard is powered and supported by the Research Institute for Environment, Energy, and Economics at Appalachian State University.", style = {'text-align' : 'center'}),
 
@@ -46,7 +56,9 @@ layout = dash.html.Div(
             
             style = {'text-align' : 'center'}
 
-        )
+        ),
 
     ]
 )
+
+# CALLBACKS (0)

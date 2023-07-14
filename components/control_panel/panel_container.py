@@ -2,7 +2,7 @@
 Module/Script Name: panel_container.py
 Author: M. W. Hefner
 
-Created: 7/01/2023
+Created: 6/28/2023
 Last Modified: 7/14/2023
 
 Project: CDIAC at AppState
@@ -26,7 +26,8 @@ component_id = "panel_container"
 # Import Dependencies
 import dash.html.Div
 import components.control_panel.header as header
-import components.control_panel.optionscontainer as optionscontainer
+import components.control_panel.controls_container as controls_container
+import components.control_panel.backtodatadash as backtodatadash
 
 # STYLES (CSS DICT)
 styles = {
@@ -55,7 +56,11 @@ layout = dash.html.Div(
 
         # OPTIONS CONTAINER
 
-        optionscontainer.layout
+        controls_container.layout,
+
+        # INFO / BACK TO DATADASH
+
+        backtodatadash.layout,
 
     ]
 )
