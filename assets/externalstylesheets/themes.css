@@ -21,7 +21,10 @@
 
 /* Global Tags */
 body {
-    background-color : aquamarine;
+    background-color : rgba(0, 0, 0, 0);
+    margin : 0px;
+    font-size: 15px;
+    font-family: "Open Sans", sans-serif;
 }
 
 #main_container {
@@ -29,10 +32,17 @@ body {
     flex-flow: row nowrap;
     justify-content: center;
     align-items: stretch;
-    height: 95vh;
-    background-color: #fff;
-    font-size: 15px;
-    font-family: "Open Sans", sans-serif;
+    height: 100vh;
+}
+
+#main_container.light {
+    background-color: white;
+    color: #000;
+}
+
+#main_container.dark {
+    background-color: black;
+    color: #fff;
 }
 
 /* Control Panel */
@@ -41,12 +51,20 @@ body {
     order: 1;
     width: 500px;
     padding: 20px;
-    background-color: #333;
-    color: #fff;
     border-radius: 10px;
     align-items: stretch;
     display: flex;
     flex-direction: column;
+}
+
+#panel_container.light {
+    background-image : linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5));
+    color: #000;
+}
+
+#panel_container.dark {
+    background-image : linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5));
+    color: #fff;
 }
 
 #control_panel_header {
@@ -60,7 +78,6 @@ body {
 }
 
 #control_panel_header a {
-    text-align: center;
     display: block;
     border-bottom: 1px solid #ffc900;
     background: #000;
@@ -106,12 +123,20 @@ body {
 #display_container {
     order: 2;
     width: 100%;
-    padding: 20px;
     overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 /* Map / Plot */
 
 #map-graph {
     height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/* Table displays */
+.table_container p {
+    color: #000;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0);
 }

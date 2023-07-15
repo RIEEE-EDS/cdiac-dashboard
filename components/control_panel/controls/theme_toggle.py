@@ -1,18 +1,18 @@
 """
-Module/Script Name: panel_container.py
+Module/Script Name: theme_toggle.py
 Author: M. W. Hefner
 
-Created: 6/28/2023
-Last Modified: 7/14/2023
+Created: 7/01/2023
+Last Modified: 7/15/2023
 
 Project: CDIAC at AppState
 
-Script Description: This script defines the logical layout and callback functionality of the panel_container.
+Script Description: This script defines the logical layout and callback functionality of the theme_toggle.
 
 Exceptional notes about this script:
 (none)
 
-Callback methods: 0
+Callback methods: 1
 
 ~~~
 
@@ -21,32 +21,23 @@ This Dash application component was created using the template provided by the R
 """
 
 # Component ID (Should be the same as the title of this file)
-component_id = "panel_container"
+component_id = "theme_toggle"
 
 # Import Dependencies
-import dash.html.Div
-import components.control_panel.control_panel_header as control_panel_header
-import components.control_panel.controls_container as controls_container
-import components.control_panel.backtodatadash as backtodatadash
+import dash.html
 
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
     children= [
 
-        # HEADER
-        control_panel_header.layout,
-
-        # OPTIONS CONTAINER
-        controls_container.layout,
-
-        # INFO / BACK TO DATADASH
-        backtodatadash.layout,
+        # TODO: Make Look nice
+        dash.html.Button('Theme', id = 'theme_toggle_switch', n_clicks=0)
 
     ]
 )
 
-# CALLBACKS (0)
+# CALLBACKS (1)
 # Controls Theme of component
 @dash.callback(
     dash.dependencies.Output(component_id, 'className'),

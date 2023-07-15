@@ -12,7 +12,7 @@ Script Description: This script defines the logical layout and callback function
 Exceptional notes about this script:
 (none)
 
-Callback methods: 0
+Callback methods: 1
 
 ~~~
 
@@ -35,6 +35,8 @@ layout = dash.html.Div(
 
     id = component_id,
     
+    className = 'light',
+
     children= [
 
         # control_panel
@@ -48,4 +50,12 @@ layout = dash.html.Div(
     ]
 )
 
-# CALLBACKS (0)
+
+# CALLBACKS (1)
+# Controls Theme of component
+@dash.callback(
+    dash.dependencies.Output(component_id, 'className'),
+    dash.dependencies.Input('theme_toggle', 'className')
+)
+def update_source_dropdown(theme):
+    return theme

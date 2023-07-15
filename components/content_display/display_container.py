@@ -27,6 +27,7 @@ component_id = "display_container"
 import dash.html.Div
 from components.staticdata import data as d
 from components.figures import figures
+from components.figures.carbon_atlas import carbon_atlas
 from components.tables import browse
 
 # LAYOUT
@@ -81,15 +82,16 @@ def update_container(nav_opt, fuel_type, source):
     dash.dependencies.Input('navigation-dropdown-controler', 'value'),
     dash.dependencies.Input('source-dropdown-controler', 'value'),
     dash.dependencies.Input('fuel-type-dropdown-controler', 'value'),
-    dash.dependencies.Input('nation-dropdown-controler', 'value')
+    dash.dependencies.Input('nation-dropdown-controler', 'value'),
+    dash.dependencies.Input('theme_toggle', 'className')
 )
-def update_map_or_graph(nav_opt, source, fuel_type, nation):
+def update_map_or_graph(nav_opt, source, fuel_type, nation, theme):
 
     if nav_opt == 'carbon-atlas' :
 
         # CARBON ATLAS
 
-        return figures.carbon_atlas(source, fuel_type)
+        return carbon_atlas(source, fuel_type, theme)
 
     elif nav_opt == 'timeseries-country' :
 

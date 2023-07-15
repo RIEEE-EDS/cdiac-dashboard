@@ -28,7 +28,7 @@ import components.main_container as mc
 external_stylesheets = {
     'light_theme' : [
         "./assets/externalstylesheets/dynamic_styling.css",
-        "./assets/externalstylesheets/light_theme.css"
+        "./assets/externalstylesheets/themes.css"
     ]
 }
 
@@ -42,6 +42,26 @@ app = Dash(
 
 # Define Application Layout
 app.layout = mc.layout
+
+app.index_string = '''
+<!DOCTYPE html>
+<html>
+    <head>
+        {%metas%}
+        <title>{%title%}</title>
+        {%favicon%}
+        {%css%}
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+    </body>
+</html>
+'''
 
 # Main script execution
 if __name__ == '__main__':

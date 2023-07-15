@@ -72,6 +72,9 @@ def carbon_atlas(source, fuel_type) :
     fig.update_geos(fitbounds="locations", visible=False)
     
     fig.update_layout(
+            geo=dict(bgcolor= 'rgba(0,0,0,0)'),
+            plot_bgcolor='rgba(0, 0, 0, 0)',
+            paper_bgcolor='rgba(0,0,0,0)',
             margin={'l': 0, 'r': 0, 't': 60, 'b': 0},
             coloraxis_colorbar_title="CO₂ Emissions<br>kilotonnes C",
             title=source,

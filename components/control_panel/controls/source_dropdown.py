@@ -55,6 +55,10 @@ layout = dash.html.Div(
 )
 
 # CALLBACKS (1)
+
+# Determines whether or not to show the source dropdown menu
+# and what the options are.
+# TODO: This is messy.  Clean it up once the SQL connection is established.
 @dash.callback(
     dash.dependencies.Output(component_id, 'hidden'),
     dash.dependencies.Output('source-dropdown-controler', 'options'),

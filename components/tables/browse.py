@@ -45,12 +45,10 @@ def browse_table(fuel_type, source) :
         id = component_id,
         className = "table_container",
         children = [
-            dash.html.P(
-                'Use the sidebar dropdowns to select data.  Filter and sort below.  Inequality filters (e.g. ">2005" for Year) are supported.', 
-                style = {'text-align' : 'center'}),
-            dash.html.P(
-                'All values are in Thousand Metric Tons of Carbon (ktC)', 
-                style = {'text-align' : 'center'}),
+            # TODO: Look into styling this page better.
+            # Do dash.data_table/s play nice with css?
+            dash.html.P('Use the sidebar dropdowns to select data.  Filter and sort below.  Inequality filters (e.g. ">2005" for Year) are supported.'),
+            dash.html.P('All values are in Thousand Metric Tons of Carbon (ktC)'),
             dash.dash_table.DataTable(
                 data=df.to_dict('records'),
                 columns=[{'id': c, 'name': c} for c in ["Nation", "Year", source]],
