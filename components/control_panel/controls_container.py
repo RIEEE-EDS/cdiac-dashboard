@@ -30,22 +30,9 @@ import components.control_panel.controls.fuel_type_dropdown as fuel_type_dropdow
 import components.control_panel.controls.source_dropdown as source_dropdown
 import components.control_panel.controls.nation_dropdown as nation_dropdown
 
-# STYLES (CSS DICT)
-styles = {
-    component_id : {
-        'padding': '20px',
-        'background-color': '#333',
-        'color': '#fff',
-        #'overflow-y' : 'auto',
-        'border-bottom-left-radius' : '10px',
-        'border-bottom-right-radius' : '10px'
-    }
-}
-
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
-    style = styles[component_id],
     children= [
 
         # NAVIGATION SELECTION

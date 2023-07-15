@@ -27,37 +27,16 @@ component_id = "backtodatadash"
 import dash.html.Div
 # import components.examplesubcomponent as examplesubcomponent
 
-# STYLES (CSS DICT)
-styles = {
-    component_id : {
-
-    }
-}
-
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
-    style = styles[component_id],
     children= [
-
-        dash.html.P("This dashboard is powered and supported by the Research Institute for Environment, Energy, and Economics at Appalachian State University.", style = {'text-align' : 'center'}),
-
+        dash.html.P("This dashboard is powered and supported by the Research Institute for Environment, Energy, and Economics at Appalachian State University."),
         dash.html.H3(
-
             children = [
-
-                dash.html.A(
-                    "↖ Back to DataDash",
-                    
-                    href = "https://www.appstate.edu"
-                )
-                
-            ], 
-            
-            style = {'text-align' : 'center'}
-
+                dash.html.A("↖ Back to DataDash", href = "https://www.appstate.edu")
+            ]
         ),
-
     ]
 )
 

@@ -28,25 +28,16 @@ import dash.html.Div
 from components.staticdata import data as d
 
 # STYLES (CSS DICT)
-styles = {
-    component_id : {
-        'margin-top': '20px',
-        'margin-bottom': '20px',
-        'color': '#000'
-    },
-
-    'h2' : {
-        'color' : '#fff'
-    },
-}
 
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
-    style = styles[component_id],
+    
+    className = 'dropdown',
+
     children= [
 
-        dash.html.H2('Country', style=styles['h2']),
+        dash.html.H2('Country'),
 
         dash.dcc.Dropdown(
 

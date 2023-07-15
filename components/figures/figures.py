@@ -22,6 +22,7 @@ from components.staticdata import data as d
 # Carbon Atlas
 def carbon_atlas(source, fuel_type) :
 
+    # Select Color Scale depending on fuel type
     if fuel_type == 'solids':
         df = d.df_solid
         c_scale = "turbid"
@@ -35,18 +36,36 @@ def carbon_atlas(source, fuel_type) :
         df = d.df_total
         c_scale = "electric_r"
 
+    # Top of the scale should be the max value for the entire range of years
     maxValue = df[source].max()
 
+    # Map each observation to their nation ISO for plotly
     df['Nation_ISO'] = df['Nation'].map(d.location_mapping)
 
+    # Create the choropleth figure
     fig = px.choropleth(
+
+        # Our Dataframe
         df, 
+
+        # Base locations of ISO
         locations = "Nation_ISO",
+
+        # The color of a nation depends on the carbon emissions value from the given source
         color = source,
+
+        # Hovering over a country should give you the nation name
         hover_name = "Nation",
+
+        # Animate based on year
         animation_frame = "Year",
+
+        # Keep "nation" as a distinct group
+        # TODO: Something is off about this.  Countries do no remain selected over years within plotly.
         animation_group = "Nation",
+
         color_continuous_scale = c_scale,
+        
         range_color = [0, maxValue]
     )
     

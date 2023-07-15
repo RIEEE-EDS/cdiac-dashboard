@@ -27,26 +27,15 @@ component_id = "fuel_type_dropdown"
 import dash.html.Div
 # import components.examplesubcomponent as examplesubcomponent
 
-# STYLES (CSS DICT)
-styles = {
-    component_id : {
-        'margin-top': '20px',
-        'margin-bottom': '20px',
-        'color': '#000'
-    },
-
-    'h2' : {
-        'color' : '#fff'
-    },
-}
-
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
-    style = styles[component_id],
+    
+    className = 'dropdown',
+
     children=[
 
-        dash.html.H2('Fuel Type', style = styles['h2']),
+        dash.html.H2('Fuel Type'),
 
         dash.dcc.Dropdown(
 

@@ -7,7 +7,7 @@ Last Modified: 7/14/2023
 
 Project: CDIAC at AppState
 
-Script Description: This script defines the style, layout, and callback functionality of the maincontainer.
+Script Description: This script defines the logical layout and callback functionality of the maincontainer.
 
 Exceptional notes about this script:
 (none)
@@ -21,29 +21,12 @@ This Dash application component was created using the template provided by the R
 """
 
 # Component ID (Should be the same as the title of this file)
-component_id = "maincontainer"
+component_id = "main_container"
 
 # Import Dependencies
 import dash.html.Div
 import components.control_panel.panel_container as control_panel
-import components.content_display.content_display as content_display
-
-# STYLES (CSS DICT)
-styles = {
-    component_id : {
-        # Flow, Size and Function
-        'display': 'flex',
-        'flex-flow' : 'row nowrap',
-        'justify-content' : 'center',
-        'align-items' : 'stretch',
-        'height': '95vh',
-
-        # Color and Fonts
-        'background-color' : '#fff',
-        'font-size' : '15px',
-        'font-family' : '"Open Sans",sans-serif'
-    }
-}
+import components.content_display.display_container as display_container
 
 # LAYOUT
 layout = dash.html.Div(
@@ -51,8 +34,6 @@ layout = dash.html.Div(
     # MAIN APPLICATION CONTAINER
 
     id = component_id,
-    
-    style = styles[component_id],
     
     children= [
 
@@ -62,7 +43,7 @@ layout = dash.html.Div(
 
         # Content Area
 
-        content_display.layout
+        display_container.layout
 
     ]
 )
