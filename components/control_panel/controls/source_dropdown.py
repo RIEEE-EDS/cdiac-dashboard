@@ -12,7 +12,7 @@ Script Description: This script defines the style, layout, and callback function
 Exceptional notes about this script:
 (none)
 
-Callback methods: 1
+Callback methods: 2
 
 ~~~
 
@@ -30,8 +30,6 @@ from components.staticdata import data as d
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
-    
-    className = 'dropdown',
 
     children= [
 
@@ -54,7 +52,7 @@ layout = dash.html.Div(
     ]
 )
 
-# CALLBACKS (1)
+# CALLBACKS (2)
 
 # Determines whether or not to show the source dropdown menu
 # and what the options are.
@@ -110,3 +108,11 @@ def update_source_dropdown(nav_opt, fuel_type, value):
         hidden = True
     
     return hidden, options, value
+
+# Controls Theme of component
+@dash.callback(
+    dash.dependencies.Output(component_id, 'className'),
+    dash.dependencies.Input('theme_toggle', 'className')
+)
+def update_source_dropdown(theme):
+    return "dropdown_" + theme

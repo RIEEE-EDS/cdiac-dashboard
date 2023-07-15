@@ -12,7 +12,7 @@ Script Description: The fuel type selector allows for the selection of fossil fu
 Exceptional notes about this script:
 (none)
 
-Callback methods: 1
+Callback methods: 2
 
 ~~~
 
@@ -30,8 +30,6 @@ import dash.html.Div
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
-    
-    className = 'dropdown',
 
     children=[
 
@@ -63,7 +61,7 @@ layout = dash.html.Div(
     ]
 )
 
-# CALLBACKS (1)
+# CALLBACKS (2)
 
 # Updates whether or not to show the fuel type dropdown selector.
 @dash.callback(
@@ -80,3 +78,11 @@ def update_fuel_dropdown(nav_opt) :
         return False
     else:
         return True
+
+# Controls Theme of component
+@dash.callback(
+    dash.dependencies.Output(component_id, 'className'),
+    dash.dependencies.Input('theme_toggle', 'className')
+)
+def update_source_dropdown(theme):
+    return "dropdown_" + theme

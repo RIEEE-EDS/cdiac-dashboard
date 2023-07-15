@@ -12,7 +12,7 @@ Script Description: This script defines the style, layout, and callback function
 Exceptional notes about this script:
 (none)
 
-Callback methods: 0
+Callback methods: 2
 
 ~~~
 
@@ -32,8 +32,6 @@ from components.staticdata import data as d
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
-    
-    className = 'dropdown',
 
     children= [
 
@@ -60,7 +58,7 @@ layout = dash.html.Div(
     ]
 )
 
-# CALLBACKS (1)
+# CALLBACKS (2)
 
 # Updates whether to show the country selector, and whether it's multi- or single
 @dash.callback(
@@ -91,3 +89,11 @@ def update_navigation_dropdown(nav_opt) :
                 'UNITED STATES OF AMERICA',
                 'RUSSIAN FEDERATION',
                 'INDIA']
+
+# Controls Theme of component
+@dash.callback(
+    dash.dependencies.Output(component_id, 'className'),
+    dash.dependencies.Input('theme_toggle', 'className')
+)
+def update_source_dropdown(theme):
+    return "dropdown_" + theme
