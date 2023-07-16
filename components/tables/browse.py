@@ -3,7 +3,7 @@ Module/Script Name: browse.py
 Author: M. W. Hefner
 
 Created: 7/15/2023
-Last Modified: 7/15/2023
+Last Modified: 7/16/2023
 
 Project: CDIAC at AppState
 
@@ -26,7 +26,7 @@ component_id = "browse"
 import dash.html.Div
 import dash.html.P
 import dash.dash_table.DataTable
-from components.staticdata import data as d
+from components.utils import constants as d
 
 def browse_table(fuel_type, source) :
 

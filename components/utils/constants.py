@@ -1,9 +1,8 @@
 """
-Module/Script Name: data.py
+Module/Script Name: constants.py
 Author: M. W. Hefner
 Created: 6/28/2023
-Last Modified: 6/28/2023
-Version: 1.0
+Last Modified: 7/16/2023
 """
 
 # Import Dependencies
@@ -272,16 +271,16 @@ location_mapping = {
 }
 
 # Load TOTAL sheet
-df_total = pd.read_excel('./components/staticData/National_Sectoral_2020.xlsx', sheet_name='TOTAL')
+df_total = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='TOTAL')
 
 # Load SOLID FUELS sheet (also used for LIQUID FUELS sheet)
-df_solid = pd.read_excel('./components/staticData/National_Sectoral_2020.xlsx', sheet_name='SOLID FUELS')
+df_solid = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='SOLID FUELS')
 
 # Load LIQUID FUELS sheet (also used for LIQUID FUELS sheet)
-df_liquid = pd.read_excel('./components/staticData/National_Sectoral_2020.xlsx', sheet_name='LIQUID FUELS')
+df_liquid = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='LIQUID FUELS')
 
 # Load GAS FUELS sheet (also used for LIQUID FUELS sheet)
-df_gas = pd.read_excel('./components/staticData/National_Sectoral_2020.xlsx', sheet_name='GAS FUELS')
+df_gas = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='GAS FUELS')
 
 """ CLEAN DATA -----
 

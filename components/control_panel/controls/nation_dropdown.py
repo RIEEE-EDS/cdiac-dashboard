@@ -3,7 +3,7 @@ Module/Script Name: nation_dropdown.py
 Author: M. W. Hefner
 
 Created: 6/28/2023
-Last Modified: 7/14/2023
+Last Modified: 7/16/2023
 
 Project: CDIAC at AppState
 
@@ -25,7 +25,7 @@ component_id = "nation_dropdown"
 
 # Import Dependencies
 import dash.html.Div
-from components.staticdata import data as d
+from components.utils import constants as d
 
 # STYLES (CSS DICT)
 

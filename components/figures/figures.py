@@ -2,7 +2,7 @@
 Module/Script Name: figures.py
 Author: M. W. Hefner
 Created: 6/28/2023
-Last Modified: 6/28/2023
+Last Modified: 7/16/2023
 Version: 1.0
 
 Defines the interactive plotly figures used in this application.
@@ -17,11 +17,11 @@ import plotly.express as px
 import pandas as pd
 import datetime
 import plotly.io as pio
-from components.staticdata import data as d
+from components.utils import constants as d
 
 
 # Time Series by Country
-def timeseries_country(fuel_type, nation) :
+def timeseriasdfes_country(fuel_type, nation) :
 
     pio.templates.default = "plotly_white"
 

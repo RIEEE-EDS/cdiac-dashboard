@@ -3,7 +3,7 @@ Module/Script Name: carbon_atlas.py
 Author: M. W. Hefner
 
 Created: 4/12/2023
-Last Modified: 7/15/2023
+Last Modified: 7/16/2023
 
 Project: CDIAC at AppState
 
@@ -26,7 +26,7 @@ import plotly.express as px
 import pandas as pd
 import datetime
 import plotly.io as pio
-from components.staticdata import data as d
+from components.utils import constants as d
 
 # Carbon Atlas
 def carbon_atlas(source, fuel_type, theme) :
@@ -120,8 +120,9 @@ def carbon_atlas(source, fuel_type, theme) :
 
             coloraxis_colorbar_title="CO₂ Emissions<br>kilotonnes C",
 
+            # Set the font size for the entire plot, excluding the title
             font=dict(
-                size=20, # Set the font size for the entire plot, excluding the title
+                size=20, 
                 color = textCol  
             ),
             

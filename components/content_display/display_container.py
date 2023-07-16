@@ -3,7 +3,7 @@ Module/Script Name: content_display.py
 Author: M. W. Hefner
 
 Created: 7/01/2023
-Last Modified: 7/15/2023
+Last Modified: 7/16/2023
 
 Project: CDIAC at AppState
 
@@ -25,9 +25,10 @@ component_id = "display_container"
 
 # Import Dependencies
 import dash.html.Div
-from components.staticdata import data as d
-from components.figures import figures
+from components.utils import constants as d
 from components.figures.carbon_atlas import carbon_atlas
+from components.figures.country_timeseries import country_timeseries
+from components.figures.source_timeseries import source_timeseries
 from components.tables import browse
 
 # LAYOUT
@@ -53,18 +54,18 @@ def update_container(nav_opt, fuel_type, source):
     if nav_opt == "about" :
         return [
             # About page: Markdown
-            dash.dcc.Markdown(children = d.about_content, mathjax=True)
+            dash.dcc.Markdown(children = d.about_content, className = "markdown", mathjax=True)
         ]
     elif nav_opt == "methodology" :
         return [
             # Methodology: Markdown
-            dash.dcc.Markdown(children = d.methodology_content, mathjax=True)
+            dash.dcc.Markdown(children = d.methodology_content, className = "markdown", mathjax=True)
         ]
     elif nav_opt == "download" :
         return [
             # Downloan page: Markdown for now
             # TODO: Perhaps make this a nicer page on down the line?
-            dash.dcc.Markdown(children = d.download_content, mathjax=True)
+            dash.dcc.Markdown(children = d.download_content, className = "markdown", mathjax=True)
         ]
     elif nav_opt == "browse" :
         return [
@@ -97,13 +98,13 @@ def update_map_or_graph(nav_opt, source, fuel_type, nation, theme):
 
         # TIME SERIES BY COUNTRY
 
-        return figures.timeseries_country(fuel_type, nation)
+        return country_timeseries(fuel_type, nation, theme)
 
     elif nav_opt == 'timeseries-source' :
 
         # TIME SERIES BY SOURCE
 
-        return figures.timeseries_source(source, fuel_type, nation)
+        return source_timeseries(source, fuel_type, nation, theme)
 
     else :
 
