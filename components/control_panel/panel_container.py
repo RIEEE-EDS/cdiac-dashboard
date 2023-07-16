@@ -12,7 +12,7 @@ Script Description: This script defines the logical layout and callback function
 Exceptional notes about this script:
 (none)
 
-Callback methods: 0
+Callback methods: 1
 
 ~~~
 
@@ -25,6 +25,7 @@ component_id = "panel_container"
 
 # Import Dependencies
 import dash.html.Div
+import dash.exceptions
 import components.control_panel.control_panel_header as control_panel_header
 import components.control_panel.controls_container as controls_container
 import components.control_panel.backtodatadash as backtodatadash
@@ -43,17 +44,28 @@ layout = dash.html.Div(
         # INFO / BACK TO DATADASH
         backtodatadash.layout,
 
+        dash.html.Div(
+
+            id = "control_panel_toggle"
+
+        )
+
     ]
 )
 
-# CALLBACKS (0)
+# CALLBACKS (1)
+
 # Controls Theme of component
 @dash.callback(
     dash.dependencies.Output(component_id, 'className'),
-    dash.dependencies.Input('theme_toggle_switch', 'n_clicks')
+    dash.dependencies.Output("control_panel_toggle", 'className'),
+    dash.dependencies.Input('theme_toggle', 'className'),
+    dash.dependencies.Input("control_panel_toggle", 'n_clicks')
 )
-def update_source_dropdown(n_clicks):
-    if n_clicks % 2 == 0 :
-        return 'light'
+def update_source_dropdown(theme, panel_toggle_clicks):
+    if panel_toggle_clicks is None:
+        return theme, theme
+    elif panel_toggle_clicks % 2 == 1 :
+        return theme + " collapsed", theme + " collapsed"
     else :
-        return 'dark'
+        return theme, theme
