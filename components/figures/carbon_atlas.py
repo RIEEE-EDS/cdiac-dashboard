@@ -86,10 +86,6 @@ def carbon_atlas(source, fuel_type, theme) :
         # Animate based on year
         animation_frame = "Year",
 
-        # Keep "nation" as a distinct group
-        # TODO: Something is off about this.  Countries do no remain selected over years within plotly.
-        animation_group = "Nation",
-
         # set color scale
         color_continuous_scale = c_scale,
         
@@ -99,46 +95,63 @@ def carbon_atlas(source, fuel_type, theme) :
     
     fig.update_geos(fitbounds="locations", visible=False)
     
-    fig.update_layout(
-            geo=dict(bgcolor= 'rgba(0,0,0,0)'),
-            plot_bgcolor='rgba(0, 0, 0, 0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            margin={'l': 0, 'r': 0, 't': 60, 'b': 0},
-            coloraxis_colorbar_title="CO₂ Emissions<br>kilotonnes C",
-            title=source,
-            title_font_color=textCol,  # Set the font color of the title
-            font=dict(
-                size=15, # Set the font size for the entire plot, excluding the title
-                color = textCol  
-            ),
-            title_x=0.5,  # Set the horizontal alignment of the title (0-1)
-            title_y=0.95,  # Set the vertical alignment of the title (0-1)
-            title_xanchor="center",  # Set the horizontal anchor point of the title
-            title_yanchor="top"  # Set the vertical anchor point of the title
-        )
-    
     # Give it the CDIAC Watermark with overkill year code lol
     subtitle_annotation = dict(
         x=0.5,
-        y=-0.10,
+        y=0,
         xref='paper',
         yref='paper',
-        text='Source: CDIAC at AppState, ' + str(datetime.date.today().year),
+        text='Source: CDIAC at AppState Dashboard | Hefner, M; Marland, G (' + str(datetime.date.today().year) + ')',
         showarrow=False,
         
         font = dict(
-            size=15,
+            size=20,
             color = textCol
         )
     )
 
-    fig.update_layout(annotations=[subtitle_annotation])
-    
+    fig.update_layout(
+
+            geo=dict(bgcolor= 'rgba(0,0,0,0)'),
+            plot_bgcolor='rgba(0, 0, 0, 0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+
+            margin={'l': 0, 'r': 0, 't': 50, 'b': 0},
+
+            coloraxis_colorbar_title="CO₂ Emissions<br>kilotonnes C",
+
+            font=dict(
+                size=20, # Set the font size for the entire plot, excluding the title
+                color = textCol  
+            ),
+            
+            # Title Layout and Styling
+            title = dict(
+                text = source,
+                xanchor="center",
+                xref = "container",
+                yref = "container",
+                x = 0.5,
+                yanchor="top",
+                y = .98,
+                font = dict(
+                    size = 32,
+                    color = textCol
+                )
+            ),
+
+            sliders = [dict(
+                font=dict(size=20, color = textCol),
+                pad=dict(t=0,b=10,l=20)
+            )],
+
+            # Apply CDIAC Watermark
+            annotations=[subtitle_annotation]
+        )
+
     # These lines set the a last frame
     last_frame_num = len(fig.frames) -1
-
     fig.layout['sliders'][0]['active'] = last_frame_num
-
     fig = go.Figure(data=fig['frames'][-1]['data'], frames=fig['frames'], layout=fig.layout)
 
     return fig

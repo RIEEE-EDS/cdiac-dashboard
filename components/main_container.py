@@ -10,7 +10,8 @@ Project: CDIAC at AppState
 Script Description: This script defines the logical layout and callback functionality of the maincontainer.
 
 Exceptional notes about this script:
-(none)
+
+1.  dcc.Loading doesn't actually create an HTML tag of its own, so it's necessary to handle its styling in the python code.
 
 Callback methods: 1
 
@@ -45,7 +46,13 @@ layout = dash.html.Div(
 
         # Content Area
 
-        display_container.layout
+        dash.dcc.Loading(
+            fullscreen = True,
+            style = {'background-color' : 'white'},
+            id = 'loading',
+            type = 'graph',
+            children = display_container.layout
+        )
 
     ]
 )
@@ -55,7 +62,11 @@ layout = dash.html.Div(
 # Controls Theme of component
 @dash.callback(
     dash.dependencies.Output(component_id, 'className'),
+    dash.dependencies.Output('loading', 'style'),
     dash.dependencies.Input('theme_toggle', 'className')
 )
 def update_source_dropdown(theme):
-    return theme
+    if theme == 'light' :
+        return theme, {'background-color' : 'white'}
+    else :
+        return theme, {'background-color' : 'black'}

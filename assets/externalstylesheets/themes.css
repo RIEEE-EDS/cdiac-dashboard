@@ -170,7 +170,7 @@ body {
 
 #display_container {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     padding-left: 30px;
     box-sizing: border-box;
     overflow-y: auto;
