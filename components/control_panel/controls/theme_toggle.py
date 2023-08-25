@@ -32,7 +32,7 @@ layout = dash.html.Div(
     children= [
 
         # TODO: Make Look nice
-        dash.html.Button('Theme', id = 'theme_toggle_switch', n_clicks=0)
+        dash.html.Button('Switch to Dark Theme', id = 'theme_toggle_switch', n_clicks=0)
 
     ]
 )
@@ -41,10 +41,11 @@ layout = dash.html.Div(
 # Controls Theme of component
 @dash.callback(
     dash.dependencies.Output(component_id, 'className'),
+    dash.dependencies.Output('theme_toggle_switch', 'children'),
     dash.dependencies.Input('theme_toggle_switch', 'n_clicks')
 )
 def update_source_dropdown(n_clicks):
     if n_clicks % 2 == 0 :
-        return 'light'
+        return 'light', "Switch to Dark Theme"
     else :
-        return 'dark'
+        return 'dark', "Switch to Light Theme"

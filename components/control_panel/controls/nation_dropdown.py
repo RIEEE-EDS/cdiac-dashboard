@@ -42,6 +42,15 @@ layout = dash.html.Div(
             id='nation-dropdown-controler',
 
             value = [
+                'Annex I',
+                'Non-Annex I',
+                'Africa',
+                'Asia Pacific',
+                'Commonwealth of Independent States',
+                'Europe',
+                'North America',
+                'Middle East',
+                'South and Central America',
                 'CHINA (MAINLAND)', 
                 'UNITED STATES OF AMERICA',
                 'RUSSIAN FEDERATION',
@@ -73,10 +82,22 @@ def update_navigation_dropdown(nav_opt) :
     if nav_opt == 'timeseries-country' : 
         return False, False, 'UNITED STATES OF AMERICA'
     
+    if nav_opt == 'sunburst-country' : 
+            return False, False, 'UNITED STATES OF AMERICA'
+
     # Not Hidden.  Multi.
     if nav_opt == 'timeseries-source' :
 
         return False, True, [
+                'Annex I',
+                'Non-Annex I',
+                'Africa',
+                'Asia Pacific',
+                'Commonwealth of Independent States',
+                'Europe',
+                'North America',
+                'Middle East',
+                'South and Central America',
                 'CHINA (MAINLAND)', 
                 'UNITED STATES OF AMERICA',
                 'RUSSIAN FEDERATION',
@@ -85,6 +106,15 @@ def update_navigation_dropdown(nav_opt) :
     # Hidden
     else:
         return True, True, [
+                'Annex I',
+                'Non-Annex I',
+                'Africa',
+                'Asia Pacific',
+                'Commonwealth of Independent States',
+                'Europe',
+                'North America',
+                'Middle East',
+                'South and Central America',
                 'CHINA (MAINLAND)', 
                 'UNITED STATES OF AMERICA',
                 'RUSSIAN FEDERATION',

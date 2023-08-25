@@ -74,6 +74,7 @@ def update_fuel_dropdown(nav_opt) :
         'carbon-atlas', 
         'timeseries-source', 
         'timeseries-country', 
+        'sunburst-country', 
         'browse'] :
         return False
     else:

@@ -7,6 +7,7 @@ Last Modified: 7/16/2023
 
 # Import Dependencies
 import pandas as pd
+import math
 
 location_mapping = {
     'WORLD': 'World',
@@ -270,8 +271,17 @@ location_mapping = {
     'ZANZIBAR': 'TZA'
 }
 
+def round_down(x):
+    if isinstance(x, (int, float)) and not math.isnan(x):
+        return math.floor(x)
+    else:
+        return x
+
 # Load TOTAL sheet
 df_total = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='TOTAL')
+
+# Round down
+df_total = df_total.applymap(round_down)
 
 # Load SOLID FUELS sheet (also used for LIQUID FUELS sheet)
 df_solid = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='SOLID FUELS')

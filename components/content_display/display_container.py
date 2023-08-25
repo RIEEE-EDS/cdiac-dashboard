@@ -28,6 +28,7 @@ import dash.html.Div
 from components.utils import constants as d
 from components.figures.carbon_atlas import carbon_atlas
 from components.figures.country_timeseries import country_timeseries
+from components.figures.country_sunburst import country_sunburst
 from components.figures.source_timeseries import source_timeseries
 from components.tables import browse
 
@@ -105,6 +106,12 @@ def update_map_or_graph(nav_opt, source, fuel_type, nation, theme):
         # TIME SERIES BY SOURCE
 
         return source_timeseries(source, fuel_type, nation, theme)
+
+    elif nav_opt == 'sunburst-country' :
+
+        # Sunburst by Country
+
+        return country_sunburst(nation, theme)
 
     else :
 

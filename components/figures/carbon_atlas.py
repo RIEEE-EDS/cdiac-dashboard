@@ -62,6 +62,17 @@ def carbon_atlas(source, fuel_type, theme) :
     if theme == 'dark' :
         textCol = '#fff'
 
+
+    # List of Nation values to filter
+    nations_to_filter = [
+        "Africa", "Antarctica", "Asia Pacific", "Commonwealth of Independent States",
+        "Europe", "Middle East", "North America", "South and Central America",
+        "Annex I", "Non-Annex I"
+    ]
+
+    # Filter out rows with specified Nation values
+    df = df.copy()[~df['Nation'].isin(nations_to_filter)]
+
     # Top of the scale should be the max value for the entire range of years
     maxValue = df[source].max()
 

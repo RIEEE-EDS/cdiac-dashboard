@@ -194,3 +194,14 @@ body {
     text-align: center;
     background-color: rgba(0, 0, 0, 0);
 }
+
+/* Custom styling for Dash DataTable */
+.dash-table-container th {
+    color: black !important;
+    text-align: center;
+}
+
+.dash-table-container td {
+    color: black !important;
+    text-align: center;
+}

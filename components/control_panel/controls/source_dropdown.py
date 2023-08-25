@@ -71,7 +71,7 @@ def update_source_dropdown(nav_opt, fuel_type, value):
     hidden = False
     options = []
 
-    if nav_opt not in ['about', 'timeseries-country', 'methodology', 'download'] :
+    if nav_opt not in ['about', 'timeseries-country', 'sunburst-country', 'methodology', 'download'] :
 
         if fuel_type == 'totals':
 

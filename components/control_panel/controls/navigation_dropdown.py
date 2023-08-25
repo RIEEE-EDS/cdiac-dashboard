@@ -47,7 +47,9 @@ layout = dash.html.Div(
 
                 {'label': 'Time Series (by Source)', 'value': 'timeseries-source'},
 
-                {'label': 'Time Series (by Country)', 'value': 'timeseries-country'},
+                {'label': 'Sunburst Chart (by Political Geography)', 'value': 'sunburst-country'},
+
+                {'label': 'Time Series (by Political Geography)', 'value': 'timeseries-country'},
 
                 {'label': 'Browse Raw Data', 'value': 'browse'},
 
