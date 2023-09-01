@@ -23,6 +23,11 @@ This Dash application was created using the template provided by the Research In
 # Import Dependencies
 from dash import Dash
 import components.main_container as mc
+import configparser
+
+cfg = configparser.ConfigParser()
+cfg.read('/etc/rieee.conf')
+cfg.read('rieee.conf')
 
 # Import Styles that _have_ to be CSS;
 external_stylesheets = {
@@ -37,7 +42,8 @@ app = Dash(
     __name__, 
     external_stylesheets = external_stylesheets['light_theme'],
     title = "CDIAC at AppState",
-    update_title = None
+    update_title = None,
+    url_base_pathname=cfg.get('app', 'url_prefix', fallback='/')
 )
 
 # Define Application Layout
