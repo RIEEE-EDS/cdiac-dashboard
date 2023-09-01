@@ -8,6 +8,6 @@ COPY requirements.txt ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY dashboard.py assets components /usr/src/app/
+COPY . /usr/src/app
 
 CMD [ "gunicorn", "dashboard:server", "--bind", "0.0.0.0:8050", "--access-logfile", "-" ]
