@@ -26,7 +26,7 @@ import components.main_container as mc
 import configparser
 
 cfg = configparser.ConfigParser()
-cfg.read('/etc/rieee.conf')
+cfg.read('/etc/rieee/rieee.conf')
 cfg.read('rieee.conf')
 
 # Import Styles that _have_ to be CSS;
