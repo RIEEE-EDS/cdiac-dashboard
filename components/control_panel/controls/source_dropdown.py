@@ -45,7 +45,9 @@ layout = dash.html.Div(
 
             clearable=False,
 
-            optionHeight=50
+            optionHeight=50,
+
+            searchable=False
 
         )
 

@@ -62,7 +62,9 @@ layout = dash.html.Div(
             # Default to carbon map
             value='carbon-atlas',
 
-            clearable=False
+            clearable=False,
+
+            searchable=False
 
         )
 
