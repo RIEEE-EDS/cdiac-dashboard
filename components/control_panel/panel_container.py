@@ -42,7 +42,7 @@ layout = dash.html.Div(
         controls_container.layout,
 
         # INFO / BACK TO DATADASH
-        backtodatadash.layout,
+        #backtodatadash.layout,
 
         dash.html.Div(
 

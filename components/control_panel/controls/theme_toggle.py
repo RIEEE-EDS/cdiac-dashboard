@@ -32,7 +32,12 @@ layout = dash.html.Div(
     children= [
 
         # TODO: Make Look nice
-        dash.html.Button('Switch to Dark Theme', id = 'theme_toggle_switch', n_clicks=0)
+        dash.html.Button(
+            dash.html.P('Switch to Dark Theme'), 
+            id = 'theme_toggle_switch',  
+            className = "universal_button", 
+            n_clicks=0
+        )
 
     ]
 )
@@ -46,6 +51,6 @@ layout = dash.html.Div(
 )
 def update_source_dropdown(n_clicks):
     if n_clicks % 2 == 0 :
-        return 'light', "Switch to Dark Theme"
+        return 'light', dash.html.P('Switch to Dark Theme')
     else :
-        return 'dark', "Switch to Light Theme"
+        return 'dark', dash.html.P('Switch to Light Theme')

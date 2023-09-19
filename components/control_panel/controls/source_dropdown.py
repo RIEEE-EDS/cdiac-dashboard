@@ -3,7 +3,7 @@ Module/Script Name: source_dropdown.py
 Author: M. W. Hefner
 
 Created: 6/28/2023
-Last Modified: 7/16/2023
+Last Modified: 9/06/2023
 
 Project: CDIAC at AppState
 
@@ -58,22 +58,31 @@ layout = dash.html.Div(
 
 # Determines whether or not to show the source dropdown menu
 # and what the options are.
-# TODO: This is messy.  Clean it up once the SQL connection is established.
 @dash.callback(
     dash.dependencies.Output(component_id, 'hidden'),
     dash.dependencies.Output('source-dropdown-controler', 'options'),
     dash.dependencies.Output('source-dropdown-controler', 'value'),
     dash.dependencies.Input('navigation-dropdown-controler', 'value'),
     dash.dependencies.Input('fuel-type-dropdown-controler', 'value'),
+    dash.dependencies.Input('source-dropdown-controler', 'options'),
     dash.dependencies.Input('source-dropdown-controler', 'value')
 )
-def update_source_dropdown(nav_opt, fuel_type, value):
+def update_source_dropdown(nav_opt, fuel_type, options, value):
 
     # Defaults
-    hidden = False
-    options = []
+    hidden = True
 
-    if nav_opt not in ['about', 'timeseries-country', 'sunburst-country', 'methodology', 'download'] :
+    if nav_opt in [
+            'carbon-atlas',
+
+            'timeseries-source',
+
+            'sunburst-source',
+
+            'browse'
+        ] :
+
+        hidden = False
 
         if fuel_type == 'totals':
 
@@ -105,9 +114,6 @@ def update_source_dropdown(nav_opt, fuel_type, value):
             
             if value not in d.df_gas.columns :
                 value = d.best_match_option(value, fuel_type)
-
-    else :
-        hidden = True
     
     return hidden, options, value
 

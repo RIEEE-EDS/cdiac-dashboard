@@ -30,6 +30,7 @@ from components.figures.carbon_atlas import carbon_atlas
 from components.figures.country_timeseries import country_timeseries
 from components.figures.country_sunburst import country_sunburst
 from components.figures.source_timeseries import source_timeseries
+from components.figures.source_sunburst import source_sunburst
 from components.tables import browse
 
 # LAYOUT
@@ -47,11 +48,9 @@ layout = dash.html.Div(
 @dash.callback(
     dash.dependencies.Output(component_id, 'children'),
     dash.dependencies.Input('navigation-dropdown-controler', 'value'),
-    dash.dependencies.Input('fuel-type-dropdown-controler', 'value'),
-    dash.dependencies.Input('source-dropdown-controler', 'value'),
 )
-def update_container(nav_opt, fuel_type, source):
-
+def update_container(nav_opt):
+    
     if nav_opt == "about" :
         return [
             # About page: Markdown
@@ -68,11 +67,6 @@ def update_container(nav_opt, fuel_type, source):
             # TODO: Perhaps make this a nicer page on down the line?
             dash.dcc.Markdown(children = d.download_content, className = "markdown", mathjax=True)
         ]
-    elif nav_opt == "browse" :
-        return [
-            # Browse returns the browse datatable
-            browse.browse_table(fuel_type, source)
-        ]
     else :
         return [
             dash.dcc.Graph(id='map-graph', style = {'height' :  '100%'})
@@ -87,7 +81,7 @@ def update_container(nav_opt, fuel_type, source):
     dash.dependencies.Input('nation-dropdown-controler', 'value'),
     dash.dependencies.Input('theme_toggle', 'className')
 )
-def update_map_or_graph(nav_opt, source, fuel_type, nation, theme):
+def update_fig_or_table(nav_opt, source, fuel_type, nation, theme):
 
     if nav_opt == 'carbon-atlas' :
 
@@ -106,12 +100,24 @@ def update_map_or_graph(nav_opt, source, fuel_type, nation, theme):
         # TIME SERIES BY SOURCE
 
         return source_timeseries(source, fuel_type, nation, theme)
+    
+    elif nav_opt == "browse" :
+
+        # BROWSE DATA TABLE
+
+        return browse.browse_table(fuel_type, source)
 
     elif nav_opt == 'sunburst-country' :
 
         # Sunburst by Country
 
         return country_sunburst(nation, theme)
+
+    elif nav_opt == 'sunburst-source' :
+
+        # Sunburst by Country
+
+        return source_sunburst(source, fuel_type, theme)
 
     else :
 

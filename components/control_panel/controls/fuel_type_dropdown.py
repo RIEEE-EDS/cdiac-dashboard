@@ -3,7 +3,7 @@ Module/Script Name: fuel_type_dropdown.py
 Author: M. W. Hefner
 
 Created: 6/28/2023
-Last Modified: 7/14/2023
+Last Modified: 9/06/2023
 
 Project: CDIAC at AppState
 
@@ -65,7 +65,9 @@ layout = dash.html.Div(
 
 # Updates whether or not to show the fuel type dropdown selector.
 @dash.callback(
+    # OUT controls visibility of component (HIDDEN == VARIABLE -> FALSE == VISIBLE)
     dash.dependencies.Output(component_id, 'hidden'),
+    # IN from navigation dropdown
     dash.dependencies.Input('navigation-dropdown-controler', 'value')
 )
 def update_fuel_dropdown(nav_opt) :
@@ -75,10 +77,11 @@ def update_fuel_dropdown(nav_opt) :
         'timeseries-source', 
         'timeseries-country', 
         'sunburst-country', 
+        'sunburst-source', 
         'browse'] :
-        return False
+        return False # IS visible
     else:
-        return True
+        return True # is NOT visible
 
 # Controls Theme of component
 @dash.callback(

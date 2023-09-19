@@ -26,6 +26,7 @@ import pandas as pd
 import datetime
 import plotly.io as pio
 from components.utils import constants as d
+import plotly.graph_objects as go
 
 def country_timeseries(fuel_type, nation, theme):
 
@@ -46,8 +47,13 @@ def country_timeseries(fuel_type, nation, theme):
     if theme == 'dark' :
         textCol = '#fff'
 
+    # Filter to proper political geography
     df = df[df['Nation'] == nation]
 
+    # Save a pre-melt for variables you do not want to stack
+    premelt_df = df
+
+    # melt for variables you wish to stack
     df = pd.melt(
         df, 
         id_vars=['Nation', 'Year'], 
@@ -55,13 +61,68 @@ def country_timeseries(fuel_type, nation, theme):
         value_name='Carbon'
     )
 
-    fig = px.line(df, x='Year', y = 'Carbon', color = 'Source', 
-                  color_discrete_sequence=px.colors.qualitative.Alphabet)
+    # Filter and keep only the sources you want to stack
+    df = df[df['Source'].isin([
+        "Nation", 
+        "Year", 
+
+        "Electric, CHP, Heat Plants",
+
+        "Energy Industries' Own Use",
+
+        # Subsectors
+
+        "Manufact, Constr, Non-Fuel Industry",
+
+        # Subsectors
+
+        "Transport",
+
+        # Subsectors
+
+        "Household",
+        "Agriculture, Forestry, Fishing",
+        "Commerce and Public Services",
+        "NES Other Consumption",
+        "Non-Energy Use",]
+    )]
+
+    # Make stacked area plot
+    fig = px.area(
+        df, 
+        x ='Year', 
+        y = 'Carbon', 
+        color = 'Source', 
+        color_discrete_sequence = px.colors.qualitative.Alphabet
+    )
+
+    # Add Sectoral Consumption (Should stack to the same height... make dashed)
+    fig.add_trace(
+        go.Scatter(
+                x=premelt_df['Year'],  # X-axis: Year
+                y=premelt_df["Sectoral (Consumption) Total"],  # Y-axis: Nitrogen
+                mode='lines',  # Display as a line plot
+                name="Sectoral (Consumption) Total",  # Legend label
+                line=dict(color='red', dash='dash'),  # Line color
+            )
+    )
+
+    # Add Reference approach
+    fig.add_trace(
+        go.Scatter(
+                x=premelt_df['Year'],  # X-axis: Year
+                y=premelt_df["Reference (Supply) Total"],  # Y-axis: Nitrogen
+                mode='lines',  # Display as a line plot
+                name="Reference (Supply) Total",  # Legend label
+                line=dict(color='blue', dash='dot'),  # Line color
+            )
+    )
 
     fig.update_layout(
 
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor = 'rgba(0,0,0,0)',
+        
+        paper_bgcolor = 'rgba(0,0,0,0)',
 
         margin={'l': 0, 'r': 0, 't': 100, 'b': 0},
 

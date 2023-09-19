@@ -30,12 +30,16 @@ import components.control_panel.controls.fuel_type_dropdown as fuel_type_dropdow
 import components.control_panel.controls.source_dropdown as source_dropdown
 import components.control_panel.controls.nation_dropdown as nation_dropdown
 import components.control_panel.controls.theme_toggle as theme_toggle
+import components.control_panel.backtodatadash as backtodatadash
 
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
     children= [
 
+        # THEME TOGGLE
+        theme_toggle.layout,
+        
         # NAVIGATION SELECTION
         navigation_dropdown.layout,
 
@@ -48,8 +52,9 @@ layout = dash.html.Div(
         # NATION SELECTION
         nation_dropdown.layout,
 
-        # NATION SELECTION
-        theme_toggle.layout,
+        # INFO / BACK TO DATADASH
+        backtodatadash.layout,
+
     ]
 )
 

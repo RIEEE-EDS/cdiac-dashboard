@@ -3,7 +3,7 @@ Module/Script Name: navigation_dropdown.py
 Author: M. W. Hefner
 
 Created: 6/28/2023
-Last Modified: 7/14/2023
+Last Modified: 9/06/2023
 
 Project: CDIAC at AppState
 
@@ -27,6 +27,10 @@ component_id = "navigation_dropdown"
 import dash.html.Div
 # import components.examplesubcomponent as examplesubcomponent
 
+# Two IDs are used - a wrapper around the dropdown, and the controller itself.
+# This allows for easier self-reference without worrying about infinite loops,
+# though I love hofstadter's work, myself.
+
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
@@ -39,31 +43,40 @@ layout = dash.html.Div(
 
             id='navigation-dropdown-controler',
 
+            # Provides default (and in the case of navigation, perm) options.
+
+            # NOTE: Simply adding an option here is not sufficient to add
+            # a control to the control panel.  Please see the DataDash Development
+            # handbook for clarification and design guidance.
+
             options=[
 
                 {'label': 'About', 'value': 'about'},
 
                 {'label': 'Carbon Emissions Atlas', 'value': 'carbon-atlas'},
 
-                {'label': 'Time Series (by Source)', 'value': 'timeseries-source'},
+                {'label': 'Time Series (by Political Geography)', 'value': 'timeseries-country'},
 
                 {'label': 'Sunburst Chart (by Political Geography)', 'value': 'sunburst-country'},
 
-                {'label': 'Time Series (by Political Geography)', 'value': 'timeseries-country'},
+                {'label': 'Time Series (by Source)', 'value': 'timeseries-source'},
 
-                {'label': 'Browse Raw Data', 'value': 'browse'},
+                {'label': 'Sunburst Chart (by Source)', 'value': 'sunburst-source'},
 
-                {'label': 'Methodology', 'value': 'methodology'},
+                {'label': 'Browse Data Table', 'value': 'browse'},
 
-                {'label': 'Download', 'value': 'download'}
+                {'label': 'How We Get Our Numbers', 'value': 'methodology'},
+
+                {'label': 'Download Data', 'value': 'download'}
                 
             ],
 
-            # Default to carbon map
-            value='carbon-atlas',
+            # Default to the Carbon Atlas
+            value = 'carbon-atlas',
 
             clearable=False,
 
+            # Making this searchable will disturb the tablet experience.
             searchable=False
 
         )
@@ -72,7 +85,7 @@ layout = dash.html.Div(
 )
 
 # CALLBACKS (1)
-# Controls Theme of component
+# Controls the theme of the navigation dropdown
 @dash.callback(
     dash.dependencies.Output(component_id, 'className'),
     dash.dependencies.Input('theme_toggle', 'className')

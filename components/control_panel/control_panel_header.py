@@ -52,7 +52,7 @@ layout = dash.html.Div(
 
         # Title
 
-        dash.html.H2("Carbon Dioxide Information Analysis Center (CDIAC) at AppState")
+        dash.html.H1("Carbon Dioxide Information Analysis Center (CDIAC) at AppState")
     ]
 )
 

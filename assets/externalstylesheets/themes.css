@@ -52,12 +52,13 @@ body {
 #panel_container {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 
     position: fixed;
     left : 0px;
     top: 0px;
 
-    z-index: 10001;
+    z-index: 1001;
 
     box-sizing: border-box;
     width: 500px;
@@ -90,28 +91,36 @@ body {
     height: 100%;
     /* Should match the left padding of the content display area */
     width: 30px;
-    transition: all 0.5s ease;
+    /*transition: all 0.5s ease;*/
 }
 
 #control_panel_toggle.light {
     background-image : linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.5));
+    cursor: pointer; /* Change cursor to a pointer on hover */
 }
 
 #control_panel_toggle.dark {
     background-image : linear-gradient(to right, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.5));
+    cursor: pointer; /* Change cursor to a pointer on hover */
 }
 
 #control_panel_toggle.light:hover {
-    background-image : linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75));
+    background-image : linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.75));
+    border-right: 1px solid #000000; /* 1px solid black top border */
+    border-left: 1px solid #000000; /* 2px dotted blue left border */
 }
 
 #control_panel_toggle.dark:hover {
     background-image : linear-gradient(to right, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75));
+    border-right: 1px solid #FFFFFF; /* 1px solid black top border */
+    border-left: 1px solid #FFFFFF; /* 2px dotted blue left border */
 }
 
 /* within control panel */
 
 #control_panel_header {
+    align-self: flex-start; /* Align to the top */
+
     padding: 0px;
     text-align: center;
     border-top-left-radius: 10px;
@@ -131,20 +140,54 @@ body {
 }
 
 #backtodatadash {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     text-align: center;
 }
 
 /* Controls */
 
 #controls_container {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end; /* Align to the bottom */
+    flex: 1; /* Grow to fill remaining space */
     padding: 20px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    overflow-y: auto;
 }
 
 /* Dropdown controls */
 
 /* TODO: Fix the class situation with these.  This is not done consistently with the rest of the theme styling. */
+
+.universal_button {
+    /* Add your CSS styles here */
+    background-color: #333; /* Change the background color */
+    color: #fff; /* Change the text color */
+    border: none; /* Remove the button border */
+    border-radius: 5px;
+    padding: 10px 20px; /* Adjust padding as needed */
+    cursor: pointer; /* Change cursor to a pointer on hover */
+  }
+  
+.universal_button:hover {
+    background-color: #555; /* Change the background color on hover */
+}
+
+.universal_button p {
+    margin: 0px
+}
+
+.universal_button a {
+    text-decoration: none;
+}
+
+#theme_toggle {
+    align-self: center;
+}
 
 .dropdown_light {
     margin-top: 20px;

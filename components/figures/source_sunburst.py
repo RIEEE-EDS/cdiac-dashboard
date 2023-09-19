@@ -2,12 +2,12 @@
 Module/Script Name: country_sunburst.py
 Author: M. W. Hefner
 
-Created: 4/12/2023
-Last Modified: 7/16/2023
+Created: 9/15/2023
+Last Modified: 9/15/2023
 
 Project: CDIAC at AppState
 
-Script Description: This script defines the country-view plotly figure.
+Script Description: This script defines a source-view plotly figure.
 
 Exceptional notes about this script:
 (none)
@@ -28,95 +28,48 @@ import datetime
 import plotly.io as pio
 from components.utils import constants as d
 
-def country_sunburst(nation, theme):
+def source_sunburst(source, fuel_type, theme):
 
     pio.templates.default = "plotly_white"
 
     # Select Color Scale depending on fuel type and theme
-    df = d.df_total
+    if fuel_type == 'solids':
+        df = d.df_solid
+    elif fuel_type == 'liquids':
+        df = d.df_liquid
+    elif fuel_type == 'gases':
+        df = d.df_gas
+    else :
+        df = d.df_total
 
     if theme == 'light' :
         textCol = '#000'
     if theme == 'dark' :
         textCol = '#fff'
 
-    # Filter the data frame for the right data
-    df = df[df['Nation'] == nation]
-    df = df[df['Year'] == 2019]
-
-    # Take only the columns we want for the starburst chart
-    columns_to_keep = [
-        "Fossil Fuel and Cement Production",
-        "Sectoral (Consumption) Total",
-        "Statistical Difference (Sup-Con)",
-        "Manufacture of Cement",
-        "Electric, CHP, Heat Plants",
-        "Energy Industries' Own Use",
-        "Manufact, Constr, Non-Fuel Industry",
-        "Transport",
-        "Household",
-        "Agriculture, Forestry, Fishing",
-        "Commerce and Public Services",
-        "NES Other Consumption",
-        
-        "Bunkered",
-        "Bunkered (Marine)",
-        "Bunkered (Aviation)",
-        "Flaring of Natural Gas",
-    ]
-
-    df = df[columns_to_keep]
-
-    df.fillna(0, inplace=True)
-
     # Debug
-    dfl = df.values.tolist()[0]
-    print(df)
+    df = df[['Nation', source]]
+    print(df[['Nation', source]])
 
-    if dfl[2] > 0 :
-        sunburst_parents = [
-            "",
-            "Total",
-            "Total",
-            "Total",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
+    sunburst_parents = [
+        "",
+        "Total",
+        "Total",
+        "Total",
+        "Consumption",
+        "Consumption",
+        "Consumption",
+        "Consumption",
+        "Consumption",
+        "Consumption",
+        "Consumption",
+        "Consumption",
 
-            "Consumption",
-            "Bunkered",
-            "Bunkered",
-            "Consumption",
-        ]
-    else:
-        dfl[0] = dfl[3] + dfl[1]
-
-        dfl[2] = dfl[2] * -1
-
-        sunburst_parents = [
-            "",
-            "Total",
-            "Electric, CHP, Heat Plants",
-            "Total",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-
-            "Consumption",
-            "Bunkered",
-            "Bunkered",
-            "Consumption",
-        ]
+        "Consumption",
+        "Bunkered",
+        "Bunkered",
+        "Consumption",
+    ]
 
     fig = go.Figure(go.Sunburst(
 

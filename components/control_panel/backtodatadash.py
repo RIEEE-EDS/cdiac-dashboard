@@ -31,10 +31,16 @@ import dash.html.Div
 layout = dash.html.Div(
     id = component_id,
     children= [
-        dash.html.P("This dashboard is powered and supported by the Research Institute for Environment, Energy, and Economics at Appalachian State University."),
+        dash.html.A(dash.html.Img(
+                src='/assets/images/RIEEE_LOGO.svg'
+            ), href = "https://rieee.appstate.edu",
+                style={"color" : "white", 'width': '65%', 'height': '65%', 'display': 'block', 'margin': 'auto'}),
+        dash.html.P(["This dashboard is powered and supported by the ",
+                     dash.html.A("Research Institute for Environment, Energy, and Economics", href = "https://datadash-dev.appstate.edu", style={"color" : "white"}),
+                       " at Appalachian State University."]),
         dash.html.H3(
             children = [
-                dash.html.A("↖ Back to DataDash", href = "https://www.appstate.edu")
+                dash.html.A("Go to DataDash", href = "https://datadash-dev.appstate.edu", style={"color" : "white", 'text-decoration': 'none'}, className = 'universal_button')
             ]
         ),
     ]

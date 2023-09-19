@@ -2,7 +2,10 @@
 Module/Script Name: constants.py
 Author: M. W. Hefner
 Created: 6/28/2023
-Last Modified: 7/16/2023
+Last Modified: 9/08/2023
+
+Contains import and other utility functions for the application.
+
 """
 
 # Import Dependencies
@@ -273,7 +276,7 @@ location_mapping = {
 
 def round_down(x):
     if isinstance(x, (int, float)) and not math.isnan(x):
-        return math.floor(x)
+        return round(x)
     else:
         return x
 
@@ -281,16 +284,25 @@ def round_down(x):
 df_total = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='TOTAL')
 
 # Round down
-df_total = df_total.applymap(round_down)
+#df_total = df_total.applymap(round_down)
 
 # Load SOLID FUELS sheet (also used for LIQUID FUELS sheet)
 df_solid = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='SOLID FUELS')
 
+# Round down
+#df_solid = df_solid.applymap(round_down)
+
 # Load LIQUID FUELS sheet (also used for LIQUID FUELS sheet)
 df_liquid = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='LIQUID FUELS')
 
+# Round down
+#df_liquid = df_liquid.applymap(round_down)
+
 # Load GAS FUELS sheet (also used for LIQUID FUELS sheet)
 df_gas = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='GAS FUELS')
+
+# Round down
+#df_gas = df_gas.applymap(round_down)
 
 """ CLEAN DATA -----
 
@@ -298,73 +310,50 @@ This section cleans the CDIAC data to be used easily by the dash application.
 
 """
 
-# Which column best matches that of another sheet (TOTAL -> PHASES)
-best_match = {
-    2  : 2,
-    3  : 3,
-    4  : 5,
-    5  : 6,
-    6  : 7,
-    7  : 8,
-    8  : 9,
-    9  : 10,
-    10 : 11,
-    11 : 12,
-    12 : 13,
-    13 : 4,
-    14:2,
-    15:2,
-    16:2,
-    17:2,
-    18:2,
-    19:2
-}
-
-# Reverse which column best matches that of another sheet (PHASES -> TOTAL)
-best_match_r = {
-    2: 2,
-    3: 3,
-    4: 5,
-    5: 6,
-    6: 7,
-    7: 8,
-    8: 9,
-    9: 10,
-    10: 11,
-    11: 12,
-    12: 13,
-    13: 4
-}
-
 # Names of the Columns in the Total sheet
 df_total.columns = [
     "Nation", 
     "Year", 
 
-    "Total CO₂ Emissions from Fossil-Fuels and Cement Production",
-    "Energy Use of Fossil Fuels",
+    "Fossil Fuel and Cement Production",
 
-    "Tranformation of Fossil Fuels in Electricity, CHP and Heat Plants",
-    "Energy Industries' Own Use of Fossil Fuels",
+    "Reference (Supply) Total",
 
-    "Total Non-Energy-Industry Fossil Fuel Consumption",
+    "Sectoral (Consumption) Total",
 
-    "Consumption of Fossil Fuels in Manufacturing, Construction, and Non-Fuel Industry",
-    "Consumption of Fossil Fuels for Transport",
-    "Household Consumption of Fossil Fuels",
-    "Consumption of Fossil Fuels for Agriculture, Forestry, and Fishing",
-    "Consumption of Fossil Fuels for Commerce and Public Services",
-    "Other Non-Energy-Industry Consumption of Fossil Fuels",
+    "Statistical Difference (Sup-Con)",
 
-    "Non-Energy Use of Fossil Fuels",
+    "Electric, CHP, Heat Plants",
+    
+    "Energy Industries' Own Use",
 
-    "Total Bunkered Fossil Fuels",
-    "Bunkered Fossil Fuels (Marine)",
-    "Bunkered Fossil Fuels (Aviation)"
-    ,
+    # Subsectors
+
+    "Manufact, Constr, Non-Fuel Industry",
+
+    # Subsectors
+
+    "Transport",
+
+    # Subsectors
+
+    "Household",
+    "Agriculture, Forestry, Fishing",
+    "Commerce and Public Services",
+    "NES Other Consumption",
+    "Non-Energy Use",
+
+    # Only for Totals-----------------
+    "Bunkered",
+
+    "Bunkered (Marine)",
+    "Bunkered (Aviation)",
+
     "Flaring of Natural Gas",
+
     "Manufacture of Cement",
-    "Per Capita Fossil-Fuels and Cement Production"
+
+    "Per Capita Total Emissions"
 ]
 
 # Names of the columns in the SOLID sheet
@@ -372,106 +361,64 @@ df_solid.columns = [
     "Nation", 
     "Year", 
 
-    "Total CO₂ Emissions from Solid Fossil Fuels",
-    "Energy Use of Solid Fossil Fuels",
+    "Reference (Supply) Total",
 
-    "Non-Energy Use of Solid Fossil Fuels",
+    "Sectoral (Consumption) Total",
 
-    "Tranformation of Solid Fossil Fuels in Electricity, CHP and Heat Plants",
-    "Energy Industries' Own Use of Solid Fossil Fuels",
+    "Statistical Difference (Sup-Con)",
 
-    "Total Non-Energy-Industry Solid Fossil Fuel Consumption",
+    "Electric, CHP, Heat Plants",
 
-    "Consumption of Solid Fossil Fuels in Manufacturing, Construction, and Non-Fuel Industry",
-    "Consumption of Solid Fossil Fuels for Transport",
-    "Household Consumption of Solid Fossil Fuels",
-    "Consumption of Solid Fossil Fuels for Agriculture, Forestry, and Fishing",
-    "Consumption of Solid Fossil Fuels for Commerce and Public Services",
-    "Other Non-Energy-Industry Consumption of Solid Fossil Fuels"
+    "Energy Industries' Own Use",
+
+    # Subsectors
+
+    "Manufact, Constr, Non-Fuel Industry",
+
+    # Subsectors
+
+    "Transport",
+
+    # Subsectors
+
+    "Household",
+    "Agriculture, Forestry, Fishing",
+    "Commerce and Public Services",
+    "NES Other Consumption",
+    "Non-Energy Use",
 ]
 
-# Names of the columns in the LIQUID sheet
-df_liquid.columns = [
-    "Nation", 
-    "Year", 
-    "Total CO₂ Emissions from Liqiud Fossil Fuels",
-    "Energy Use of Liqiud Fossil Fuels",
-    "Non-Energy Use of Liqiud Fossil Fuels",
-    "Tranformation of Liqiud Fossil Fuels in Electricity, CHP and Heat Plants",
-    "Energy Industries' Own Use of Liqiud Fossil Fuels",
-    "Total Non-Energy-Industry Liqiud Fossil Fuel Consumption",
-    "Consumption of Liqiud Fossil Fuels in Manufacturing, Construction, and Non-Fuel Industry",
-    "Consumption of Liqiud Fossil Fuels for Transport",
-    "Household Consumption of Liqiud Fossil Fuels",
-    "Consumption of Liqiud Fossil Fuels for Agriculture, Forestry, and Fishing",
-    "Consumption of Liqiud Fossil Fuels for Commerce and Public Services",
-    "Other Non-Energy-Industry Consumption of Liqiud Fossil Fuels"
-]
+df_liquid.columns = df_solid.columns
 
-# Names of the columns in the GAS sheet
-df_gas.columns = [
-    "Nation", 
-    "Year", 
-    "Total CO₂ Emissions from Gas Fossil Fuels",
-    "Energy Use of Gas Fossil Fuels",
-    "Non-Energy Use of Gas Fossil Fuels",
-    "Tranformation of Gas Fossil Fuels in Electricity, CHP and Heat Plants",
-    "Energy Industries' Own Use of Gas Fossil Fuels",
-    "Total Non-Energy-Industry Gas Fossil Fuel Consumption",
-    "Consumption of Gas Fossil Fuels in Manufacturing, Construction, and Non-Fuel Industry",
-    "Consumption of Gas Fossil Fuels for Transport",
-    "Household Consumption of Gas Fossil Fuels",
-    "Consumption of Gas Fossil Fuels for Agriculture, Forestry, and Fishing",
-    "Consumption of Gas Fossil Fuels for Commerce and Public Services",
-    "Other Non-Energy-Industry Consumption of Gas Fossil Fuels"
-]
+df_gas.columns = df_solid.columns
 
 # For mapping source to source between sheets when a different fuel type is selected
 def best_match_option(value, fuel_type):
 
     # Are we coming from the totals sheet?  Assume first no
     from_totals = False
-    # Are we going to the totals sheet?  Assume first no
-    to_totals = False
-
-    # Columns of the TO sheet
-    if (fuel_type == 'totals') : 
-        to_cols = df_total.columns
-        to_totals = True
-    elif (fuel_type == 'solids') : 
-        to_cols = df_solid.columns
-    elif (fuel_type == 'liquids') : 
-        to_cols = df_liquid.columns
-    else : 
-        to_cols = df_gas.columns
-
-    # Get FROM column index
-    if (value in df_total.columns) : 
+    
+    if (value in df_solid.columns) : 
+        from_index = df_solid.columns.get_loc(value)
+    else :
         from_index = df_total.columns.get_loc(value)
         from_totals = True
 
-    elif (value in df_solid.columns) : 
-        from_index = df_solid.columns.get_loc(value)
+    if (from_totals and fuel_type == 'totals') :
+        return value
+    
+    if (from_totals and fuel_type != 'totals') :
+        if (from_index >= 3 and from_index <= 14):
+            return df_solid.columns[from_index - 1]
+        else:
+            return df_solid.columns[2]
 
-    elif (value in df_liquid.columns) : 
-        from_index = df_liquid.columns.get_loc(value)
+    if (not from_totals and fuel_type == 'totals') :
+        return df_total.columns[from_index + 1]
 
-    elif (value in df_gas.columns) : 
-        from_index = df_gas.columns.get_loc(value)
+    return value
 
-    else :
-        return "Unexpected Carbon Emission Source Value.  See data.best_match_option."
 
-    if from_totals :
-        # from totals to phase; use index map
-        return to_cols[best_match[from_index]]
-    else :
-        # coming from a phase sheet to totals; use reverse map
-        if to_totals :
-            return to_cols[best_match_r[from_index]]
-        else :
-            #phase sheet to phase sheet; index doesn't change
-            return to_cols[from_index]
 
     
 
