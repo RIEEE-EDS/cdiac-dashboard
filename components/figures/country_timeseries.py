@@ -61,8 +61,7 @@ def country_timeseries(fuel_type, nation, theme):
         value_name='Carbon'
     )
 
-    # Filter and keep only the sources you want to stack
-    df = df[df['Source'].isin([
+    custom_order = [
         "Nation", 
         "Year", 
 
@@ -74,17 +73,29 @@ def country_timeseries(fuel_type, nation, theme):
 
         "Manufact, Constr, Non-Fuel Industry",
 
-        # Subsectors
+        # Subsectors in the future
 
         "Transport",
 
-        # Subsectors
+        # Subsectors in the future
 
         "Household",
         "Agriculture, Forestry, Fishing",
         "Commerce and Public Services",
         "NES Other Consumption",
-        "Non-Energy Use",]
+        
+        # Used only for totals
+        "Bunkered (Marine)",
+        "Bunkered (Aviation)",
+        "Flaring of Natural Gas",
+
+        # have non-energy use seperate
+        "Non-Energy Use",
+        ]
+
+    # Filter and keep only the sources you want to stack
+    df = df[df['Source'].isin(
+        custom_order
     )]
 
     # Make stacked area plot
@@ -93,16 +104,18 @@ def country_timeseries(fuel_type, nation, theme):
         x ='Year', 
         y = 'Carbon', 
         color = 'Source', 
-        color_discrete_sequence = px.colors.qualitative.Alphabet
+        color_discrete_sequence = px.colors.qualitative.Set3,
+        template="plotly_dark",
+        category_orders={'Source': custom_order}  # Specify the custom order
     )
 
     # Add Sectoral Consumption (Should stack to the same height... make dashed)
     fig.add_trace(
         go.Scatter(
                 x=premelt_df['Year'],  # X-axis: Year
-                y=premelt_df["Sectoral (Consumption) Total"],  # Y-axis: Nitrogen
+                y=premelt_df["Energy Consumption Total"],  # Y-axis: Nitrogen
                 mode='lines',  # Display as a line plot
-                name="Sectoral (Consumption) Total",  # Legend label
+                name="Energy Consumption Total",  # Legend label
                 line=dict(color='red', dash='dash'),  # Line color
             )
     )
@@ -111,13 +124,36 @@ def country_timeseries(fuel_type, nation, theme):
     fig.add_trace(
         go.Scatter(
                 x=premelt_df['Year'],  # X-axis: Year
-                y=premelt_df["Reference (Supply) Total"],  # Y-axis: Nitrogen
+                y=premelt_df["Energy Supply Total"],  # Y-axis: Nitrogen
                 mode='lines',  # Display as a line plot
-                name="Reference (Supply) Total",  # Legend label
+                name="Energy Supply Total",  # Legend label
                 line=dict(color='blue', dash='dot'),  # Line color
             )
     )
 
+    # Add Statistical Difference "Statistical Difference (Sup-Con)",
+    # Add Reference approach
+    fig.add_trace(
+        go.Scatter(
+                x=premelt_df['Year'],  # X-axis: Year
+                y=premelt_df["Statistical Difference (Sup-Con)"],  # Y-axis: Nitrogen
+                mode='lines',  # Display as a line plot
+                name="Statistical Difference (Sup-Con)",  # Legend label
+                line=dict(color='yellow', dash='longdashdot'),  # Line color
+            )
+    )
+
+    # Figure out what the plot title will be
+    if fuel_type == 'solids':
+        plot_title = nation + " SOLID FUEL CO₂ EMISSIONS"
+    elif fuel_type == 'liquids':
+        plot_title = nation + " LIQUID FUEL CO₂ EMISSIONS"
+    elif fuel_type == 'gases':
+        plot_title = nation + " GAS FUEL CO₂ EMISSIONS"
+    else :
+        plot_title = nation + " CO₂ EMISSIONS"
+
+    # Updates the figure layout
     fig.update_layout(
 
         plot_bgcolor = 'rgba(0,0,0,0)',
@@ -136,7 +172,7 @@ def country_timeseries(fuel_type, nation, theme):
 
         # Title Layout and Styling
         title = dict(
-            text = nation,
+            text = plot_title,
             xanchor="center",
             xref = "container",
             yref = "container",
@@ -169,3 +205,4 @@ def country_timeseries(fuel_type, nation, theme):
     fig.update_layout(annotations=[subtitle_annotation])
     
     return fig
+    

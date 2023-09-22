@@ -121,6 +121,16 @@ def carbon_atlas(source, fuel_type, theme) :
         )
     )
 
+    # Figure out what the plot title will be
+    if fuel_type == 'solids':
+        plot_title = " Solid Fuel CO₂ Emissions"
+    elif fuel_type == 'liquids':
+        plot_title = " Liquid Fuel CO₂ Emissions"
+    elif fuel_type == 'gases':
+        plot_title = " Gas Fuel CO₂ Emissions"
+    else :
+        plot_title = " CO₂ Emissions"
+
     fig.update_layout(
 
             geo=dict(bgcolor= 'rgba(0,0,0,0)'),
@@ -139,7 +149,7 @@ def carbon_atlas(source, fuel_type, theme) :
             
             # Title Layout and Styling
             title = dict(
-                text = source,
+                text = source + plot_title,
                 xanchor="center",
                 xref = "container",
                 yref = "container",

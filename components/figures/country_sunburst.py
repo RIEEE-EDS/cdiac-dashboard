@@ -47,7 +47,7 @@ def country_sunburst(nation, theme):
     # Take only the columns we want for the starburst chart
     columns_to_keep = [
         "Fossil Fuel and Cement Production",
-        "Sectoral (Consumption) Total",
+        "Energy Consumption Total",
         "Statistical Difference (Sup-Con)",
         "Manufacture of Cement",
         "Electric, CHP, Heat Plants",

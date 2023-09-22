@@ -3,14 +3,14 @@ Module/Script Name: nation_dropdown.py
 Author: M. W. Hefner
 
 Created: 6/28/2023
-Last Modified: 7/16/2023
+Last Modified: 9/22/2023
 
 Project: CDIAC at AppState
 
 Script Description: This script defines the style, layout, and callback functionality of the nation_dropdown.
 
 Exceptional notes about this script:
-(none)
+This script is titled using the old "nation" terminology; as of September 2023, this is officially outdated language (in favor of the use of the term "political geography").  Eventually, it would be nice to eliminate vestiges of the previous standard language so that the language in the scripts are consistent with the language in the literature it is used to produce.
 
 Callback methods: 2
 
@@ -35,7 +35,7 @@ layout = dash.html.Div(
 
     children= [
 
-        dash.html.H2('Country'),
+        dash.html.H2('Political Geography'),
 
         dash.dcc.Dropdown(
 

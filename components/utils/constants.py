@@ -317,9 +317,9 @@ df_total.columns = [
 
     "Fossil Fuel and Cement Production",
 
-    "Reference (Supply) Total",
+    "Energy Supply Total",
 
-    "Sectoral (Consumption) Total",
+    "Energy Consumption Total",
 
     "Statistical Difference (Sup-Con)",
 
@@ -361,9 +361,9 @@ df_solid.columns = [
     "Nation", 
     "Year", 
 
-    "Reference (Supply) Total",
+    "Energy Supply Total",
 
-    "Sectoral (Consumption) Total",
+    "Energy Consumption Total",
 
     "Statistical Difference (Sup-Con)",
 
