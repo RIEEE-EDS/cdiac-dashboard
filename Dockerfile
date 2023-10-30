@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.11
 
 WORKDIR /usr/src/app
 
@@ -10,4 +10,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /usr/src/app
 
-CMD [ "gunicorn", "dashboard:server", "--bind", "0.0.0.0:8050", "--access-logfile", "-" ]
+CMD [ "gunicorn", "application:server", "--bind", "0.0.0.0:8050", "--access-logfile", "-" ]

@@ -76,17 +76,17 @@ layout = dash.html.Div(
     dash.dependencies.Output('nation-dropdown-controler', 'value'),
     dash.dependencies.Input('navigation-dropdown-controler', 'value')
 )
-def update_navigation_dropdown(nav_opt) :
+def update_nation_dropdown(nav_opt) :
 
     # Not Hidden, Not Multi Choice.  Default USA.
-    if nav_opt == 'timeseries-country' : 
+    if nav_opt == 'political-geography-time-series' : 
         return False, False, 'UNITED STATES OF AMERICA'
     
-    if nav_opt == 'sunburst-country' : 
+    if nav_opt == 'political-geography-sunburst' : 
             return False, False, 'UNITED STATES OF AMERICA'
 
     # Not Hidden.  Multi.
-    if nav_opt == 'timeseries-source' :
+    if nav_opt == 'source-time-series' :
 
         return False, True, [
                 'Annex I',

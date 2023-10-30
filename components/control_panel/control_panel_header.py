@@ -1,13 +1,13 @@
 """
 Module/Script Name: control_panel_header.py
-Author: M. W. Hefner
 
-Created: 6/28/2023
-Last Modified: 7/14/2023
+Author(s): M. W. Hefner
 
-Project: CDIAC at AppState
+Initially Created: 6/28/2023
 
-Script Description: This script defines the style, layout, and callback functionality of the control_panel header.
+Last Modified: 10/29/2023
+
+Script Description: This is the control panel header.
 
 Exceptional notes about this script:
 (none)
@@ -16,7 +16,7 @@ Callback methods: 0
 
 ~~~
 
-This Dash application component was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
 
 """
 
@@ -26,6 +26,7 @@ component_id = "control_panel_header"
 # Import Dependencies
 import dash.html.Div
 # import components.examplesubcomponent as examplesubcomponent
+from components.utils.constants import application_title
 
 # LAYOUT
 layout = dash.html.Div(
@@ -52,7 +53,8 @@ layout = dash.html.Div(
 
         # Title
 
-        dash.html.H1("Carbon Dioxide Information Analysis Center (CDIAC) at AppState")
+        dash.html.H1(application_title)
+
     ]
 )
 

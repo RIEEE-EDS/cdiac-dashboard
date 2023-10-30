@@ -29,7 +29,7 @@ from components.utils import constants as d
 import plotly.graph_objects as go
 
 def country_timeseries(fuel_type, nation, theme):
-
+    
     pio.templates.default = "plotly_white"
 
     # Select Color Scale depending on fuel type and theme
@@ -106,7 +106,8 @@ def country_timeseries(fuel_type, nation, theme):
         color = 'Source', 
         color_discrete_sequence = px.colors.qualitative.Set3,
         template="plotly_dark",
-        category_orders={'Source': custom_order}  # Specify the custom order
+        category_orders={'Source': custom_order},  # Specify the custom order
+        hover_data={'Year' : False, 'Nation' : False},
     )
 
     # Add Sectoral Consumption (Should stack to the same height... make dashed)
@@ -145,13 +146,17 @@ def country_timeseries(fuel_type, nation, theme):
 
     # Figure out what the plot title will be
     if fuel_type == 'solids':
-        plot_title = nation + " SOLID FUEL CO₂ EMISSIONS"
+        plot_title = nation + ": CO₂ EMISSIONS"
+        plot_subtitle = "FROM ENERGY USE OF SOLID FOSSIL FUELS"
     elif fuel_type == 'liquids':
-        plot_title = nation + " LIQUID FUEL CO₂ EMISSIONS"
+        plot_title = nation + ": CO₂ EMISSIONS"
+        plot_subtitle = "FROM ENERGY USE OF LIQUID FOSSIL FUELS"
     elif fuel_type == 'gases':
-        plot_title = nation + " GAS FUEL CO₂ EMISSIONS"
+        plot_title = nation + ": CO₂ EMISSIONS"
+        plot_subtitle = "FROM ENERGY USE OF GASEOUS FOSSIL FUELS"
     else :
-        plot_title = nation + " CO₂ EMISSIONS"
+        plot_title = nation + ": CO₂ EMISSIONS"
+        plot_subtitle = "FROM ENERGY USE OF FOSSIL FUELS AND CEMENT MANUFACTURE"
 
     # Updates the figure layout
     fig.update_layout(
@@ -185,24 +190,46 @@ def country_timeseries(fuel_type, nation, theme):
             )
         ),
 
-    )
-    
-    # Give it the CDIAC Watermark with overkill year code lol
-    subtitle_annotation = dict(
-        x=0.5,
-        y=0,
-        xref='paper',
-        yref='paper',
-        text='Source: CDIAC at AppState Dashboard | Hefner, M; Marland, G (' + str(datetime.date.today().year) + ')',
-        showarrow=False,
-        
-        font = dict(
-            size=20,
-            color = textCol
-        )
+        # Subtitle
+        annotations=[
+            # Subtitle
+            dict(
+                text= plot_subtitle,
+                showarrow=False,
+                xref="paper",
+                yref="paper",
+                x=0.5,
+                y=1.04,
+                font=dict(size=18, color=textCol)
+            ),
+
+            # Credit
+            dict(
+                x=0.5,
+                y=0,
+                xref='paper',
+                yref='paper',
+                text='The CDIAC at AppState Dashboard (' + str(datetime.date.today().year) + ')',
+                showarrow=False,
+                
+                font = dict(
+                    size=20,
+                    color = textCol
+                )
+            )
+        ]
+
     )
 
-    fig.update_layout(annotations=[subtitle_annotation])
+    fig.update_traces(mode="markers+lines")
+
+    fig.update_layout(
+        hovermode="closest",
+        hoverlabel=dict(
+        font_size=16,
+        font_family="Rockwell"
+        )
+    )
     
     return fig
     

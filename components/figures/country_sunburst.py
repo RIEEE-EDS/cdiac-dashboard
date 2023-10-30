@@ -3,7 +3,7 @@ Module/Script Name: country_sunburst.py
 Author: M. W. Hefner
 
 Created: 4/12/2023
-Last Modified: 7/16/2023
+Last Modified: 10/30/2023
 
 Project: CDIAC at AppState
 
@@ -21,35 +21,23 @@ This figure was created using the template provided by the Research Institute fo
 """
 
 # Import needed libraries
-import plotly.express as px
 import plotly.graph_objects as go
-import pandas as pd
 import datetime
 import plotly.io as pio
 from components.utils import constants as d
 
-def country_sunburst(nation, theme):
-
-    pio.templates.default = "plotly_white"
-
-    # Select Color Scale depending on fuel type and theme
-    df = d.df_total
+def country_sunburst(nation, fuel_type, theme):
 
     if theme == 'light' :
         textCol = '#000'
     if theme == 'dark' :
         textCol = '#fff'
 
-    # Filter the data frame for the right data
-    df = df[df['Nation'] == nation]
-    df = df[df['Year'] == 2019]
-
     # Take only the columns we want for the starburst chart
     columns_to_keep = [
-        "Fossil Fuel and Cement Production",
+        "Energy Supply Total",
         "Energy Consumption Total",
         "Statistical Difference (Sup-Con)",
-        "Manufacture of Cement",
         "Electric, CHP, Heat Plants",
         "Energy Industries' Own Use",
         "Manufact, Constr, Non-Fuel Industry",
@@ -58,12 +46,55 @@ def country_sunburst(nation, theme):
         "Agriculture, Forestry, Fishing",
         "Commerce and Public Services",
         "NES Other Consumption",
-        
-        "Bunkered",
-        "Bunkered (Marine)",
-        "Bunkered (Aviation)",
-        "Flaring of Natural Gas",
     ]
+
+    if fuel_type == 'solids':
+
+        df = d.df_solid
+
+        plot_subtitle = str(datetime.date.today().year - 3) +" CO₂ Emissions from the Energy Use of Solid Fuels"
+
+    elif fuel_type == 'liquids':
+
+        df = d.df_liquid
+
+        plot_subtitle = str(datetime.date.today().year - 3) +" CO₂ Emissions from the Energy Use of Liquid Fuels"
+
+    elif fuel_type == 'gases':
+
+        df = d.df_gas
+
+        plot_subtitle = str(datetime.date.today().year - 3) +" CO₂ Emissions from the Energy Use of Gas Fuels"
+
+    else :
+
+        plot_subtitle = str(datetime.date.today().year - 3) +" CO₂ Emissions"
+
+        df = d.df_total
+
+        columns_to_keep = [
+            "Fossil Fuel and Cement Production",
+            "Energy Consumption Total",
+            "Statistical Difference (Sup-Con)",
+            "Manufacture of Cement",
+            "Electric, CHP, Heat Plants",
+            "Energy Industries' Own Use",
+            "Manufact, Constr, Non-Fuel Industry",
+            "Transport",
+            "Household",
+            "Agriculture, Forestry, Fishing",
+            "Commerce and Public Services",
+            "NES Other Consumption",
+            
+            "Bunkered",
+            "Bunkered (Marine)",
+            "Bunkered (Aviation)",
+            "Flaring of Natural Gas",
+        ]
+
+    # Filter the data frame for the right data
+    df = df[df['Nation'] == nation]
+    df = df[df['Year'] == 2019]
 
     df = df[columns_to_keep]
 
@@ -71,7 +102,6 @@ def country_sunburst(nation, theme):
 
     # Debug
     dfl = df.values.tolist()[0]
-    print(df)
 
     if dfl[2] > 0 :
         sunburst_parents = [
@@ -169,7 +199,7 @@ def country_sunburst(nation, theme):
                 '#6a3d9a',
             ],
 
-            line=dict(color=textCol, width=3) 
+            line=dict(color=textCol, width=0) 
         )
     ))
 
@@ -200,26 +230,39 @@ def country_sunburst(nation, theme):
             y = .98,
             font = dict(
                 size = 32,
+                color = textCol,
             )
         ),
 
-    )
-    
-    # Give it the CDIAC Watermark with overkill year code lol
-    subtitle_annotation = dict(
-        x=0.5,
-        y=0,
-        xref='paper',
-        yref='paper',
-        text='Source: CDIAC at AppState Dashboard | Hefner, M; Marland, G (' + str(datetime.date.today().year) + ')',
-        showarrow=False,
-        
-        font = dict(
-            size=20,
-            color = textCol
-        )
-    )
+                # Subtitle
+        annotations=[
+            # Subtitle
+            dict(
+                text= plot_subtitle,
+                showarrow=False,
+                xref="paper",
+                yref="paper",
+                x=0.5,
+                y=1.04,
+                font=dict(size=18, color=textCol)
+            ),
 
-    fig.update_layout(annotations=[subtitle_annotation])
+            # Credit
+            dict(
+                x=0.5,
+                y=0,
+                xref='paper',
+                yref='paper',
+                text='The CDIAC at AppState Dashboard (' + str(datetime.date.today().year) + ')',
+                showarrow=False,
+                
+                font = dict(
+                    size=20,
+                    color = textCol
+                )
+            )
+        ]
+
+    )
     
     return fig

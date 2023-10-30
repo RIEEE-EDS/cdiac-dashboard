@@ -3,7 +3,7 @@ Module/Script Name: carbon_atlas.py
 Author: M. W. Hefner
 
 Created: 4/12/2023
-Last Modified: 7/16/2023
+Last Modified: 10/30/2023
 
 Project: CDIAC at AppState
 
@@ -23,9 +23,7 @@ This figure was created using the template provided by the Research Institute fo
 # Import needed libraries
 import plotly.graph_objects as go
 import plotly.express as px
-import pandas as pd
 import datetime
-import plotly.io as pio
 from components.utils import constants as d
 
 # Carbon Atlas
@@ -67,7 +65,7 @@ def carbon_atlas(source, fuel_type, theme) :
     nations_to_filter = [
         "Africa", "Antarctica", "Asia Pacific", "Commonwealth of Independent States",
         "Europe", "Middle East", "North America", "South and Central America",
-        "Annex I", "Non-Annex I"
+        "Annex I", "Non-Annex I", "World"
     ]
 
     # Filter out rows with specified Nation values
@@ -112,7 +110,7 @@ def carbon_atlas(source, fuel_type, theme) :
         y=0,
         xref='paper',
         yref='paper',
-        text='Source: CDIAC at AppState Dashboard | Hefner, M; Marland, G (' + str(datetime.date.today().year) + ')',
+        text='The CDIAC at AppState Dashboard (' + str(datetime.date.today().year) + ')',
         showarrow=False,
         
         font = dict(

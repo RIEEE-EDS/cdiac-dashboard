@@ -75,11 +75,9 @@ def update_source_dropdown(nav_opt, fuel_type, options, value):
     if nav_opt in [
             'carbon-atlas',
 
-            'timeseries-source',
+            'source-time-series',
 
-            'sunburst-source',
-
-            'browse'
+            'sunburst-source'
         ] :
 
         hidden = False

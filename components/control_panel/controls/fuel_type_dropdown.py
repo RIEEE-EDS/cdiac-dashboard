@@ -74,11 +74,11 @@ def update_fuel_dropdown(nav_opt) :
     # Navigat options that have a fuel type dropdown menu
     if nav_opt in [
         'carbon-atlas', 
-        'timeseries-source', 
-        'timeseries-country', 
-        'sunburst-country', 
-        'sunburst-source', 
-        'browse'] :
+        'source-time-series', 
+        'political-geography-time-series', 
+        'political-geography-sunburst', 
+        'source-sunburst', 
+        'table'] :
         return False # IS visible
     else:
         return True # is NOT visible

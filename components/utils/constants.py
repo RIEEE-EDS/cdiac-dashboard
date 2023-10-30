@@ -1,10 +1,22 @@
 """
 Module/Script Name: constants.py
-Author: M. W. Hefner
-Created: 6/28/2023
-Last Modified: 9/08/2023
 
-Contains import and other utility functions for the application.
+Author(s): M. W. Hefner
+
+Initially Created: 06/28/2023
+
+Last Modified: 10/29/2023
+
+Script Description: this script contains constants and calls for locally stored (on the application server) data.
+
+Exceptional notes about this script:
+(none)
+
+Callback methods: 0
+
+~~~
+
+This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
 
 """
 
@@ -12,6 +24,24 @@ Contains import and other utility functions for the application.
 import pandas as pd
 import math
 
+# IN-LINE APPLICATION METADATA----------------------------------------
+
+# SETS THE TITLE OF THE APPLICATION
+application_title = "The CDIAC at AppState Dashboard"
+
+# SET THE APPLICATION ID (APPLICATION METADATA USED FOR AUTHORIZATION)
+app_id = 4
+
+# SET THE REPO TITLE (APPLICATION METADATA USED FOR AUTHORIZATION)
+repo_title = "cdiac"
+
+app_doi = "NONE_FOR_TEMPLATE"
+
+developers = "Matt Hefner, RIEEE Environmental Data Scientist"
+
+version = "2023"
+
+# Location map for carbon atlas
 location_mapping = {
     'WORLD': 'World',
     'AFRICA': 'AFR',
@@ -279,30 +309,27 @@ def round_down(x):
         return round(x)
     else:
         return x
-
+    
 # Load TOTAL sheet
-df_total = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='TOTAL')
+df_total = pd.read_excel('assets/data/National_Sectoral_2020.xlsx', sheet_name='TOTAL')
 
 # Round down
 #df_total = df_total.applymap(round_down)
 
 # Load SOLID FUELS sheet (also used for LIQUID FUELS sheet)
-df_solid = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='SOLID FUELS')
+df_solid = pd.read_excel('assets/data/National_Sectoral_2020.xlsx', sheet_name='SOLID FUELS')
 
 # Round down
 #df_solid = df_solid.applymap(round_down)
 
 # Load LIQUID FUELS sheet (also used for LIQUID FUELS sheet)
-df_liquid = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='LIQUID FUELS')
+df_liquid = pd.read_excel('assets/data/National_Sectoral_2020.xlsx', sheet_name='LIQUID FUELS')
 
 # Round down
 #df_liquid = df_liquid.applymap(round_down)
 
 # Load GAS FUELS sheet (also used for LIQUID FUELS sheet)
-df_gas = pd.read_excel('./assets/National_Sectoral_2020.xlsx', sheet_name='GAS FUELS')
-
-# Round down
-#df_gas = df_gas.applymap(round_down)
+df_gas = pd.read_excel('assets/data/National_Sectoral_2020.xlsx', sheet_name='GAS FUELS')
 
 """ CLEAN DATA -----
 
@@ -419,13 +446,7 @@ def best_match_option(value, fuel_type):
     return value
 
 
-
-    
-
-
-
-
-# Read Markdown Pages
+# Read Markdown Pages-------------------------------
 
 # About page
 with open("./assets/markdown/about.md", "r") as file:
@@ -438,3 +459,4 @@ with open("./assets/markdown/methodology.md", "r") as file:
 # Download page
 with open("./assets/markdown/download.md", "r") as file:
     download_content = file.read()
+

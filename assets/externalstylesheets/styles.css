@@ -12,8 +12,6 @@
 
 /* DESCRIPTION */
 
-/* Holds styling for the light theme... TODO: may need to be done differently. */
-
 /* Notes */
 
 /* This comes from the Research Institute for Environment, */
@@ -26,6 +24,7 @@ body {
     padding : 0px;
     font-size: 15px;
     font-family: "Open Sans", sans-serif;
+    max-height: 100vh;
 }
 
 #main_container {
@@ -139,14 +138,34 @@ body {
     margin: 10px;
 }
 
-#backtodatadash {
+#defaultbuttonarea {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     text-align: center;
+
+    border-top: 1px solid #FFFFFF;
+
+    font-size: 12px;
+}
+
+#defaultbuttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    text-align: center;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 /* Controls */
+
+#navigation-dropdown-controler {
+    white-space: nowrap; 
+    overflow: show; 
+    text-overflow: ellipsis;
+}
 
 #controls_container {
     display: flex;
@@ -157,6 +176,20 @@ body {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     overflow-y: auto;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+.control_dark {
+    color: #fff;
+}
+ 
+.control_light {
+    color: #fff;
 }
 
 /* Dropdown controls */
@@ -218,33 +251,63 @@ body {
     box-sizing: border-box;
     overflow-y: auto;
     background-color: rgba(0, 0, 0, 0);
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Styling for Markdown */
 .markdown {
     padding: 50px;
+    margin-left: 15%;
+    margin-right: 15%;
+    background: linear-gradient(to bottom right, rgba(100, 125, 98, 0.5), rgba(128, 128, 128, 0));
+    min-height: 100vh;
 }
 
-/* Map / Plot */
+.table_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 85%;
+}
 
-#map-graph {
+#upload-data-table {
+    width: 95vw;
+    height: 60px;
+    line-height: 60px;
+    border-width: 1px;
+    border-style: dashed;
+    border-radius: 5px;
+    text-align: center;
+    margin: 10px;
+}
+
+#upload-data-table a {
+    color: #1EAEDB; 
+    text-decoration: underline;
+    cursor: pointer;
+    }
+
+#inner-upload-container a {
+    color: #1EAEDB; 
+    text-decoration: underline;
+    cursor: pointer;
+    }
+
+#ouput-data-upload {
+    max-width: fit-content;
+}
+
+/* Plotly Figure */
+
+.plotly-figure {
     height: 100%;
     background-color: rgba(0, 0, 0, 0);
 }
 
 /* Table displays */
-.table_container p {
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0);
-}
-
-/* Custom styling for Dash DataTable */
-.dash-table-container th {
-    color: black !important;
-    text-align: center;
-}
-
-.dash-table-container td {
-    color: black !important;
+#table-container {
     text-align: center;
 }

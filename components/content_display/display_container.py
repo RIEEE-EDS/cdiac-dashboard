@@ -1,22 +1,22 @@
 """
-Module/Script Name: content_display.py
-Author: M. W. Hefner
+Module/Script Name: display_container.py
 
-Created: 7/01/2023
-Last Modified: 7/16/2023
+Author(s): M. W. Hefner
 
-Project: CDIAC at AppState
+Initially Created: 7/01/2023
 
-Script Description: This script defines the logical layout and callback functionality of the content_display.
+Last Modified: 10/29/2023
+
+Script Description: This is the display container that holds the content being displayed by the application.  It calls different plotly figures, markdowns and tables as selected by the navigation dropdown menu.
 
 Exceptional notes about this script:
 (none)
 
-Callback methods: 2
+Callback methods: 0
 
 ~~~
 
-This Dash application component was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
 
 """
 
@@ -25,32 +25,35 @@ component_id = "display_container"
 
 # Import Dependencies
 import dash.html.Div
+import plotly.graph_objs as go
 from components.utils import constants as d
 from components.figures.carbon_atlas import carbon_atlas
-from components.figures.country_timeseries import country_timeseries
 from components.figures.country_sunburst import country_sunburst
-from components.figures.source_timeseries import source_timeseries
+from components.figures.country_timeseries import country_timeseries
 from components.figures.source_sunburst import source_sunburst
-from components.tables import browse
+from components.figures.source_timeseries import source_timeseries
+from components.tables.browse import browse_table
+import time
 
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
-    children= [
-
-        dash.dcc.Graph(id='map-graph')
-
-    ]
 )
 
 # CALLBACKS (2)
-# The first callback decides, based on the state of navigation, fuel type, and source, what content should be in the display container.
+# The first callback decides what content should be in the display container.
 @dash.callback(
     dash.dependencies.Output(component_id, 'children'),
     dash.dependencies.Input('navigation-dropdown-controler', 'value'),
+    dash.dependencies.Input('theme_toggle', 'className'),
+    dash.dependencies.Input('source-dropdown-controler', 'value'),
+    dash.dependencies.Input('fuel-type-dropdown-controler', 'value'),
+    dash.dependencies.Input('nation-dropdown-controler', 'value'),
 )
-def update_container(nav_opt):
+def update_container(nav_opt, theme, source, fuel_type, nation):
     
+    # for displaying all non-plotly figure navigation options
+
     if nav_opt == "about" :
         return [
             # About page: Markdown
@@ -67,60 +70,84 @@ def update_container(nav_opt):
             # TODO: Perhaps make this a nicer page on down the line?
             dash.dcc.Markdown(children = d.download_content, className = "markdown", mathjax=True)
         ]
-    else :
+    if nav_opt == "table" :
         return [
-            dash.dcc.Graph(id='map-graph', style = {'height' :  '100%'})
+            dash.dcc.Loading(
+                children=browse_table(),
+                )
         ]
     
-# Updates the graph or map displayed in the content area's map-graph
-@dash.callback(
-    dash.dependencies.Output('map-graph', 'figure'),
-    dash.dependencies.Input('navigation-dropdown-controler', 'value'),
-    dash.dependencies.Input('source-dropdown-controler', 'value'),
-    dash.dependencies.Input('fuel-type-dropdown-controler', 'value'),
-    dash.dependencies.Input('nation-dropdown-controler', 'value'),
-    dash.dependencies.Input('theme_toggle', 'className')
-)
-def update_fig_or_table(nav_opt, source, fuel_type, nation, theme):
-
-    if nav_opt == 'carbon-atlas' :
-
-        # CARBON ATLAS
-
-        return carbon_atlas(source, fuel_type, theme)
-
-    elif nav_opt == 'timeseries-country' :
-
-        # TIME SERIES BY COUNTRY
-
-        return country_timeseries(fuel_type, nation, theme)
-
-    elif nav_opt == 'timeseries-source' :
-
-        # TIME SERIES BY SOURCE
-
-        return source_timeseries(source, fuel_type, nation, theme)
-    
-    elif nav_opt == "browse" :
-
-        # BROWSE DATA TABLE
-
-        return browse.browse_table(fuel_type, source)
-
-    elif nav_opt == 'sunburst-country' :
-
-        # Sunburst by Country
-
-        return country_sunburst(nation, theme)
-
-    elif nav_opt == 'sunburst-source' :
-
-        # Sunburst by Country
-
-        return source_sunburst(source, fuel_type, theme)
-
     else :
 
-        # If you're going somewhere else, just keep the same figure.
+        if nav_opt == 'carbon-atlas' :
 
-        return dash.no_update
+            # Carbon Atlas
+
+            return dash.dcc.Loading(
+                id = "carbon-atlas-loading",
+                children= dash.dcc.Graph(
+                    figure=carbon_atlas(source, fuel_type, theme) , 
+                    className='plotly-figure', 
+                    style = {'height' :  '100vh'})
+            )
+
+        if nav_opt == 'political-geography-sunburst' :
+
+            # Political Geography sunburst
+            return dash.dcc.Loading(
+                id="political-geography-sunburst-loading",
+                children=dash.dcc.Graph(
+                    figure=country_sunburst(nation, fuel_type, theme),
+                    className='plotly-figure',
+                    style={
+                        'height': '100vh',
+                        'background': 'radial-gradient(circle at center, #999 10%, transparent 70%)',
+                        'background-size': '100% 100%',
+                        'background-repeat': 'no-repeat'
+                    }
+                )
+            )
+
+
+        if nav_opt == 'political-geography-time-series' :
+
+            # Surface Demo
+            return dash.dcc.Loading(
+                id = "political-geography-time-series-loading",
+                children=dash.dcc.Graph(
+                    figure=country_timeseries(fuel_type, nation, theme), 
+                    className='plotly-figure', 
+                    style = {'height' :  '100vh'})
+            )
+        
+        if nav_opt == 'source-sunburst' :
+
+            # Animation Demo
+            return dash.dcc.Loading(
+                id = "source-sunburst-loading",
+                children=dash.dcc.Graph(
+                    figure=source_sunburst(source, fuel_type, theme), 
+                    className='plotly-figure', 
+                    style = {'height' :  '100vh'})
+            )
+
+        if nav_opt == 'source-time-series' :
+
+            # Animation Demo
+            return dash.dcc.Loading(
+                id = "source-time-series-loading",
+                children=dash.dcc.Graph(
+                    figure=source_timeseries(source, fuel_type, nation, theme), 
+                    className='plotly-figure', 
+                    style = {'height' :  '100vh'})
+            )
+
+        else :
+            return dash.dcc.Loading(
+                children=dash.dcc.Graph(
+                    figure=go.Figure(), 
+                    className='plotly-figure', 
+                    style = {'height' :  '100vh'}))
+
+
+

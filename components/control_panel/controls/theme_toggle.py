@@ -1,13 +1,13 @@
 """
 Module/Script Name: theme_toggle.py
-Author: M. W. Hefner
 
-Created: 7/01/2023
-Last Modified: 7/15/2023
+Author(s): M. W. Hefner
 
-Project: CDIAC at AppState
+Initially Created: 7/01/2023
 
-Script Description: This script defines the logical layout and callback functionality of the theme_toggle.
+Last Modified: 10/29/2023
+
+Script Description: This script defines the functionality of the theme toggle.  When toggled (clicked), the theme toggle's class changes between "dark" and "light".  This is used in callbacks throughout the application to update components to the correct theme.
 
 Exceptional notes about this script:
 (none)
@@ -16,7 +16,7 @@ Callback methods: 1
 
 ~~~
 
-This Dash application component was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
 
 """
 
@@ -30,15 +30,12 @@ import dash.html
 layout = dash.html.Div(
     id = component_id,
     children= [
-
-        # TODO: Make Look nice
         dash.html.Button(
             dash.html.P('Switch to Dark Theme'), 
             id = 'theme_toggle_switch',  
             className = "universal_button", 
             n_clicks=0
         )
-
     ]
 )
 
