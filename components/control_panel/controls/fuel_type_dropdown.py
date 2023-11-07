@@ -41,13 +41,13 @@ layout = dash.html.Div(
 
             options=[
 
-                {'label': 'Totals', 'value': 'totals'},
+                {'label': 'TOTALS', 'value': 'totals'},
 
-                {'label': 'Solids', 'value': 'solids'},
+                {'label': 'SOLIDS', 'value': 'solids'},
 
-                {'label': 'Liquids', 'value': 'liquids'},
+                {'label': 'LIQUIDS', 'value': 'liquids'},
 
-                {'label': 'Gases', 'value': 'gases'}
+                {'label': 'GASES', 'value': 'gases'}
 
             ],
 

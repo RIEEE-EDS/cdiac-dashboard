@@ -43,27 +43,27 @@ def parse_contents(theme, fuel_type):
     if fuel_type == 'solids':
         df = d.df_solid  
         table_title = "CO₂ Emissions from the Energy Use of Solid Fossil Fuels"
-        header_color = "rgba(217,95,2,0.75)"
-        cell_c_1 = "rgba(217,95,2,0.5)"
-        cell_c_2 = "rgba(217,95,2,0.25)"
+        header_color = "rgba(253,180,98,0.75)"
+        cell_c_1 = "rgba(253,180,98,0.5)"
+        cell_c_2 = "rgba(253,180,98,0.25)"
     elif fuel_type == 'liquids':
         df = d.df_liquid
         table_title = "CO₂ Emissions from the Energy Use of Liquid Fossil Fuels"
-        header_color = "rgba(117,112,179,0.75)"
-        cell_c_1 = "rgba(117,112,179,0.5)"
-        cell_c_2 = "rgba(117,112,179,0.25)"
+        header_color = "rgba(251,128,114,0.75)"
+        cell_c_1 = "rgba(251,128,114,0.5)"
+        cell_c_2 = "rgba(251,128,114,0.25)"
     elif fuel_type == 'gases':
         df = d.df_gas
         table_title = "CO₂ Emissions from the Energy Use of Gaseous Fossil Fuels"
-        header_color = "rgba(27,158,119,0.75)"
-        cell_c_1 = "rgba(27,158,119,0.5)"
-        cell_c_2 = "rgba(27,158,119,0.25)"
+        header_color = "rgba(190,186,218,0.75)"
+        cell_c_1 = "rgba(190,186,218,0.5)"
+        cell_c_2 = "rgba(190,186,218,0.25)"
     else :
         df = d.df_total
         table_title = "CO₂ Emissions from the Energy Use of Fossil Fuels and Cement Manufacture"
-        header_color = "rgba(231,41,138,0.75)"
-        cell_c_1 = "rgba(231,41,138,0.5)"
-        cell_c_2 = "rgba(231,41,138,0.25)"
+        header_color = "rgba(217,217,217,0.75)"
+        cell_c_1 = "rgba(217,217,217,0.5)"
+        cell_c_2 = "rgba(217,217,217,0.25)"
     
     # Set a maximum width for columns and enable word wrap
     style = {

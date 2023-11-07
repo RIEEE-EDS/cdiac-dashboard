@@ -311,25 +311,25 @@ def round_down(x):
         return x
     
 # Load TOTAL sheet
-df_total = pd.read_excel('assets/data/National_Sectoral_2020.xlsx', sheet_name='TOTAL')
+df_total = pd.read_excel('assets/data/CDIAC_Sectoral_Inventory_1995_2020.xlsx', sheet_name='TOTALS')
 
 # Round down
 #df_total = df_total.applymap(round_down)
 
 # Load SOLID FUELS sheet (also used for LIQUID FUELS sheet)
-df_solid = pd.read_excel('assets/data/National_Sectoral_2020.xlsx', sheet_name='SOLID FUELS')
+df_solid = pd.read_excel('assets/data/CDIAC_Sectoral_Inventory_1995_2020.xlsx', sheet_name='SOLID FUELS')
 
 # Round down
 #df_solid = df_solid.applymap(round_down)
 
 # Load LIQUID FUELS sheet (also used for LIQUID FUELS sheet)
-df_liquid = pd.read_excel('assets/data/National_Sectoral_2020.xlsx', sheet_name='LIQUID FUELS')
+df_liquid = pd.read_excel('assets/data/CDIAC_Sectoral_Inventory_1995_2020.xlsx', sheet_name='LIQUID FUELS')
 
 # Round down
 #df_liquid = df_liquid.applymap(round_down)
 
 # Load GAS FUELS sheet (also used for LIQUID FUELS sheet)
-df_gas = pd.read_excel('assets/data/National_Sectoral_2020.xlsx', sheet_name='GAS FUELS')
+df_gas = pd.read_excel('assets/data/CDIAC_Sectoral_Inventory_1995_2020.xlsx', sheet_name='GAS FUELS')
 
 """ CLEAN DATA -----
 
@@ -337,110 +337,41 @@ This section cleans the CDIAC data to be used easily by the dash application.
 
 """
 
-# Names of the Columns in the Total sheet
-df_total.columns = [
-    "Nation", 
-    "Year", 
-
-    "Fossil Fuel and Cement Production",
-
-    "Energy Supply Total",
-
-    "Energy Consumption Total",
-
-    "Statistical Difference (Sup-Con)",
-
-    "Electric, CHP, Heat Plants",
-    
-    "Energy Industries' Own Use",
-
-    # Subsectors
-
-    "Manufact, Constr, Non-Fuel Industry",
-
-    # Subsectors
-
-    "Transport",
-
-    # Subsectors
-
-    "Household",
-    "Agriculture, Forestry, Fishing",
-    "Commerce and Public Services",
-    "NES Other Consumption",
-    "Non-Energy Use",
-
-    # Only for Totals-----------------
-    "Bunkered",
-
-    "Bunkered (Marine)",
-    "Bunkered (Aviation)",
-
-    "Flaring of Natural Gas",
-
-    "Manufacture of Cement",
-
-    "Per Capita Total Emissions"
-]
-
-# Names of the columns in the SOLID sheet
-df_solid.columns = [
-    "Nation", 
-    "Year", 
-
-    "Energy Supply Total",
-
-    "Energy Consumption Total",
-
-    "Statistical Difference (Sup-Con)",
-
-    "Electric, CHP, Heat Plants",
-
-    "Energy Industries' Own Use",
-
-    # Subsectors
-
-    "Manufact, Constr, Non-Fuel Industry",
-
-    # Subsectors
-
-    "Transport",
-
-    # Subsectors
-
-    "Household",
-    "Agriculture, Forestry, Fishing",
-    "Commerce and Public Services",
-    "NES Other Consumption",
-    "Non-Energy Use",
-]
-
-df_liquid.columns = df_solid.columns
-
-df_gas.columns = df_solid.columns
-
 # For mapping source to source between sheets when a different fuel type is selected
 def best_match_option(value, fuel_type):
 
     # Are we coming from the totals sheet?  Assume first no
     from_totals = False
     
+    # If the value of the source is in the solid df's columns,
     if (value in df_solid.columns) : 
+        # Then see where that's at (index of the column)
         from_index = df_solid.columns.get_loc(value)
     else :
+        # Then we're coming from totals.  Get its index
         from_index = df_total.columns.get_loc(value)
         from_totals = True
 
+    # If we're coming from totals and we want to go to totals,
+    # return the value
     if (from_totals and fuel_type == 'totals') :
         return value
     
+    # If we're coming from totals and we want to go somewhere else,
     if (from_totals and fuel_type != 'totals') :
-        if (from_index >= 3 and from_index <= 14):
+        # If you're between indexes 3 ("Fossil Fuel Energy (Supplied)") 
+        # and 21 ("Bunkered (Aviation)")
+        # (index starting at zero)
+        if (from_index >= 3 and from_index <= 25):
+            # Return one below since totals has an extra
             return df_solid.columns[from_index - 1]
         else:
+            # Just return the main total
             return df_solid.columns[2]
 
+    # if you're coming from s/l/g and going to totals
     if (not from_totals and fuel_type == 'totals') :
+        # return one over since totals has an extra
         return df_total.columns[from_index + 1]
 
     return value

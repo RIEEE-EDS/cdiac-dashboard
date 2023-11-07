@@ -1,8 +1,10 @@
 """
 Module/Script Name: carbon_atlas.py
+
 Author: M. W. Hefner
 
 Created: 4/12/2023
+
 Last Modified: 10/30/2023
 
 Project: CDIAC at AppState
@@ -62,20 +64,16 @@ def carbon_atlas(source, fuel_type, theme) :
 
 
     # List of Nation values to filter
-    nations_to_filter = [
-        "Africa", "Antarctica", "Asia Pacific", "Commonwealth of Independent States",
-        "Europe", "Middle East", "North America", "South and Central America",
-        "Annex I", "Non-Annex I", "World"
-    ]
+    nations_to_filter = ["AFRICA", "ANTARCTICA", "ASIA PACIFIC", "COMMONWEALTH OF INDEPENDENT STATES", "EUROPE", "MIDDLE EAST", "NORTH AMERICA", "SOUTH AND CENTRAL AMERICA", "ANNEX I", "NON-ANNEX I", "WORLD"]
 
     # Filter out rows with specified Nation values
-    df = df.copy()[~df['Nation'].isin(nations_to_filter)]
+    df = df.copy()[~df['Political Geography'].isin(nations_to_filter)]
 
     # Top of the scale should be the max value for the entire range of years
     maxValue = df[source].max()
 
     # Map each observation to their nation ISO for plotly
-    df['Nation_ISO'] = df['Nation'].map(d.location_mapping)
+    df['Nation_ISO'] = df['Political Geography'].map(d.location_mapping)
 
     # Create the choropleth figure
     fig = px.choropleth(
@@ -90,7 +88,9 @@ def carbon_atlas(source, fuel_type, theme) :
         color = source,
 
         # Hovering over a country should give you the nation name
-        hover_name = "Nation",
+        hover_name = "Political Geography",
+
+        hover_data= {"Nation_ISO" : False},
 
         # Animate based on year
         animation_frame = "Year",
@@ -169,9 +169,16 @@ def carbon_atlas(source, fuel_type, theme) :
             annotations=[subtitle_annotation]
         )
 
-    # These lines set the a last frame
+    # These lines set the last frame
     last_frame_num = len(fig.frames) -1
     fig.layout['sliders'][0]['active'] = last_frame_num
     fig = go.Figure(data=fig['frames'][-1]['data'], frames=fig['frames'], layout=fig.layout)
+
+    fig.update_layout(
+        hoverlabel=dict(
+        font_size=16,
+        font_family="Rockwell",
+        )
+    )
 
     return fig

@@ -41,22 +41,9 @@ layout = dash.html.Div(
 
             id='nation-dropdown-controler',
 
-            value = [
-                'Annex I',
-                'Non-Annex I',
-                'Africa',
-                'Asia Pacific',
-                'Commonwealth of Independent States',
-                'Europe',
-                'North America',
-                'Middle East',
-                'South and Central America',
-                'CHINA (MAINLAND)', 
-                'UNITED STATES OF AMERICA',
-                'RUSSIAN FEDERATION',
-                'INDIA'],
+            value = 'WORLD',
 
-            options=[{'label': factor, 'value': factor} for factor in d.df_total['Nation'].unique()],
+            options=[{'label': factor, 'value': factor} for factor in d.df_total['Political Geography'].unique()],
 
             clearable=False,
 
@@ -80,45 +67,19 @@ def update_nation_dropdown(nav_opt) :
 
     # Not Hidden, Not Multi Choice.  Default USA.
     if nav_opt == 'political-geography-time-series' : 
-        return False, False, 'UNITED STATES OF AMERICA'
+        return False, False, 'WORLD'
     
     if nav_opt == 'political-geography-sunburst' : 
-            return False, False, 'UNITED STATES OF AMERICA'
+            return False, False, 'WORLD'
 
     # Not Hidden.  Multi.
     if nav_opt == 'source-time-series' :
 
-        return False, True, [
-                'Annex I',
-                'Non-Annex I',
-                'Africa',
-                'Asia Pacific',
-                'Commonwealth of Independent States',
-                'Europe',
-                'North America',
-                'Middle East',
-                'South and Central America',
-                'CHINA (MAINLAND)', 
-                'UNITED STATES OF AMERICA',
-                'RUSSIAN FEDERATION',
-                'INDIA']
+        return False, True, ['ANNEX I', 'NON-ANNEX I', 'AFRICA', 'ASIA PACIFIC', 'COMMONWEALTH OF INDEPENDENT STATES', 'EUROPE', 'NORTH AMERICA', 'MIDDLE EAST', 'SOUTH AND CENTRAL AMERICA', 'CHINA (MAINLAND)',  'UNITED STATES OF AMERICA', 'RUSSIAN FEDERATION', 'INDIA']
     
     # Hidden
     else:
-        return True, True, [
-                'Annex I',
-                'Non-Annex I',
-                'Africa',
-                'Asia Pacific',
-                'Commonwealth of Independent States',
-                'Europe',
-                'North America',
-                'Middle East',
-                'South and Central America',
-                'CHINA (MAINLAND)', 
-                'UNITED STATES OF AMERICA',
-                'RUSSIAN FEDERATION',
-                'INDIA']
+        return True, False, []
 
 # Controls Theme of component
 @dash.callback(

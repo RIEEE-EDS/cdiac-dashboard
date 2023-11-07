@@ -53,33 +53,35 @@ layout = dash.html.Div(
 
                 {'label': 'About CDIAC at AppState', 'value': 'about'},
 
-                {'label': 'Carbon Emissions Atlas', 'value': 'carbon-atlas'},
-
                 {'label': 'Inventory Methodology', 'value': 'methodology'},
 
-                {'label': 'Browse Data', 'value': 'table'},
+                {'label': 'Carbon Emissions Atlas', 'value': 'carbon-atlas'},
 
-                {'label': 'Time Series: Political Geography', 'value': 'political-geography-time-series'},
+                {'label': 'Time Series by Political Geography', 'value': 'political-geography-time-series'},
 
-                {'label': 'Sunburst Plot: Political Geography', 'value': 'political-geography-sunburst'},
+                {'label': 'Time Series by Emissions Source', 'value': 'source-time-series'},
 
-                {'label': 'Time Series: Emissions Source', 'value': 'source-time-series'},
+                {'label': 'Sunburst Plot by Political Geography', 'value': 'political-geography-sunburst'},
 
-                #{'label': 'Sunburst Plot: Emissions Source', 'value': 'source-sunburst'},
-                
-                {'label': 'Download Legacy Products (XLSX)', 'value': 'download'},
+                {'label': 'Sunburst Plot by Emissions Source', 'value': 'source-sunburst'},
+
+                {'label': 'Ternary Proportion Analysis', 'value': 'ternary'},
+
+                {'label': 'Sort, Filter, and Download Data', 'value': 'table'},
+
+                {'label': 'Simple XLSX or CSV Download Links', 'value': 'download'},
 
             ],
 
             # Default to the about page
-            value = 'carbon-atlas',
+            value = 'political-geography-time-series',
 
             clearable=False,
 
             # Making this searchable will disturb the tablet experience.
             searchable=False,
 
-            maxHeight=150
+            maxHeight=175
 
         )
 

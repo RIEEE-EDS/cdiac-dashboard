@@ -35,18 +35,105 @@ def country_sunburst(nation, fuel_type, theme):
 
     # Take only the columns we want for the starburst chart
     columns_to_keep = [
-        "Energy Supply Total",
-        "Energy Consumption Total",
-        "Statistical Difference (Sup-Con)",
+        "Fossil Fuel Energy (Consumed)",
         "Electric, CHP, Heat Plants",
         "Energy Industries' Own Use",
         "Manufact, Constr, Non-Fuel Industry",
         "Transport",
+
+        "Road Transport",
+        "Rail Transport",
+        "Domestic Aviation",
+        "Domestic Navigation",
+        "Other Transport",
+
         "Household",
         "Agriculture, Forestry, Fishing",
         "Commerce and Public Services",
         "NES Other Consumption",
+        "Bunkered",
+        "Bunkered (Marine)",
+        "Bunkered (Aviation)",
+
     ]
+
+    sunburst_parents = [
+        "",
+        "Fossil Fuel<br>Energy Use<br>(Consumed)",
+        "Fossil Fuel<br>Energy Use<br>(Consumed)",
+        "Fossil Fuel<br>Energy Use<br>(Consumed)",
+        "Fossil Fuel<br>Energy Use<br>(Consumed)",
+
+        "Transport",
+        "Transport",
+        "Transport",
+        "Transport",
+        "Transport",
+
+        "Fossil Fuel<br>Energy Use<br>(Consumed)",
+        "Fossil Fuel<br>Energy Use<br>(Consumed)",
+        "Fossil Fuel<br>Energy Use<br>(Consumed)",
+        "Fossil Fuel<br>Energy Use<br>(Consumed)",
+    ]
+
+    if nation == "WORLD" :
+        sunburst_parents.append("Fossil Fuel<br>Energy Use<br>(Consumed)")
+        sunburst_parents.append("Bunkered")
+        sunburst_parents.append("Bunkered")
+    else :
+        sunburst_parents.append("")
+        sunburst_parents.append("Bunkered")
+        sunburst_parents.append("Bunkered")
+
+    sunburst_labels = [
+        "Fossil Fuel<br>Energy Use<br>(Consumed)",
+        "Electric, CHP,<br>Heat Plants",
+        "Energy<br>Industries'<br>Own Use",
+        "Manufact,<br>Constr,<br>Non-Fuel<br>Industry",
+        "Transport",
+
+        "Road<br>Transport",
+        "Rail<br>Transport",
+        "Domestic<br>Aviation",
+        "Domestic<br>Navigation",
+        "Other<br>Transport",
+
+        "Household",
+        "Agriculture,<br>Forestry,<br>Fishing",
+        "Commerce and<br>Public Services",
+        "NES Other<br>Consumption",
+        "Bunkered",
+        "Marine",
+        "Aviation",
+
+    ]
+    
+    sunburst_colors=[
+        "rgba(0,0,0,0)",
+        
+        "#FF5733", 
+        "#FFD700", 
+        "#8A2BE2",
+
+        "rgba(0,0,0,0)", # Transport
+        
+        "#00FFFF", 
+        "#008000", 
+        "#FF4500", 
+        "#000080", 
+        "#800080", 
+
+        "#FFFF00", 
+        "#228B22", 
+        "#FF69B4", 
+        "#FFA07A", 
+
+        "rgba(0,0,0,0)", # Bunkered
+        "#0000FF", 
+        "#8B0000",
+
+        "#A52A2A", 
+        "#D2691E"]
 
     if fuel_type == 'solids':
 
@@ -72,29 +159,16 @@ def country_sunburst(nation, fuel_type, theme):
 
         df = d.df_total
 
-        columns_to_keep = [
-            "Fossil Fuel and Cement Production",
-            "Energy Consumption Total",
-            "Statistical Difference (Sup-Con)",
-            "Manufacture of Cement",
-            "Electric, CHP, Heat Plants",
-            "Energy Industries' Own Use",
-            "Manufact, Constr, Non-Fuel Industry",
-            "Transport",
-            "Household",
-            "Agriculture, Forestry, Fishing",
-            "Commerce and Public Services",
-            "NES Other Consumption",
-            
-            "Bunkered",
-            "Bunkered (Marine)",
-            "Bunkered (Aviation)",
-            "Flaring of Natural Gas",
-        ]
+        columns_to_keep.append("Flaring of Natural Gas")
+        columns_to_keep.append("Manufacture of Cement")
+        sunburst_labels.append("Flaring of<br>Natural Gas")
+        sunburst_labels.append("Cement<br>Manufact")
+        sunburst_parents.append("Fossil Fuel<br>Energy Use<br>(Consumed)")
+        sunburst_parents.append("")
 
     # Filter the data frame for the right data
-    df = df[df['Nation'] == nation]
-    df = df[df['Year'] == 2019]
+    df = df[df['Political Geography'] == nation]
+    df = df[df['Year'] == 2020]
 
     df = df[columns_to_keep]
 
@@ -103,72 +177,11 @@ def country_sunburst(nation, fuel_type, theme):
     # Debug
     dfl = df.values.tolist()[0]
 
-    if dfl[2] > 0 :
-        sunburst_parents = [
-            "",
-            "Total",
-            "Total",
-            "Total",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-
-            "Consumption",
-            "Bunkered",
-            "Bunkered",
-            "Consumption",
-        ]
-    else:
-        dfl[0] = dfl[3] + dfl[1]
-
-        dfl[2] = dfl[2] * -1
-
-        sunburst_parents = [
-            "",
-            "Total",
-            "Electric, CHP, Heat Plants",
-            "Total",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-            "Consumption",
-
-            "Consumption",
-            "Bunkered",
-            "Bunkered",
-            "Consumption",
-        ]
+    print(df)
 
     fig = go.Figure(go.Sunburst(
 
-        labels = [
-            "Total",
-            "Consumption",
-            "Statistical Difference",
-            "Cement",
-            "Electric, CHP, Heat Plants",
-            "Energy Industries' Own Use",
-            "Manufact, Constr, Non-Fuel Industry",
-            "Transport",
-            "Household",
-            "Agriculture, Forestry, Fishing",
-            "Commerce and Public Services",
-            "NES Other Consumption",
-            
-            "Bunkered",
-            "Marine",
-            "Aviation",
-            "Flared Natural Gas",
-        ],
+        labels = sunburst_labels,
 
         parents = sunburst_parents,
 
@@ -179,28 +192,11 @@ def country_sunburst(nation, fuel_type, theme):
         insidetextorientation='horizontal',
 
         marker=dict(
-            colors=[
-                '#a6cee3',
-                '#1f78b4',
-                '#ffff00',
-                "#bbbbbb",
-                '#fb9a99',
-                '#ff7f00',
-                '#fdbf6f',
-                '#e31a1c',
-                '#cab2d6',
-                '#33a02c',
-                '#ffff99',
-                '#b15928',
+            colors=sunburst_colors,
 
-                "#888888",
-                "#999999",
-                "#aaaaaa",
-                '#6a3d9a',
-            ],
+            line=dict(color=textCol, width=2) 
+        ),
 
-            line=dict(color=textCol, width=0) 
-        )
     ))
 
     fig.update_layout(
@@ -216,7 +212,8 @@ def country_sunburst(nation, fuel_type, theme):
 
         # Set the font size for the entire plot, excluding the title
         font=dict(
-            size=28, 
+            size=16, 
+            color=textCol
         ),
 
         # Title Layout and Styling
