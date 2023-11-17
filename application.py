@@ -25,6 +25,10 @@ This Dash application was created using the template provided by the Research In
 LOCAL_DEVELOPMENT = False
 # !!! IMPORTANT: CHANGE TO FALSE BEFORE PUSHING !!!
 
+# !!! IMPORTANT: CHANGE TO FALSE BEFORE PUBLISHING !!!
+UNLISTED = True
+# !!! IMPORTANT: CHANGE TO FALSE BEFORE PUBLISHING !!!
+
 # Import Dependencies
 import dash
 import secrets
@@ -136,7 +140,7 @@ def authorize(pathname, hash):
     # Application Authorization Token (for preventing memorization)
     authorizationToken = secrets.token_hex()
 
-    if login.userIsAuthorized() or LOCAL_DEVELOPMENT:
+    if UNLISTED or login.userIsAuthorized() or LOCAL_DEVELOPMENT:
         # If the user is authorized, or this is for local development:
         return mc.layout, authorizationToken
     else :
