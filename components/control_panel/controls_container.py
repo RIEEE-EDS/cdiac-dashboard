@@ -30,7 +30,10 @@ import components.control_panel.controls.theme_toggle as theme_toggle
 import components.control_panel.defaultbuttonarea as defaultbuttonarea
 import components.control_panel.controls.fuel_type_dropdown as fuel_type_dropdown
 import components.control_panel.controls.source_dropdown as source_dropdown
+import components.control_panel.controls.source_A_dropdown as source_A_dropdown
+import components.control_panel.controls.source_B_dropdown as source_B_dropdown
 import components.control_panel.controls.nation_dropdown as nation_dropdown
+import components.control_panel.controls.nation_group_selection as nation_group_selection
 
 # LAYOUT
 layout = dash.html.Div(
@@ -54,7 +57,13 @@ layout = dash.html.Div(
 
                 # NATION SELECTION
                 nation_dropdown.layout,
-                
+
+                # Ternary Source Selections
+                source_A_dropdown.layout,
+                source_B_dropdown.layout,
+                # Ternary Group Selection
+                nation_group_selection.layout
+
             ],
 
             color = "#ffcc00"

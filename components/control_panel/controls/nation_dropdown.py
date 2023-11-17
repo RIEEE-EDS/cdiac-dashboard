@@ -43,7 +43,7 @@ layout = dash.html.Div(
 
             value = 'WORLD',
 
-            options=[{'label': factor, 'value': factor} for factor in d.df_total['Political Geography'].unique()],
+            options = [{'label': factor, 'value': factor} for factor in d.df_total['Political Geography'].unique() if factor != "ANTARCTICA"],
 
             clearable=False,
 
@@ -75,7 +75,7 @@ def update_nation_dropdown(nav_opt) :
     # Not Hidden.  Multi.
     if nav_opt == 'source-time-series' :
 
-        return False, True, ['ANNEX I', 'NON-ANNEX I', 'AFRICA', 'ASIA PACIFIC', 'COMMONWEALTH OF INDEPENDENT STATES', 'EUROPE', 'NORTH AMERICA', 'MIDDLE EAST', 'SOUTH AND CENTRAL AMERICA', 'CHINA (MAINLAND)',  'UNITED STATES OF AMERICA', 'RUSSIAN FEDERATION', 'INDIA']
+        return False, True, ['AFRICA', 'ASIA PACIFIC', 'COMMONWEALTH OF INDEPENDENT STATES', 'EUROPE', 'NORTH AMERICA', 'MIDDLE EAST', 'SOUTH AND CENTRAL AMERICA', 'CHINA (MAINLAND)',  'UNITED STATES OF AMERICA', 'RUSSIAN FEDERATION', 'INDIA']
     
     # Hidden
     else:

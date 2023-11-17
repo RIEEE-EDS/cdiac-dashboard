@@ -35,11 +35,15 @@ app_id = 4
 # SET THE REPO TITLE (APPLICATION METADATA USED FOR AUTHORIZATION)
 repo_title = "cdiac"
 
-app_doi = "NONE_FOR_TEMPLATE"
+app_doi = "PRE-PUBLICATION. DO NOT SHARE."
 
-developers = "Matt Hefner, RIEEE Environmental Data Scientist"
+developers = "Matt Hefner"
 
 version = "2023"
+
+# For showing in conexts where you do not wish to be doxed
+# i.e. presentations in anonymous contexts
+show_credit = True
 
 # Location map for carbon atlas
 location_mapping = {
@@ -331,6 +335,9 @@ df_liquid = pd.read_excel('assets/data/CDIAC_Sectoral_Inventory_1995_2020.xlsx',
 # Load GAS FUELS sheet (also used for LIQUID FUELS sheet)
 df_gas = pd.read_excel('assets/data/CDIAC_Sectoral_Inventory_1995_2020.xlsx', sheet_name='GAS FUELS')
 
+# Load region lookup
+regionLookup = pd.read_excel('assets/data/Region_Lookup.xlsx')
+
 """ CLEAN DATA -----
 
 This section cleans the CDIAC data to be used easily by the dash application.
@@ -362,7 +369,7 @@ def best_match_option(value, fuel_type):
         # If you're between indexes 3 ("Fossil Fuel Energy (Supplied)") 
         # and 21 ("Bunkered (Aviation)")
         # (index starting at zero)
-        if (from_index >= 3 and from_index <= 25):
+        if (from_index >= 3 and from_index <= 20):
             # Return one below since totals has an extra
             return df_solid.columns[from_index - 1]
         else:

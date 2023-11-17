@@ -1,13 +1,13 @@
 """
-Module/Script Name: country_sunburst.py
+Module/Script Name: source_sunburst.py
 Author: M. W. Hefner
 
-Created: 9/15/2023
+Created: 4/12/2023
 Last Modified: 10/30/2023
 
 Project: CDIAC at AppState
 
-Script Description: This script defines a source-view plotly figure.
+Script Description: This script defines the country-view plotly figure.
 
 Exceptional notes about this script:
 (none)
@@ -23,98 +23,200 @@ This figure was created using the template provided by the Research Institute fo
 # Import needed libraries
 import plotly.graph_objects as go
 import datetime
-import plotly.io as pio
+import numpy as np
+import pandas as pd
 from components.utils import constants as d
 
-def source_sunburst(source, fuel_type, theme):
+def build_sunburst_data(source, fuel_type, year, bg) :
+    # Assign Region Colors
+    colormap = pd.DataFrame()
 
-    if theme == 'light' :
-        textCol = '#000'
-    if theme == 'dark' :
-        textCol = '#fff'
+    colormap["REGION"] = ["NONE", "WORLD", "AFRICA", "ASIA PACIFIC", "COMMONWEALTH OF INDEPENDENT STATES", "MIDDLE EAST", "NORTH AMERICA", "SOUTH AND CENTRAL AMERICA", "EUROPE"]
+    colormap["COLOR"] = [bg, bg, "#46C6E7", "#616BB2", "#8B69AD", "#F9A05B", "#EF563C", "#F06591", "#41BB91"]
 
+    # Set Data, Title, and Subtitle
     if fuel_type == 'solids':
 
         df = d.df_solid
 
-        plot_subtitle = "CO₂ Emissionsfrom the Energy Use of Solid Fuels"
+        plot_title = source + " <b>SOLID</b> FUEL CO₂ EMISSIONS"
+
+        plot_subtitle = "<b>" + str(year) +"</b>"
 
     elif fuel_type == 'liquids':
 
         df = d.df_liquid
 
-        plot_subtitle = "CO₂ Emissions from the Energy Use of Liquid Fuels"
+        plot_title = source + " <b>LIQUID</b> FUEL CO₂ EMISSIONS"
+
+        plot_subtitle = "<b>" + str(year) +"</b>"
 
     elif fuel_type == 'gases':
 
         df = d.df_gas
 
-        plot_subtitle = "CO₂ Emissions from the Energy Use of Gas Fuels"
+        plot_title = source + " <b>GAS</b> FUEL CO₂ EMISSIONS"
+
+        plot_subtitle = "<b>" + str(year) +"</b>"
 
     else :
 
-        plot_subtitle = "CO₂ Emissions"
+        plot_title = source + " CO₂ EMISSIONS"
+
+        plot_subtitle = "<b>" + str(year) +"</b>"
 
         df = d.df_total
 
-    # Filter the data frame for the right data
-    df = df[df['Year'] == 2020]
-    df = df[[source, 'Nation']]
-    df = df.transpose()
+    # Filter the DataFrame to include only rows where Year is year
+    df = df[df['Year'] == year]
 
-    keys = d.location_mapping.keys()
-    # Convert the keys to a list if needed
-    key_list = list(keys)
+    world_bunkered = df.loc[df['Political Geography'] == "WORLD", "Bunkered"].values[0]
+    world_bunkered_marine = df.loc[df['Political Geography'] == "WORLD", "Bunkered (Marine)"].values[0]
+    world_bunkered_aviation = df.loc[df['Political Geography'] == "WORLD", "Bunkered (Aviation)"].values[0]
 
-    sunburst_labels = ['WORLD', 'AFRICA', 'NORTH AMERICA', 'AFGHANISTAN', 'SOUTH AMERICA', 'ASIA', 'EUROPE', 'ALBANIA', 'OCEANIA', 'ALGERIA', 'AMERICAN SAMOA', 'ANDORRA', 'ANGOLA', 'ANTIGUA & BARBUDA', 'AZERBAIJAN', 'ARGENTINA', 'AUSTRALIA', 'AUSTRIA', 'BAHAMAS', 'BAHRAIN', 'BANGLADESH', 'ARMENIA', 'BARBADOS', 'BELGIUM', 'BERMUDA', 'BHUTAN', 'PLURINATIONAL STATE OF BOLIVIA', 'BOSNIA & HERZEGOVINA', 'BOTSWANA', 'BRAZIL', 'ANTARCTIC FISHERIES', 'BELIZE', 'BRITISH INDIAN OCEAN TERRITORIES', 'SOLOMON ISLANDS', 'BRITISH VIRGIN ISLANDS', 'BRUNEI (DARUSSALAM)', 'BULGARIA', 'MYANMAR (FORMERLY BURMA)', 'BURUNDI', 'BELARUS', 'CAMBODIA', 'REPUBLIC OF CAMEROON', 'CANADA', 'CAPE VERDE', 'CAYMAN ISLANDS', 'CENTRAL AFRICAN REPUBLIC', 'SRI LANKA', 'CHAD', 'CHILE', 'CHINA (MAINLAND)', 'TAIWAN', 'CHRISTMAS ISLAND', 'COLOMBIA', 'COMMONWEALTH OF INDEPENDENT STATES (CIS)', 'COMOROS', 'MAYOTTE', 'CONGO', 'DEMOCRATIC REPUBLIC OF THE CONGO (FORMERLY ZAIRE)', 'COOK ISLANDS', 'COSTA RICA', 'CROATIA', 'CUBA', 'CYPRUS', 'CZECHOSLOVAKIA', 'CZECH REPUBLIC', 'BENIN', 'DENMARK', 'DOMINICA', 'DOMINICAN REPUBLIC', 'ECUADOR', 'EL SALVADOR', 'EQUATORIAL GUINEA', 'ETHIOPIA', 'ERITREA', 'ESTONIA', 'FAEROE ISLANDS', 'FALKLAND ISLANDS (MALVINAS)', 'FIJI', 'FINLAND', 'ALAND ISLANDS', 'FRANCE', 'FRANCE (INCLUDING MONACO)', 'FRENCH GUIANA', 'FRENCH POLYNESIA', 'DJIBOUTI', 'FRENCH EQUATORIAL AFRICA', 'FRENCH INDO-CHINA', 'GABON', 'FRENCH WEST AFRICA', 'GEORGIA', 'GAMBIA', 'OCCUPIED PALESTINIAN TERRITORY', 'GERMANY', 'FORMER GERMAN DEMOCRATIC REPUBLIC', 'FEDERAL REPUBLIC OF GERMANY', 'GHANA', 'GIBRALTAR', 'KIRIBATI', 'GREECE', 'GREENLAND', 'GRENADA', 'GUADELOUPE', 'GUAM', 'GUATEMALA', 'GUINEA', 'GUYANA', 'HAITI', 'HONDURAS', 'HONG KONG SPECIAL ADMINSTRATIVE REGION OF CHINA', 'HUNGARY', 'ICELAND', 'INDIA', 'INDONESIA', 'ISLAMIC REPUBLIC OF IRAN', 'IRAQ', 'IRELAND', 'ISRAEL', 'ITALY', 'ITALY (INCLUDING SAN MARINO)', 'COTE D IVOIRE', 'JAMAICA', 'JAPAN', 'JAPAN (EXCLUDING THE RUYUKU ISLANDS)', 'KAZAKHSTAN', 'JORDAN', 'KENYA', 'DEMOCRATIC PEOPLE S REPUBLIC OF KOREA', 'UNITED KOREA', 'REPUBLIC OF KOREA', 'KOSOVO', 'KUWAIT', 'KUWAITI OIL FIRES', 'KYRGYZSTAN', 'LAO PEOPLE S DEMOCRATIC REPUBLIC', 'LEBANON', 'LEEWARD ISLANDS', 'LESOTHO', 'LATVIA', 'LIBERIA', 'LIBYAN ARAB JAMAHIRIYAH', 'LIECHTENSTEIN', 'LITHUANIA', 'LUXEMBOURG', 'MACAU SPECIAL ADMINSTRATIVE REGION OF CHINA', 'MADAGASCAR', 'MALAWI', 'FEDERATION OF MALAYA-SINGAPORE', 'SARAWAK', 'MALAYSIA', 'PENINSULAR MALAYSIA', 'SABAH', 'MALDIVES', 'MALI', 'MALTA', 'MARTINIQUE', 'MAURITANIA', 'MAURITIUS', 'MEXICO', 'MONACO', 'MONGOLIA', 'REPUBLIC OF MOLDOVA', 'MONTENEGRO', 'MONTSERRAT', 'MOROCCO', 'MOZAMBIQUE', 'OMAN', 'NAMIBIA', 'NAURU', 'NEPAL', 'NETHERLANDS', 'NETHERLAND ANTILLES', 'CURACAO', 'NETHERLAND ANTILLES AND ARUBA', 'ARUBA', 'SAINT MARTIN (DUTCH PORTION)', 'BONAIRE, SAINT EUSTATIUS, AND SABA', 'NEW CALEDONIA', 'VANUATU', 'NEW ZEALAND', 'NICARAGUA', 'NIGER', 'NIGERIA', 'NIUE', 'NORWAY', 'NORTHERN MARIANA ISLANDS', 'PACIFIC ISLANDS (PALAU)', 'FEDERATED STATES OF MICRONESIA', 'MARSHALL ISLANDS', 'PALAU', 'PAKISTAN', 'EAST & WEST PAKISTAN', 'PANAMA', 'PANAMA', 'FORMER PANAMA CANAL ZONE', 'PAPUA NEW GUINEA', 'PARAGUAY', 'PERU', 'PHILIPPINES', 'POLAND', 'PORTUGAL', 'GUINEA BISSAU', 'TIMOR-LESTE (FORMERLY EAST TIMOR)', 'PUERTO RICO', 'QATAR', 'REUNION', 'ROMANIA', 'RUSSIAN FEDERATION', 'RWANDA-URUNDI', 'RWANDA', 'RYUKYU ISLANDS', 'SAINT BARTHELEMY', 'SAINT HELENA', 'ST. KITTS-NEVIS-ANGUILLA', 'ST. KITTS-NEVIS', 'ANGUILLA', 'SAINT LUCIA', 'SAINT MARTIN (French part)', 'ST. PIERRE & MIQUELON', 'ST. VINCENT & THE GRENADINES', 'SAN MARINO', 'SAO TOME & PRINCIPE', 'SAUDI ARABIA', 'SENEGAL', 'SERBIA', 'SEYCHELLES', 'SIERRA LEONE', 'SINGAPORE', 'SLOVAKIA', 'VIET NAM', 'SLOVENIA', 'SOMALIA', 'SOUTH AFRICA', 'CUSTOMS UNION OF SOUTH AFRICA', 'ZIMBABWE', 'RHODESIA-NYASALAND', 'FORMER DEMOCRATIC YEMEN', 'SPAIN', 'REPUBLIC OF SOUTH SUDAN', 'REPUBLIC OF SUDAN', 'WESTERN SAHARA', 'SUDAN', 'SURINAME', 'SVALBARD & JAN MAYEN ISLANDS', 'SWAZILAND', 'SWEDEN', 'SWITZERLAND', 'SWITZERLAND', 'SYRIAN ARAB REPUBLIC', 'TAJIKISTAN', 'THAILAND', 'TOGO', 'TONGA', 'TRINIDAD AND TOBAGO', 'UNITED ARAB EMIRATES', 'TUNISIA', 'TURKEY', 'TURKMENISTAN', 'TURKS AND CAICOS ISLANDS', 'TUVALU', 'UGANDA', 'UKRAINE', 'MACEDONIA', 'USSR', 'EGYPT', 'UNITED KINGDOM', 'CHANNEL ISLANDS', 'GUERNSEY', 'JERSEY', 'ISLE OF MAN', 'UNITED REPUBLIC OF TANZANIA', 'TANGANYIKA', 'ZANZIBAR', 'UNITED STATES OF AMERICA', 'U.S. VIRGIN ISLANDS', 'BURKINA FASO', 'URUGUAY', 'UZBEKISTAN', 'VENEZUELA', 'DEMOCRATIC REPUBLIC OF VIETNAM', 'REPUBLIC OF SOUTH VIETNAM', 'WAKE ISLAND', 'WALLIS AND FUTUNA ISLANDS', 'SAMOA', 'FORMER YEMEN', 'YEMEN', 'YUGOSLAVIA (FORMER SOCIALIST FEDERAL REPUBLIC)', 'YUGOSLAVIA (MONTENEGRO & SERBIA)', 'ZAMBIA']
-    sunburst_parents = ['', 'World', 'World', 'World', 'World', 'World', 'World', 'Europe', 'Oceania', 'Africa', 'Asia Pacific', 'Europe', 'Africa', 'South and Central America', 'Commonwealth of Independent States', 'South and Central America', 'Asia Pacific', 'Europe', 'South and Central America', 'Middle East', 'Asia Pacific', 'Commonwealth of Independent States', 'South and Central America', 'Europe', 'South and Central America', 'Asia Pacific', 'South and Central America', 'Europe', 'Africa', 'South and Central America', 'Antarctica', 'South and Central America', 'Asia Pacific', 'Asia Pacific', 'South and Central America', 'Asia Pacific', 'Europe', 'Asia Pacific', 'Africa', 'Commonwealth of Independent States', 'Asia Pacific', 'Africa', 'North America', 'Africa', 'South and Central America', 'Africa', 'Asia Pacific', 'Africa', 'South and Central America', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'South and Central America', 'Commonwealth of Independent States', 'Africa', 'Africa', 'Africa', 'Africa', 'Asia Pacific', 'South and Central America', 'Europe', 'South and Central America', 'Europe', 'Europe', 'Europe', 'Africa', 'Europe', 'South and Central America', 'South and Central America', 'South and Central America', 'South and Central America', 'Africa', 'Africa', 'Africa', 'Europe', 'Europe', 'South and Central America', 'Asia Pacific', 'Europe', 'Europe', 'Europe', 'Europe', 'South and Central America', 'Asia Pacific', 'Africa', 'Africa', 'Asia Pacific', 'Africa', 'Africa', 'Europe', 'Africa', 'Middle East', 'Europe', 'Europe', 'Europe', 'Africa', 'Europe', 'Asia Pacific', 'Europe', 'North America', 'South and Central America', 'South and Central America', 'Asia Pacific', 'South and Central America', 'Africa', 'South and Central America', 'South and Central America', 'South and Central America', 'Asia Pacific', 'Europe', 'Europe', 'Asia Pacific', 'Asia Pacific', 'Middle East', 'Middle East', 'Europe', 'Middle East', 'Europe', 'Europe', 'Africa', 'South and Central America', 'Asia Pacific', 'Asia Pacific', 'Commonwealth of Independent States', 'Middle East', 'Africa', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Europe', 'Middle East', 'Middle East', 'Commonwealth of Independent States', 'Asia Pacific', 'Middle East', 'South and Central America', 'Africa', 'Europe', 'Africa', 'Africa', 'Europe', 'Europe', 'Europe', 'Asia Pacific', 'Africa', 'Africa', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Africa', 'Europe', 'South and Central America', 'Africa', 'Africa', 'North America', 'Europe', 'Asia Pacific', 'Commonwealth of Independent States', 'Europe', 'South and Central America', 'Africa', 'Africa', 'Middle East', 'Africa', 'Asia Pacific', 'Asia Pacific', 'Europe', 'South and Central America', 'South and Central America', 'South and Central America', 'South and Central America', 'South and Central America', 'South and Central America', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'South and Central America', 'Africa', 'Africa', 'Asia Pacific', 'Europe', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'South and Central America', 'South and Central America', 'South and Central America', 'Asia Pacific', 'South and Central America', 'South and Central America', 'Asia Pacific', 'Europe', 'Europe', 'Africa', 'Asia Pacific', 'South and Central America', 'Middle East', 'Africa', 'Europe', 'Commonwealth of Independent States', 'Africa', 'Africa', 'Asia Pacific', 'South and Central America', 'Africa', 'South and Central America', 'South and Central America', 'South and Central America', 'South and Central America', 'South and Central America', 'North America', 'South and Central America', 'Europe', 'Africa', 'Middle East', 'Africa', 'Europe', 'Africa', 'Africa', 'Asia Pacific', 'Europe', 'Asia Pacific', 'Europe', 'Africa', 'Africa', 'Africa', 'Africa', 'Africa', 'Middle East', 'Europe', 'Africa', 'Africa', 'Africa', 'Africa', 'South and Central America', 'Europe', 'Africa', 'Europe', 'Europe', 'Europe', 'Middle East', 'Commonwealth of Independent States', 'Asia Pacific', 'Africa', 'Asia Pacific', 'South and Central America', 'Middle East', 'Africa', 'Europe', 'Commonwealth of Independent States', 'South and Central America', 'Asia Pacific', 'Africa', 'Europe', 'Europe', 'USSR', 'Africa', 'Europe', 'Europe', 'Europe', 'Europe', 'Europe', 'Africa', 'Africa', 'Africa', 'North America', 'South and Central America', 'Africa', 'South and Central America', 'Commonwealth of Independent States', 'South and Central America', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Asia Pacific', 'Middle East', 'Middle East', 'Europe', 'Europe', 'Africa']
+    # Replace zeros with NaN values using .loc
+    df.loc[df['Year'] == year, source] = df.loc[df['Year'] == year, source].replace(0, np.nan)
 
-    df = df.copy()
-    df.fillna(0, inplace=True)
+    # Left join to get the 'REGION' column
+    df = df.merge(d.regionLookup[["Political Geography", "REGION"]], on="Political Geography", how="left")
 
-    # Debug
-    dfl = df.values.tolist()[0]
+    df = df.merge(colormap, on="REGION", how="left")
 
-    fig = go.Figure(go.Sunburst(
+    # Clean the 'REGION' values
+    df.loc[df['REGION'] == "NONE", 'REGION'] = ""
 
-        labels = sunburst_labels,
+    # List of region values to filter
+    regions_to_filter = ["", "WORLD", "AFRICA", "ASIA PACIFIC", "COMMONWEALTH OF INDEPENDENT STATES", "MIDDLE EAST", "NORTH AMERICA", "SOUTH AND CENTRAL AMERICA", "EUROPE"]
 
-        parents = sunburst_parents,
+    # Filter out rows with specified 'REGION' values
+    df = df.loc[df['REGION'].isin(regions_to_filter),]
 
-        values=dfl,
+    # Filter out rows for annex division using .loc
+    df = df.loc[~df['Political Geography'].isin(['ANNEX I', 'NON-ANNEX I'])]
 
+    # Select only the columns you need
+    df = df.loc[:,['Political Geography', 'REGION', source, 'COLOR', 'Year']]
+
+    # Create the 'sunburst' DataFrame
+    sunburst = pd.DataFrame()
+
+    # Assign columns from 'df' to 'sunburst'
+    sunburst["labels"] = df.loc[:,'Political Geography']
+    sunburst["parents"] = df.loc[:,'REGION']
+    sunburst["values"] = df.loc[:,source]
+    sunburst["colors"] = df.loc[:,'COLOR']
+    sunburst["year"] = df.loc[:,'Year']
+
+    # Fix Region Colors
+
+    sunburst.loc[sunburst["labels"] == "WORLD", "colors"] = bg
+    sunburst.loc[sunburst["labels"] == "AFRICA", "colors"] = "#46C6E7"
+    sunburst.loc[sunburst["labels"] == "ASIA PACIFIC", "colors"] = "#616BB2"
+    sunburst.loc[sunburst["labels"] == "COMMONWEALTH OF INDEPENDENT STATES", "colors"] = "#8B69AD"
+    sunburst.loc[sunburst["labels"] == "MIDDLE EAST", "colors"] = "#F9A05B"
+    sunburst.loc[sunburst["labels"] == "NORTH AMERICA", "colors"] = "#EF563C"
+    sunburst.loc[sunburst["labels"] == "SOUTH AND CENTRAL AMERICA", "colors"] = "#F06591"
+    sunburst.loc[sunburst["labels"] == "EUROPE", "colors"] = "#41BB91"
+
+    # Perform specific replacements based on the 'source' column using .loc
+    if source in ["Fossil Fuel Energy and Cement Manufacture", "Fossil Fuel Energy (Supplied)", "Fossil Fuel Energy (Consumed)"]:
+        # add bunkers
+        bunkers = [
+            {'labels' : 'Bunkered<br>Fuels', 'parents' : 'WORLD', 'values' : world_bunkered, 'colors' : "blue"},
+            {'labels' : 'Bunkered<br>(Marine)<br>Fuels', 'parents' : 'Bunkered<br>Fuels', 'values' : world_bunkered_marine, 'colors' : "blue"},
+            {'labels' : 'Bunkered<br>(Aviation)<br>Fuels', 'parents' : 'Bunkered<br>Fuels', 'values' : world_bunkered_aviation, 'colors' : "blue"},
+            ]
+
+        bunkers_df = pd.DataFrame(bunkers)
+
+        sunburst = pd.concat([sunburst, bunkers_df], ignore_index=True)
+
+        # Change region titles
+        sunburst.loc[sunburst["labels"] == "WORLD", "labels"] = "<b>WORLD</b><br>(INCLUDES<br>INTERNATIONALLY<br>BUNKERED FUELS)"
+        sunburst.loc[sunburst["parents"] == "WORLD", "parents"] = "<b>WORLD</b><br>(INCLUDES<br>INTERNATIONALLY<br>BUNKERED FUELS)"
+
+    sunburst.loc[sunburst["labels"] == "COMMONWEALTH OF INDEPENDENT STATES", "labels"] = "COMMONWEALTH OF<br>INDEPENDENT STATES"
+    sunburst.loc[sunburst["parents"] == "COMMONWEALTH OF INDEPENDENT STATES", "parents"] = "COMMONWEALTH OF<br>INDEPENDENT STATES"
+    sunburst.loc[sunburst["labels"] == "SOUTH AND CENTRAL AMERICA", "labels"] = "SOUTH AND<br>CENTRAL AMERICA"
+    sunburst.loc[sunburst["parents"] == "SOUTH AND CENTRAL AMERICA", "parents"] = "SOUTH AND<br>CENTRAL AMERICA"
+
+    # change country titles
+    sunburst.loc[sunburst["labels"] == "UNITED STATES OF AMERICA", "labels"] = "UNITED STATES<br>OF AMERICA"
+    sunburst.loc[sunburst["labels"] == "RUSSIAN FEDERATION", "labels"] = "RUSSIAN<br>FEDERATION"
+    sunburst.loc[sunburst["labels"] == "ISLAMIC REPUBLIC OF IRAN", "labels"] = "ISLAMIC REPUBLIC<br>OF IRAN"
+
+    return sunburst, plot_title, plot_subtitle
+
+def source_sunburst(source, fuel_type, theme):
+
+    # Define color and background based on the theme
+    if theme == 'light':
+        textCol = '#000'
+        bg = '#fff'
+    elif theme == 'dark':
+        textCol = '#fff'
+        bg = '#000'
+
+    # Define years for the animation
+    years = list(range(1995, 2021))
+
+    # Initialize the figure with subplots
+    fig = go.Figure()
+
+    # Setup the initial sunburst chart for the first year
+    sunburst, plot_title, plot_subtitle = build_sunburst_data(source, fuel_type, years[-1], bg)
+    fig.add_trace(go.Sunburst(
+        labels=sunburst["labels"],
+        parents=sunburst["parents"],
+        values=sunburst["values"],
         branchvalues="total",
-
         insidetextorientation='horizontal',
-
-        marker=dict(
-            colors=[
-
-            ],
-
-            line=dict(color=textCol, width=0) 
-        )
+        marker=dict(colors=sunburst["colors"], line=dict(color=textCol, width=0.5))
     ))
+
+    if d.show_credit :
+        annotations=[
+            # Credit
+            dict(
+                x=0.01,
+                y=0,
+                xref='paper',
+                yref='paper',
+                xanchor="left",
+                text='<b>The CDIAC at AppState Dashboard</b><br>Hefner and Marland (' + str(datetime.date.today().year) + ')',
+                showarrow=False,
+                align="left",
+                
+                font = dict(
+                    size=20,
+                    color = textCol
+                )
+            ),
+        ]
+    else :
+        annotations=[
+        ]
 
     fig.update_layout(
 
         #uniformtext=dict(minsize=20, mode='hide'),
 
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor=bg,
+        paper_bgcolor=bg,
 
-        margin={'l': 0, 'r': 0, 't': 100, 'b': 0},
+        margin={'l': 0, 'r': 0, 't': 55, 'b': 0},
 
         yaxis_title = "CO₂ Emissions (kilotonnes C)",
 
         # Set the font size for the entire plot, excluding the title
         font=dict(
-            size=28, 
+            size=20, 
+            color=textCol
         ),
 
         # Title Layout and Styling
         title = dict(
-            text = source,
+            text = plot_title.upper(),
             xanchor="center",
             xref = "container",
             yref = "container",
@@ -127,35 +229,63 @@ def source_sunburst(source, fuel_type, theme):
             )
         ),
 
-                # Subtitle
-        annotations=[
-            # Subtitle
-            dict(
-                text= plot_subtitle,
-                showarrow=False,
-                xref="paper",
-                yref="paper",
-                x=0.5,
-                y=1.04,
-                font=dict(size=18, color=textCol)
-            ),
-
-            # Credit
-            dict(
-                x=0.5,
-                y=0,
-                xref='paper',
-                yref='paper',
-                text='The CDIAC at AppState Dashboard (' + str(datetime.date.today().year) + ')',
-                showarrow=False,
-                
-                font = dict(
-                    size=20,
-                    color = textCol
-                )
-            )
-        ]
-
+        annotations=annotations
     )
+    # Create frames for each year
+    frames = []
+    for year in years:
+        sunburst, _, _ = build_sunburst_data(source, fuel_type, year, bg)
+        frame = go.Frame(
+            data=[go.Sunburst(
+                labels=sunburst["labels"],
+                parents=sunburst["parents"],
+                values=sunburst["values"],
+                branchvalues="total",
+                insidetextorientation='horizontal',
+                marker=dict(colors=sunburst["colors"], line=dict(color=textCol, width=0.5))
+            )],
+            name=str(year)
+        )
+        frames.append(frame)
+
+    fig.frames = frames
+
+    # Add a play button and a slider for the animation
+    fig.update_layout(
+        updatemenus = [{ 
+            'type': 'buttons',
+            'direction': 'left',
+            'x': 0.99,
+            'y': 0,  # Position of the play button
+            'xanchor': 'right',
+            'yanchor': 'bottom',
+            'showactive': False,
+            'buttons': [{
+                'label': '<br> Play Animation <br>',
+                'method': 'animate',
+                'args': [None, {'frame': {'duration': 600, 'redraw': True}, 'fromcurrent': True}]
+            }]
+        }],
+        sliders = [{
+            'active': years.index(years[-1]),
+            'yanchor': 'top',
+            'xanchor': 'center',
+            'currentvalue': {
+                'prefix': 'Year: ',
+                'visible': True,
+                'xanchor': 'center',
+            },
+            'transition': {'duration': 500},
+            'pad': {'b': 10, 't': 10},
+            'len': 0.5,
+            'x': 0.5,
+            'y': 0,
+            'steps': [{'method': 'animate', 
+                'args': [[str(year)], {'frame': {'duration': 0, 'redraw': True}, 'mode': 'immediate'}],
+                'label': str(year)} for year in years]  # Label only for even years
+        }]
+    )
+
+    fig.update_traces(textfont=dict(color=textCol))
     
     return fig

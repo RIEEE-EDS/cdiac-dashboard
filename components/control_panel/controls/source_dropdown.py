@@ -64,55 +64,57 @@ layout = dash.html.Div(
     dash.dependencies.Output('source-dropdown-controler', 'value'),
     dash.dependencies.Input('navigation-dropdown-controler', 'value'),
     dash.dependencies.Input('fuel-type-dropdown-controler', 'value'),
-    dash.dependencies.Input('source-dropdown-controler', 'options'),
+    dash.dependencies.State('source-dropdown-controler', 'options'),
     dash.dependencies.Input('source-dropdown-controler', 'value')
 )
 def update_source_dropdown(nav_opt, fuel_type, options, value):
+    
+    #print(nav_opt, fuel_type, options, value)
 
     # Defaults
     hidden = True
+
+    if fuel_type == "totals" :
+        options = [
+            {'label': col, 'value': col} for col in d.df_total.columns[2:] 
+            if col not in ['Nation', 'Year'] and 
+            (nav_opt not in ['source-sunburst', 'type-ternary', 'carbon-atlas'] or col != "Stat Difference (Supplied - Consumed)")
+        ]
+    else :
+        options = [
+            {'label': col, 'value': col} for col in d.df_total.columns[2:] 
+            if col not in ['Nation', 'Year', 'Flaring of Natural Gas', 'Manufacture of Cement', 'Per Capita Total Emissions'] and 
+            (nav_opt not in ['source-sunburst', 'type-ternary', 'carbon-atlas'] or col != "Stat Difference (Supplied - Consumed)")
+        ]
 
     if nav_opt in [
             'carbon-atlas',
 
             'source-time-series',
 
-            'sunburst-source'
+            'source-sunburst',
+
+            'type-ternary',
         ] :
 
         hidden = False
 
-        if fuel_type == 'totals':
+        if nav_opt != 'source-time-series' and value == "Stat Difference (Supplied - Consumed)":
+            return hidden, options, "Fossil Fuel Energy (Supplied)"
 
-            options = [{'label': col, 'value': col} for col in d.df_total.columns[2:]]  # Exclude the first two columns
-            
-            # TODO: Exclude last col (NATION_ISO)
+        if fuel_type == 'totals' and nav_opt != 'type-ternary':
 
             # If coming from a different fueltype, change to best match source
             if value not in d.df_total.columns :
                 value = d.best_match_option(value, fuel_type)
 
-        elif fuel_type == 'solids':
-
-            options = [{'label': col, 'value': col} for col in d.df_solid.columns[2:]]  # Exclude the first two columns
+        else :
             
-            if value not in d.df_solid.columns :
+            if nav_opt == 'type-ternary':
+                value = d.best_match_option(value, "solids")
+            elif value not in d.df_gas.columns :
                 value = d.best_match_option(value, fuel_type)
 
-        elif fuel_type == 'liquids':
-
-            options = [{'label': col, 'value': col} for col in d.df_liquid.columns[2:]]  # Exclude the first two columns
-            
-            if value not in d.df_liquid.columns :
-                value = d.best_match_option(value, fuel_type)
-
-        elif fuel_type == 'gases':
-            
-            options = [{'label': col, 'value': col} for col in d.df_gas.columns[2:]]  # Exclude the first two columns
-            
-            if value not in d.df_gas.columns :
-                value = d.best_match_option(value, fuel_type)
-    
     return hidden, options, value
 
 # Controls Theme of component

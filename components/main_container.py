@@ -47,20 +47,40 @@ layout = dash.html.Div(
         dash.dcc.Loading(
             fullscreen = True,
             style = {'background-color' : 'white'},
-            id = 'loading',
+            id = 'loading-content',
             type = 'graph',
-            children = display_container.layout
+            children = []
+        ),
+
+        dash.html.Div(
+            id='non-loading-content',
+            children = []
         )
 
     ]
 )
 
 
-# CALLBACKS (1)
+# CALLBACKS (2)
+@dash.callback(
+    dash.dependencies.Output("loading-content", "children"),
+    dash.dependencies.Output("non-loading-content", "children"),
+    dash.dependencies.Input('navigation-dropdown-controler', 'value')
+)
+def sunburst_no_loading(nav_opt):
+    # Handles situations where we do not want a dcc.loading screen to pop up
+    # such as pages with year sliders
+    if nav_opt in [] :
+        return [], display_container.layout
+    else :
+        return display_container.layout, []
+
+        
 # Controls Theme of component
 @dash.callback(
     dash.dependencies.Output(component_id, 'className'),
-    dash.dependencies.Output('loading', 'style'),
+    dash.dependencies.Output('loading-content', 'style'),
+    dash.dependencies.Output('non-loading-content', 'style'),
     dash.dependencies.Input('theme_toggle', 'className')
 )
 def theme_toggle(theme):
@@ -84,6 +104,6 @@ def theme_toggle(theme):
 
     """
     if theme == 'light' :
-        return theme, {'background-color' : 'white'}
+        return theme, {'background-color' : 'white'}, {'background-color' : 'white'}
     else :
-        return theme, {'background-color' : 'black'}
+        return theme, {'background-color' : 'black'}, {'background-color' : 'black'}

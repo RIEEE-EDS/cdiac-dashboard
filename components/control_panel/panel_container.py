@@ -28,26 +28,46 @@ import dash.html.Div
 import dash.exceptions
 import components.control_panel.control_panel_header as control_panel_header
 import components.control_panel.controls_container as controls_container
+from components.utils.constants import show_credit
 
+if show_credit :
 # LAYOUT
-layout = dash.html.Div(
-    id = component_id,
-    children= [
+    layout = dash.html.Div(
+        id = component_id,
+        children= [
 
-        # HEADER
-        control_panel_header.layout,
+            # HEADER
+            control_panel_header.layout,
 
-        # CONTROLS CONTAINER
-        controls_container.layout,
+            # CONTROLS CONTAINER
+            controls_container.layout,
 
-        dash.html.Div(
+            dash.html.Div(
 
-            id = "control_panel_toggle"
+                id = "control_panel_toggle"
 
-        )
+            )
 
-    ]
-)
+        ]
+    )
+    
+else :
+
+    layout = dash.html.Div(
+        id = component_id,
+        children= [
+
+            # CONTROLS CONTAINER
+            controls_container.layout,
+
+            dash.html.Div(
+
+                id = "control_panel_toggle"
+
+            )
+
+        ]
+    )
 
 # CALLBACKS (1)
 

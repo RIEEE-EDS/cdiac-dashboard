@@ -23,30 +23,28 @@ This figure was created using the template provided by the Research Institute fo
 # Import needed libraries
 import plotly.graph_objects as go
 import datetime
-import plotly.io as pio
+import numpy as np
+import pandas as pd
 from components.utils import constants as d
 
-def country_sunburst(nation, fuel_type, theme):
-
-    if theme == 'light' :
-        textCol = '#000'
-    if theme == 'dark' :
-        textCol = '#fff'
+def build_country_sunburst(nation, fuel_type, bg, year):
 
     # Take only the columns we want for the starburst chart
     columns_to_keep = [
+        # "Fossil Fuel Energy and Cement Manufacture" # If Totals and SD >=0
+        #                                             (step 3. insert at i=0)
+        # "Fossil Fuel Energy (Supplied)",            # SD >=0 (step 2. insert at i=0)
         "Fossil Fuel Energy (Consumed)",
+        # "Stat Difference (Supplied - Consumed)",    # SD >=0 (step 1. insert at i=1)
         "Electric, CHP, Heat Plants",
         "Energy Industries' Own Use",
         "Manufact, Constr, Non-Fuel Industry",
         "Transport",
-
         "Road Transport",
         "Rail Transport",
         "Domestic Aviation",
         "Domestic Navigation",
         "Other Transport",
-
         "Household",
         "Agriculture, Forestry, Fishing",
         "Commerce and Public Services",
@@ -63,13 +61,11 @@ def country_sunburst(nation, fuel_type, theme):
         "Fossil Fuel<br>Energy Use<br>(Consumed)",
         "Fossil Fuel<br>Energy Use<br>(Consumed)",
         "Fossil Fuel<br>Energy Use<br>(Consumed)",
-
         "Transport",
         "Transport",
         "Transport",
         "Transport",
         "Transport",
-
         "Fossil Fuel<br>Energy Use<br>(Consumed)",
         "Fossil Fuel<br>Energy Use<br>(Consumed)",
         "Fossil Fuel<br>Energy Use<br>(Consumed)",
@@ -77,10 +73,12 @@ def country_sunburst(nation, fuel_type, theme):
     ]
 
     if nation == "WORLD" :
+        # If we're looking at the world, bunkered is a child of consumption
         sunburst_parents.append("Fossil Fuel<br>Energy Use<br>(Consumed)")
         sunburst_parents.append("Bunkered")
         sunburst_parents.append("Bunkered")
     else :
+        # otherwise it is just sep
         sunburst_parents.append("")
         sunburst_parents.append("Bunkered")
         sunburst_parents.append("Bunkered")
@@ -91,13 +89,11 @@ def country_sunburst(nation, fuel_type, theme):
         "Energy<br>Industries'<br>Own Use",
         "Manufact,<br>Constr,<br>Non-Fuel<br>Industry",
         "Transport",
-
         "Road<br>Transport",
         "Rail<br>Transport",
         "Domestic<br>Aviation",
         "Domestic<br>Navigation",
         "Other<br>Transport",
-
         "Household",
         "Agriculture,<br>Forestry,<br>Fishing",
         "Commerce and<br>Public Services",
@@ -105,57 +101,63 @@ def country_sunburst(nation, fuel_type, theme):
         "Bunkered",
         "Marine",
         "Aviation",
-
     ]
     
     sunburst_colors=[
-        "rgba(0,0,0,0)",
+        bg,
         
-        "#FF5733", 
-        "#FFD700", 
-        "#8A2BE2",
+        "#6E2405", 
+        "#FF9966", 
+        "#B07E09",
 
-        "rgba(0,0,0,0)", # Transport
+        bg, # Transport
         
-        "#00FFFF", 
-        "#008000", 
-        "#FF4500", 
-        "#000080", 
-        "#800080", 
+        "#FEC77C", 
+        "#855914", 
+        "#29AAE2", 
+        "#F27AAA", 
+        "#EC008C", 
 
-        "#FFFF00", 
-        "#228B22", 
-        "#FF69B4", 
-        "#FFA07A", 
+        "#FDB913", 
+        "#7E8959", 
+        "#B25538", 
+        "#662F90", 
 
-        "rgba(0,0,0,0)", # Bunkered
-        "#0000FF", 
-        "#8B0000",
+        bg, # Bunkered
+        "#0D71BA", 
+        "#C1272D",
+    ]
 
-        "#A52A2A", 
-        "#D2691E"]
-
+    # Set Data, Title, and Subtitle
     if fuel_type == 'solids':
 
         df = d.df_solid
 
-        plot_subtitle = str(datetime.date.today().year - 3) +" CO₂ Emissions from the Energy Use of Solid Fuels"
+        plot_title = nation + " <b>SOLID</b> FUEL CO₂ EMISSIONS"
+
+        plot_subtitle = "<b>" + str(year) +"</b>"
 
     elif fuel_type == 'liquids':
 
         df = d.df_liquid
 
-        plot_subtitle = str(datetime.date.today().year - 3) +" CO₂ Emissions from the Energy Use of Liquid Fuels"
+        plot_title = nation + " <b>LIQUID</b> FUEL CO₂ EMISSIONS"
+
+        plot_subtitle = "<b>" + str(year) +"</b>"
 
     elif fuel_type == 'gases':
 
         df = d.df_gas
 
-        plot_subtitle = str(datetime.date.today().year - 3) +" CO₂ Emissions from the Energy Use of Gas Fuels"
+        plot_title = nation + " <b>GAS</b> FUEL CO₂ EMISSIONS"
+
+        plot_subtitle = "<b>" + str(year) +"</b>"
 
     else :
 
-        plot_subtitle = str(datetime.date.today().year - 3) +" CO₂ Emissions"
+        plot_title = nation + " CO₂ EMISSIONS"
+
+        plot_subtitle = "<b>" + str(year) +"</b>"
 
         df = d.df_total
 
@@ -165,60 +167,112 @@ def country_sunburst(nation, fuel_type, theme):
         sunburst_labels.append("Cement<br>Manufact")
         sunburst_parents.append("Fossil Fuel<br>Energy Use<br>(Consumed)")
         sunburst_parents.append("")
+        sunburst_colors.append("#3BB54A")
+        sunburst_colors.append("#B0A690")
 
     # Filter the data frame for the right data
     df = df[df['Political Geography'] == nation]
-    df = df[df['Year'] == 2020]
+    df = df[df['Year'] == year]
+
+    # TODO: Later, include statistical difference here
+
+    # stat_diff = df['Stat Difference (Supplied - Consumed)'].iloc[0]
+
+    # if stat_diff >= 0 :
 
     df = df[columns_to_keep]
 
-    df.fillna(0, inplace=True)
+    # Replace zeros with NAs so it doesn't show sectors with 0
+    df.replace(0, np.nan, inplace=True)
 
-    # Debug
-    dfl = df.values.tolist()[0]
+    # Transpose the DataFrame to get the values
+    transposed_df = df.T
 
-    print(df)
+    # Reset the index to make the column names as a separate column
+    transposed_df = transposed_df.reset_index()
 
-    fig = go.Figure(go.Sunburst(
+    # Rename the columns to meaningful names if needed
+    transposed_df.columns = ['Column_Name', 'Values']
 
-        labels = sunburst_labels,
+    sunburst = pd.DataFrame()
 
-        parents = sunburst_parents,
+    sunburst["labels"] = sunburst_labels
+    sunburst["parents"] = sunburst_parents
+    sunburst["values"] = transposed_df['Values']
+    sunburst["colors"] = sunburst_colors
+    sunburst["year"] = year
 
-        values=dfl,
+    return sunburst, plot_title, plot_subtitle
 
+def country_sunburst(nation, fuel_type, theme):
+
+    if theme == 'light' :
+        textCol = '#000'
+        bg = '#fff'
+    if theme == 'dark' :
+        textCol = '#fff'
+        bg = '#000'
+    # Define years for the animation
+    years = list(range(1995, 2021))
+
+    # Initialize the figure with subplots
+    fig = go.Figure()
+
+    # Setup the initial sunburst chart for the first year
+    sunburst, plot_title, plot_subtitle = build_country_sunburst(nation, fuel_type, bg, years[-1])
+
+    fig.add_trace(go.Sunburst(
+        labels=sunburst["labels"],
+        parents=sunburst["parents"],
+        values=sunburst["values"],
         branchvalues="total",
-
         insidetextorientation='horizontal',
-
-        marker=dict(
-            colors=sunburst_colors,
-
-            line=dict(color=textCol, width=2) 
-        ),
-
+        marker=dict(colors=sunburst["colors"], line=dict(color=textCol, width=0.5))
     ))
+
+    if d.show_credit :
+        annotations=[
+            # Credit
+            dict(
+                x=0.01,
+                y=0,
+                xref='paper',
+                yref='paper',
+                xanchor="left",
+                text='<b>The CDIAC at AppState Dashboard</b><br>Hefner and Marland (' + str(datetime.date.today().year) + ')',
+                showarrow=False,
+                align="left",
+                
+                font = dict(
+                    size=20,
+                    color = textCol
+                )
+            ),
+        ]
+    else :
+        annotations=[
+        ]
 
     fig.update_layout(
 
         #uniformtext=dict(minsize=20, mode='hide'),
 
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor=bg,
+        paper_bgcolor=bg,
 
-        margin={'l': 0, 'r': 0, 't': 100, 'b': 0},
+        margin={'l': 0, 'r': 0, 't': 55, 'b': 0},
 
         yaxis_title = "CO₂ Emissions (kilotonnes C)",
 
         # Set the font size for the entire plot, excluding the title
         font=dict(
-            size=16, 
+            size=20, 
             color=textCol
         ),
 
         # Title Layout and Styling
         title = dict(
-            text = nation,
+            text = plot_title.upper(),
             xanchor="center",
             xref = "container",
             yref = "container",
@@ -231,35 +285,63 @@ def country_sunburst(nation, fuel_type, theme):
             )
         ),
 
-                # Subtitle
-        annotations=[
-            # Subtitle
-            dict(
-                text= plot_subtitle,
-                showarrow=False,
-                xref="paper",
-                yref="paper",
-                x=0.5,
-                y=1.04,
-                font=dict(size=18, color=textCol)
-            ),
-
-            # Credit
-            dict(
-                x=0.5,
-                y=0,
-                xref='paper',
-                yref='paper',
-                text='The CDIAC at AppState Dashboard (' + str(datetime.date.today().year) + ')',
-                showarrow=False,
-                
-                font = dict(
-                    size=20,
-                    color = textCol
-                )
-            )
-        ]
-
+        annotations=annotations
     )
+    # Create frames for each year
+    frames = []
+    for year in years:
+        sunburst, _, _ = build_country_sunburst(nation, fuel_type, bg, year)
+        frame = go.Frame(
+            data=[go.Sunburst(
+                labels=sunburst["labels"],
+                parents=sunburst["parents"],
+                values=sunburst["values"],
+                branchvalues="total",
+                insidetextorientation='horizontal',
+                marker=dict(colors=sunburst["colors"], line=dict(color=textCol, width=0.5))
+            )],
+            name=str(year)
+        )
+        frames.append(frame)
+
+    fig.frames = frames
+
+    # Add a play button and a slider for the animation
+    fig.update_layout(
+        updatemenus = [{ 
+            'type': 'buttons',
+            'direction': 'left',
+            'x': 0.99,
+            'y': 0,  # Position of the play button
+            'xanchor': 'right',
+            'yanchor': 'bottom',
+            'showactive': False,
+            'buttons': [{
+                'label': '<br> Play Animation <br>',
+                'method': 'animate',
+                'args': [None, {'frame': {'duration': 600, 'redraw': True}, 'fromcurrent': True}]
+            }]
+        }],
+        sliders = [{
+            'active': years.index(years[-1]),
+            'yanchor': 'top',
+            'xanchor': 'center',
+            'currentvalue': {
+                'prefix': 'Year: ',
+                'visible': True,
+                'xanchor': 'center',
+            },
+            'transition': {'duration': 500},
+            'pad': {'b': 10, 't': 10},
+            'len': 0.5,
+            'x': 0.5,
+            'y': 0,
+            'steps': [{'method': 'animate', 
+                'args': [[str(year)], {'frame': {'duration': 0, 'redraw': True}, 'mode': 'immediate'}],
+                'label': str(year)} for year in years]  # Label only for even years
+        }]
+    )
+
+    fig.update_traces(textfont=dict(color=textCol))
     
     return fig

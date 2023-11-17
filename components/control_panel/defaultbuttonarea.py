@@ -29,85 +29,116 @@ import dash.html.Div
 import components.control_panel.controls.theme_toggle as theme_toggle
 import components.utils.constants as constants
 
-# LAYOUT
-layout = dash.html.Div(
-    id = component_id,
-    children= [
+if constants.show_credit :
+    # LAYOUT
+    layout = dash.html.Div(
+        id = component_id,
+        children= [
 
-        # Theme and Go-Back-To-DataDash buttons
-        dash.html.Div(
+            # Theme and Go-Back-To-DataDash buttons
+            dash.html.Div(
 
-            # So that the default buttons can be styled appropriately together
-            id = "defaultbuttons",
+                # So that the default buttons can be styled appropriately together
+                id = "defaultbuttons",
 
-            children = [
+                children = [
 
-                # THEME TOGGLE
-                theme_toggle.layout,
+                    # THEME TOGGLE
+                    theme_toggle.layout,
 
-                # Go-Back-To-DataDash button
-                dash.html.Div([
+                    # Go-Back-To-DataDash button
+                    dash.html.Div([
+                        dash.html.A(
+                            dash.html.Button("Go to DataDash", className="universal_button"),
+                            href="/",
+                            target="_blank",  # Opens the link in a new tab
+                        )
+                    ])
+
+                ]
+            ),
+
+            # Statement of RIEEE support and source code link
+            dash.html.P(
+                [
+                    "This application is made possible by the ",
                     dash.html.A(
-                        dash.html.Button("Go to DataDash", className="universal_button"),
-                        href="/",
-                        target="_blank",  # Opens the link in a new tab
-                    )
-                ])
+                        "Research Institute for Environment, Energy, and Economics", 
+                        href = "https://rieee.appstate.edu", 
+                        style={"color" : "white"}
+                    ),
+                    " at Appalachian State University through the RIEEE DataDash secure research web application platform. License information and source is avaiable ",
+                    dash.html.A(
+                        "here on GitHub.", 
+                        href = "https://github.com/mwhefner/datadash-application-template", 
+                        style={"color" : "white"}
+                    ),
+                ]
+            ),
 
-            ]
-        ),
+            # Displays the RIEEE logo, which serves as a link to the RIEEE mainpage
+            dash.html.A(
+                dash.html.Img(
+                    src='assets/images/RIEEE_LOGO.png', height=200
+                ), 
+                href = "https://rieee.appstate.edu",
+                style={'display': 'block', 'margin': 'auto'}
+            ),
 
-        # Statement of RIEEE support and source code link
-        dash.html.P(
-            [
-                "This application is made possible by the ",
-                dash.html.A(
-                    "Research Institute for Environment, Energy, and Economics", 
-                    href = "https://rieee.appstate.edu", 
-                    style={"color" : "white"}
-                ),
-                " at Appalachian State University through the RIEEE DataDash secure research web application platform. License information and source is avaiable ",
-                dash.html.A(
-                    "here on GitHub.", 
-                    href = "https://github.com/mwhefner/datadash-application-template", 
-                    style={"color" : "white"}
-                ),
-            ]
-        ),
+            # DOI
+            dash.html.P(
+                [
+                    "DOI: ",
+                    constants.app_doi
+                ]
+            ),
 
-        # Displays the RIEEE logo, which serves as a link to the RIEEE mainpage
-        dash.html.A(
-            dash.html.Img(
-                src='assets/images/RIEEE_LOGO.png', height=200
-            ), 
-            href = "https://rieee.appstate.edu",
-            style={'display': 'block', 'margin': 'auto'}
-        ),
+            # Authorship Credit
+            dash.html.P(
+                [
+                    "Developer(s): ",
+                    constants.developers
+                ]
+            ),
 
-        # DOI
-        dash.html.P(
-            [
-                "DOI: ",
-                constants.app_doi
-            ]
-        ),
+            # Version
+            dash.html.P(
+                [
+                    constants.version,
+                    " Edition"
+                ]
+            ),
+        ]
+    )
+    
+else :
 
-        # Authorship Credit
-        dash.html.P(
-            [
-                "Developer(s): ",
-                constants.developers
-            ]
-        ),
+    layout = dash.html.Div(
+        id = component_id,
+        children= [
 
-        # Version
-        dash.html.P(
-            [
-                constants.version,
-                " Edition"
-            ]
-        ),
-    ]
-)
+            # Theme and Go-Back-To-DataDash buttons
+            dash.html.Div(
+
+                # So that the default buttons can be styled appropriately together
+                id = "defaultbuttons",
+
+                children = [
+
+                    # THEME TOGGLE
+                    theme_toggle.layout,
+
+                    # Go-Back-To-DataDash button
+                    dash.html.Div([
+                        dash.html.A(
+                            dash.html.Button("Go to DataDash", className="universal_button"),
+                            href="/",
+                            target="_blank",  # Opens the link in a new tab
+                        )
+                    ])
+                ]
+            ),
+        ]
+    )
 
 # CALLBACKS (0)

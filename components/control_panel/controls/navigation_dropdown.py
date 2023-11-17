@@ -65,16 +65,18 @@ layout = dash.html.Div(
 
                 {'label': 'Sunburst Plot by Emissions Source', 'value': 'source-sunburst'},
 
-                {'label': 'Ternary Proportion Analysis', 'value': 'ternary'},
+                {'label': 'Ternary Fuel Type Proportion Analysis', 'value': 'type-ternary'},
 
-                {'label': 'Sort, Filter, and Download Data', 'value': 'table'},
+                {'label': 'Ternary Source Proportion Analysis', 'value': 'source-ternary'},
 
-                {'label': 'Simple XLSX or CSV Download Links', 'value': 'download'},
+                {'label': 'Data Browser', 'value': 'table'},
+
+                {'label': 'XLSX and CSV Download Links', 'value': 'download'},
 
             ],
 
             # Default to the about page
-            value = 'political-geography-time-series',
+            value = 'carbon-atlas',
 
             clearable=False,
 

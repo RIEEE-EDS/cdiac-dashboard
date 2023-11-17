@@ -1,5 +1,7 @@
 # About CDIAC at AppState
 
+**THIS PAGE IS PRE-PUBLICATION AND IS UNFINISHED. 11/16/23**
+
 Climate change is occurring as a result of changes in the chemistry of the Earth's atmosphere. These changes are being driven primarily by the release of carbon dioxide ($\mathrm{CO}_2$) from fossil fuel combustion and other industrial processes. Monitoring fossil fuel $\mathrm{CO}_2$ emissions is essential as the need and prospects for reducing emissions become critical and the obligation to monitor the success of mitigation actions looms. These inventories are powerful tools as nations, corporations, and individuals grapple with appropriate reduction targets, and as verification that these parties are meeting their objectives.
 
 A consistent time series of data on $\mathrm{CO}_2$ emissions from fossil fuel use and cement manufacture was for many years generated and updated annually by the Carbon Dioxide Information and Analysis Center (CDIAC) at the U.S. Department of Energy's (DOE) Oak Ridge National Laboratory (ORNL). The CDIAC annual inventories began in 1984 and were continued through 2017. The CDIAC emissions data set extended from the beginning of the industrial era (1751) to essentially the present.  There is a data lag of 2 to 3 years due to the time needed for collecting and processing the primary data. The DOE ceased support for CDIAC in 2017. The last release supported by the DOE included emission estimates for the year 2014. 

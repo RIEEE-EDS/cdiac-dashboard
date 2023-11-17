@@ -1,5 +1,5 @@
 """
-Module/Script Name: fuel_type_dropdown.py
+Module/Script Name: nation_group_dropdown.py
 Author: M. W. Hefner
 
 Created: 6/28/2023
@@ -7,7 +7,7 @@ Last Modified: 9/06/2023
 
 Project: CDIAC at AppState
 
-Script Description: The fuel type selector allows for the selection of fossil fuel by solid, liquid, gaseous, or total.
+Script Description: The nation group selector allows for the selection of different groupings on the ternary analysis pages.
 
 Exceptional notes about this script:
 (none)
@@ -21,7 +21,7 @@ This Dash application component was created using the template provided by the R
 """
 
 # Component ID (Should be the same as the title of this file)
-component_id = "fuel_type_dropdown"
+component_id = "nation_group_dropdown"
 
 # Import Dependencies
 import dash.html.Div
@@ -33,27 +33,27 @@ layout = dash.html.Div(
 
     children=[
 
-        dash.html.H2('Fuel Type'),
+        dash.html.H2('Aggregation Level'),
 
         dash.dcc.Dropdown(
 
-            id='fuel-type-dropdown-controler',
+            id='nation-group-dropdown-controler',
 
             options=[
 
-                {'label': 'Totals', 'value': 'totals'},
+                {'label': 'Individual (No Aggregates)', 'value': 'individual'},
 
-                {'label': 'Solid Fossil Fuels Only', 'value': 'solids'},
+                {'label': 'BP World Region Aggregates', 'value': 'region'},
 
-                {'label': 'Liquid Fossil Fuels Only', 'value': 'liquids'},
+                {'label': 'UNFCCC Party Type Aggregates', 'value': 'annex'},
 
-                {'label': 'Gas Fossil Fuels Only', 'value': 'gases'}
+                {'label': 'Global Aggregate', 'value': 'world'}
 
             ],
 
             searchable=False,
 
-            value='totals',
+            value='individual',
 
             clearable=False
 
@@ -63,26 +63,21 @@ layout = dash.html.Div(
 
 # CALLBACKS (2)
 
-# Updates whether or not to show the fuel type dropdown selector.
+# Updates whether or not to show the nation group dropdown selector.
 @dash.callback(
     # OUT controls visibility of component (HIDDEN == VARIABLE -> FALSE == VISIBLE)
     dash.dependencies.Output(component_id, 'hidden'),
+    dash.dependencies.Output('nation-group-dropdown-controler', 'hidden'),
     # IN from navigation dropdown
     dash.dependencies.Input('navigation-dropdown-controler', 'value')
 )
 def update_fuel_dropdown(nav_opt) :
-    # Navigat options that have a fuel type dropdown menu
+    # Navigat options that have a nation group dropdown menu
     if nav_opt in [
-        'carbon-atlas', 
-        'source-time-series', 
-        'political-geography-time-series', 
-        'political-geography-sunburst', 
-        'source-sunburst', 
-        'table',
-        'source-ternary'] :
-        return False # IS visible
+        'type-ternary', 'source-ternary'] :
+        return False, False # IS visible
     else:
-        return True # is NOT visible
+        return True, True # is NOT visible
 
 # Controls Theme of component
 @dash.callback(

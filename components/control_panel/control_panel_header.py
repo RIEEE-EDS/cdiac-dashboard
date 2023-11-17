@@ -53,7 +53,7 @@ layout = dash.html.Div(
 
         # Title
 
-        dash.html.H1(application_title)
+        dash.html.H1(application_title),
 
     ]
 )

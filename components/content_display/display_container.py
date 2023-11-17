@@ -32,13 +32,38 @@ from components.figures.country_sunburst import country_sunburst
 from components.figures.country_timeseries import country_timeseries
 from components.figures.source_sunburst import source_sunburst
 from components.figures.source_timeseries import source_timeseries
+from components.figures.source_ternary import source_ternary
+from components.figures.type_ternary import type_ternary
 from components.tables.browse import browse_table
-import time
+from dash import Patch
+import numpy as np
 
 # LAYOUT
 layout = dash.html.Div(
     id = component_id,
 )
+
+
+
+config = {
+    'doubleClickDelay': 500,
+      'toImageButtonOptions': {
+        'format': 'jpeg', # one of png, svg, jpeg, webp
+        'filename': 'CDIAC_APPSTATE_DASHBOARD',
+        'height': 1080,
+        'width': 1920,
+    }
+    }
+
+sunburst_config = {
+    'doubleClickDelay': 500,
+      'toImageButtonOptions': {
+        'format': 'jpeg', # one of png, svg, jpeg, webp
+        'filename': 'CDIAC_APPSTATE_DASHBOARD',
+        'height': 1050,
+        'width': 1400,
+    }
+    }
 
 # CALLBACKS (2)
 # The first callback decides what content should be in the display container.
@@ -49,11 +74,13 @@ layout = dash.html.Div(
     dash.dependencies.Input('source-dropdown-controler', 'value'),
     dash.dependencies.Input('fuel-type-dropdown-controler', 'value'),
     dash.dependencies.Input('nation-dropdown-controler', 'value'),
+    dash.dependencies.Input('source-a-dropdown-controler', 'value'),
+    dash.dependencies.Input('source-b-dropdown-controler', 'value'),
+    dash.dependencies.Input('nation-group-dropdown-controler', 'value'),
 )
-def update_container(nav_opt, theme, source, fuel_type, nation):
+def update_container(nav_opt, theme, source, fuel_type, nation, source_a, source_b, grouping):
     
     # for displaying all non-plotly figure navigation options
-
     if nav_opt == "about" :
         return [
             # About page: Markdown
@@ -82,7 +109,6 @@ def update_container(nav_opt, theme, source, fuel_type, nation):
         if nav_opt == 'carbon-atlas' :
 
             # Carbon Atlas
-
             return dash.dcc.Loading(
                 id = "carbon-atlas-loading",
                 children= dash.dcc.Graph(
@@ -104,7 +130,8 @@ def update_container(nav_opt, theme, source, fuel_type, nation):
                         'background': 'radial-gradient(circle at center, #999 10%, transparent 70%)',
                         'background-size': '100% 100%',
                         'background-repeat': 'no-repeat'
-                    }
+                    },
+                    config=sunburst_config
                 )
             )
 
@@ -117,19 +144,20 @@ def update_container(nav_opt, theme, source, fuel_type, nation):
                 children=dash.dcc.Graph(
                     figure=country_timeseries(fuel_type, nation, theme), 
                     className='plotly-figure', 
-                    style = {'height' :  '100vh'})
+                    style = {'height' :  '100vh'},
+                    config=config)
             )
         
         if nav_opt == 'source-sunburst' :
 
             # Animation Demo
-            return dash.dcc.Loading(
-                id = "source-sunburst-loading",
-                children=dash.dcc.Graph(
+            return dash.dcc.Graph(
                     figure=source_sunburst(source, fuel_type, theme), 
                     className='plotly-figure', 
-                    style = {'height' :  '100vh'})
-            )
+                    id="plot-figure-with-year",
+                    style = {'height' :  '100vh'},
+                    config=sunburst_config)
+            
 
         if nav_opt == 'source-time-series' :
 
@@ -139,7 +167,32 @@ def update_container(nav_opt, theme, source, fuel_type, nation):
                 children=dash.dcc.Graph(
                     figure=source_timeseries(source, fuel_type, nation, theme), 
                     className='plotly-figure', 
-                    style = {'height' :  '100vh'})
+                    style = {'height' :  '100vh'},
+                    config=config)
+            )
+        
+        if nav_opt == 'source-ternary' :
+
+            # Animation Demo
+            return dash.dcc.Loading(
+                id = "ternary-loading",
+                children=dash.dcc.Graph(
+                    figure=source_ternary(source_a, source_b, fuel_type, grouping, theme), 
+                    className='plotly-figure', 
+                    style = {'height' :  '100vh'},
+                    config=config)
+            )
+        
+        if nav_opt == 'type-ternary' :
+
+            # Animation Demo
+            return dash.dcc.Loading(
+                id = "ternary-loading",
+                children=dash.dcc.Graph(
+                    figure=type_ternary(source, grouping, theme), 
+                    className='plotly-figure', 
+                    style = {'height' :  '100vh'},
+                    config=config)
             )
 
         else :
@@ -147,7 +200,6 @@ def update_container(nav_opt, theme, source, fuel_type, nation):
                 children=dash.dcc.Graph(
                     figure=go.Figure(), 
                     className='plotly-figure', 
-                    style = {'height' :  '100vh'}))
-
-
-
+                    id="plot-figure-with-year",
+                    style = {'height' :  '100vh'},
+                    config=config))

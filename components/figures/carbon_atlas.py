@@ -59,8 +59,10 @@ def carbon_atlas(source, fuel_type, theme) :
 
     if theme == 'light' :
         textCol = '#000'
+        bg = '#fff'
     if theme == 'dark' :
         textCol = '#fff'
+        bg = '#000'
 
 
     # List of Nation values to filter
@@ -74,6 +76,8 @@ def carbon_atlas(source, fuel_type, theme) :
 
     # Map each observation to their nation ISO for plotly
     df['Nation_ISO'] = df['Political Geography'].map(d.location_mapping)
+
+    df['Year '] = df['Year']
 
     # Create the choropleth figure
     fig = px.choropleth(
@@ -93,7 +97,7 @@ def carbon_atlas(source, fuel_type, theme) :
         hover_data= {"Nation_ISO" : False},
 
         # Animate based on year
-        animation_frame = "Year",
+        animation_frame = "Year ",
 
         # set color scale
         color_continuous_scale = c_scale,
@@ -110,8 +114,10 @@ def carbon_atlas(source, fuel_type, theme) :
         y=0,
         xref='paper',
         yref='paper',
-        text='The CDIAC at AppState Dashboard (' + str(datetime.date.today().year) + ')',
+        xanchor="center",
+        text='<b>The CDIAC at AppState Dashboard</b><br>Hefner and Marland (' + str(datetime.date.today().year) + ')',
         showarrow=False,
+        align="center",
         
         font = dict(
             size=20,
@@ -121,23 +127,28 @@ def carbon_atlas(source, fuel_type, theme) :
 
     # Figure out what the plot title will be
     if fuel_type == 'solids':
-        plot_title = " Solid Fuel CO₂ Emissions"
+        plot_title = " <b>Solid</b> Fuel CO₂ Emissions"
     elif fuel_type == 'liquids':
-        plot_title = " Liquid Fuel CO₂ Emissions"
+        plot_title = " <b>Liquid</b> Fuel CO₂ Emissions"
     elif fuel_type == 'gases':
-        plot_title = " Gas Fuel CO₂ Emissions"
+        plot_title = " <b>Gas</b> Fuel CO₂ Emissions"
     else :
         plot_title = " CO₂ Emissions"
+
+    if source == "Per Capita Total Emissions" :
+        plot_title = "PER CAPITA CO₂ EMISSIONS"
+    else:
+        plot_title = (source + plot_title).upper()
 
     fig.update_layout(
 
             geo=dict(bgcolor= 'rgba(0,0,0,0)'),
-            plot_bgcolor='rgba(0, 0, 0, 0)',
-            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor=bg,
+            paper_bgcolor=bg,
 
             margin={'l': 0, 'r': 0, 't': 50, 'b': 0},
 
-            coloraxis_colorbar_title="CO₂ Emissions<br>kilotonnes C",
+            coloraxis_colorbar_title="CO₂ Emissions<br>kilotonnes C".upper(),
 
             # Set the font size for the entire plot, excluding the title
             font=dict(
@@ -147,7 +158,7 @@ def carbon_atlas(source, fuel_type, theme) :
             
             # Title Layout and Styling
             title = dict(
-                text = source + plot_title,
+                text = plot_title,
                 xanchor="center",
                 xref = "container",
                 yref = "container",
@@ -164,10 +175,14 @@ def carbon_atlas(source, fuel_type, theme) :
                 font=dict(size=20, color = textCol),
                 pad=dict(t=0,b=10,l=20)
             )],
-
-            # Apply CDIAC Watermark
-            annotations=[subtitle_annotation]
         )
+    
+
+    if d.show_credit :
+        fig.update_layout(
+                # Apply CDIAC Watermark
+                annotations=[subtitle_annotation]
+            )
 
     # These lines set the last frame
     last_frame_num = len(fig.frames) -1
@@ -180,5 +195,7 @@ def carbon_atlas(source, fuel_type, theme) :
         font_family="Rockwell",
         )
     )
+
+    fig["layout"].pop("updatemenus") # optional, drop animation buttons
 
     return fig

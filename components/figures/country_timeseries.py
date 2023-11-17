@@ -44,8 +44,10 @@ def country_timeseries(fuel_type, political_geography, theme):
 
     if theme == 'light' :
         textCol = '#000'
+        bg = '#fff'
     if theme == 'dark' :
         textCol = '#fff'
+        bg = '#000'
 
     # Filter to proper political geography
     df = df[df['Political Geography'] == political_geography]
@@ -71,8 +73,8 @@ def country_timeseries(fuel_type, political_geography, theme):
         #"Transport", 
         "Road Transport", 
         "Rail Transport", 
-        "Domestic Aviation", 
         "Domestic Navigation", 
+        "Domestic Aviation", 
         "Other Transport",
         "Household", 
         "Agriculture, Forestry, Fishing", 
@@ -87,6 +89,25 @@ def country_timeseries(fuel_type, political_geography, theme):
         "Manufacture of Cement", 
     ]
 
+    custom_color_map = {
+        "Electric, CHP, Heat Plants" : "#6E2405", 
+        "Energy Industries' Own Use" : "#FF9966", 
+        "Manufact, Constr, Non-Fuel Industry" : "#B07E09", 
+        "Road Transport" : "#FEC77C", 
+        "Rail Transport" : "#855914", 
+        "Domestic Aviation" : "#F27AAA", 
+        "Domestic Navigation" : "#29AAE2", 
+        "Other Transport" : "#EC008C", 
+        "Household" : "#FDB913", 
+        "Agriculture, Forestry, Fishing" : "#7E8959", 
+        "Commerce and Public Services" : "#B25538", 
+        "NES Other Consumption" : "#662F90", 
+        "Flaring of Natural Gas" : "#3BB54A", 
+        "Bunkered (Marine)" : "#0D71BA", 
+        "Bunkered (Aviation)" : "#C1272D", 
+        "Manufacture of Cement" : "#B0A690",  
+    }
+
     # Filter and keep only the sources you want to stack
     df = df[df['Source'].isin(custom_order) & (df.groupby('Source')['Carbon'].transform('any'))]
 
@@ -96,26 +117,26 @@ def country_timeseries(fuel_type, political_geography, theme):
         x ='Year', 
         y = 'Carbon', 
         color = 'Source', 
-        color_discrete_sequence = px.colors.qualitative.Light24,
+        #color_discrete_sequence=px.colors.qualitative.Alphabet,
+        color_discrete_map=custom_color_map,
         template="plotly_dark",
-        category_orders={'Source': custom_order},  # Specify the custom order
         hover_data={'Year' : False, 'Political Geography' : False},
     )
 
-    fig.update_traces(mode="none")
+    #fig.update_traces(mode="none")
 
-    if (fuel_type == 'totals') :
+    fig.update_traces(mode="lines",line=dict(width=0))
 
-        # Add Sectoral Consumption (Should stack to the same height... make dashed)
-        fig.add_trace(
-            go.Scatter(
-                    x=premelt_df['Year'],  # X-axis: Year
-                    y=premelt_df["Fossil Fuel Energy and Cement Manufacture"],  # Y-axis: Nitrogen
-                    mode='lines',  # Display as a line plot
-                    name="Fossil Fuel Energy and Cement Manufacture",  # Legend label
-                    line=dict(color='red', dash='dash'),  # Line color
-                )
-        )
+    # Add Statistical Difference "Statistical Difference (Sup-Con)",
+    fig.add_trace(
+        go.Scatter(
+                x=premelt_df['Year'],  # X-axis: Year
+                y=premelt_df["Stat Difference (Supplied - Consumed)"],  # Y-axis: Nitrogen
+                mode='lines',  # Display as a line plot
+                name="Statistical Difference (Sup-Con)",  # Legend label
+                line=dict(color='orange', dash='longdashdot'),  # Line color
+            )
+    )
 
     # Add Reference approach
     fig.add_trace(
@@ -139,42 +160,94 @@ def country_timeseries(fuel_type, political_geography, theme):
             )
     )
 
-    # Add Statistical Difference "Statistical Difference (Sup-Con)",
-    # Add Reference approach
-    fig.add_trace(
-        go.Scatter(
-                x=premelt_df['Year'],  # X-axis: Year
-                y=premelt_df["Stat Difference (Supplied - Consumed)"],  # Y-axis: Nitrogen
-                mode='lines',  # Display as a line plot
-                name="Statistical Difference (Sup-Con)",  # Legend label
-                line=dict(color='yellow', dash='longdashdot'),  # Line color
-            )
-    )
+    if (fuel_type == 'totals') :
+
+        # Add Sectoral Consumption (Should stack to the same height... make dashed)
+        fig.add_trace(
+            go.Scatter(
+                    x=premelt_df['Year'],  # X-axis: Year
+                    y=premelt_df["Fossil Fuel Energy and Cement Manufacture"],  # Y-axis: Nitrogen
+                    mode='lines',  # Display as a line plot
+                    name="Fossil Fuel Energy and Cement Manufacture",  # Legend label
+                    line=dict(color='red', dash='dash'),  # Line color
+                )
+        )
+
+
 
     # Figure out what the plot title will be
     if fuel_type == 'solids':
-        plot_title = political_geography + " CO₂ EMISSIONS"
-        plot_subtitle = "FROM ENERGY USE OF <b>SOLID</b> FOSSIL FUELS"
+        plot_title = political_geography + " <b>SOLID</b> FUEL CO₂ EMISSIONS"
+        plot_subtitle = "FROM ENERGY USE"
     elif fuel_type == 'liquids':
-        plot_title = political_geography + " CO₂ EMISSIONS"
-        plot_subtitle = "FROM ENERGY USE OF <b>LIQUID</b> FOSSIL FUELS"
+        plot_title = political_geography + " <b>LIQUID</b> FUEL CO₂ EMISSIONS"
+        plot_subtitle = "FROM ENERGY USE"
     elif fuel_type == 'gases':
-        plot_title = political_geography + " CO₂ EMISSIONS"
-        plot_subtitle = "FROM ENERGY USE OF <b>GASEOUS</b> FOSSIL FUELS"
+        plot_title = political_geography + " <b>GAS</b> FUEL CO₂ EMISSIONS"
+        plot_subtitle = "FROM ENERGY USE"
     else :
         plot_title = political_geography + " CO₂ EMISSIONS"
         plot_subtitle = "FROM ENERGY USE OF FOSSIL FUELS AND CEMENT MANUFACTURE"
 
+    if d.show_credit :
+        annotations=[
+            # Subtitle
+            dict(
+                text= plot_subtitle,
+                showarrow=False,
+                xref="paper",
+                yref="paper",
+                x=0.5,
+                y=1.04,
+                font=dict(size=20, color=textCol)
+            ),
+
+            # Credit
+            dict(
+                x=0,
+                y=-0.05,
+                xref='paper',
+                yref='paper',
+                xanchor="left",
+                yanchor="top",
+                text='<b>The CDIAC at AppState Dashboard</b><br>Hefner and Marland (' + str(datetime.date.today().year) + ')',
+                showarrow=False,
+                align="left",
+                
+                font = dict(
+                    size=20,
+                    color = textCol
+                )
+            ),
+        ]
+    else :
+        annotations=[
+            # Subtitle
+            dict(
+                text= plot_subtitle,
+                showarrow=False,
+                xref="paper",
+                yref="paper",
+                x=0.5,
+                y=1.04,
+                font=dict(size=20, color=textCol)
+            ),
+        ]
+
     # Updates the figure layout
     fig.update_layout(
 
-        plot_bgcolor = 'rgba(0,0,0,0)',
-        
-        paper_bgcolor = 'rgba(0,0,0,0)',
+        legend={'traceorder': 'reversed'},
+
+        plot_bgcolor=bg,
+        paper_bgcolor=bg,
 
         margin={'l': 0, 'r': 0, 't': 100, 'b': 100},
 
         yaxis_title = "CO₂ Emissions (kilotonnes C)",
+
+        # everyone knows what a year is
+        xaxis_title = "",
 
         # Set the font size for the entire plot, excluding the title
         font=dict(
@@ -196,42 +269,13 @@ def country_timeseries(fuel_type, political_geography, theme):
                 color = textCol
             )
         ),
-
+        
         # Subtitle
-        annotations=[
-            # Subtitle
-            dict(
-                text= plot_subtitle,
-                showarrow=False,
-                xref="paper",
-                yref="paper",
-                x=0.5,
-                y=1.04,
-                font=dict(size=20, color=textCol)
-            ),
-
-            # Credit
-            dict(
-                x=0.5,
-                y=-0.10,
-                xref='paper',
-                yref='paper',
-                xanchor = 'center',
-                yanchor = 'top',
-                text='The CDIAC at AppState Dashboard (' + str(datetime.date.today().year) + ')',
-                showarrow=False,
-                
-                font = dict(
-                    size=20,
-                    color = textCol
-                )
-            )
-        ]
-
+        annotations=annotations
     )
 
     fig.update_layout(
-        hovermode="x",
+        hovermode="closest",
         hoverlabel=dict(
         font_size=16,
         font_family="Rockwell"
