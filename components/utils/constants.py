@@ -35,7 +35,7 @@ app_id = 4
 # SET THE REPO TITLE (APPLICATION METADATA USED FOR AUTHORIZATION)
 repo_title = "cdiac"
 
-app_doi = "PRE-PUBLICATION. DO NOT SHARE."
+app_doi = "FINAL PRE-PUBLICATION"
 
 developers = "Matt Hefner"
 

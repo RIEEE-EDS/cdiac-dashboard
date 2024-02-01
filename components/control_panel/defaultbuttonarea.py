@@ -96,18 +96,11 @@ if constants.show_credit :
             # Authorship Credit
             dash.html.P(
                 [
-                    "Developer(s): ",
+                    "Developer: ",
                     constants.developers
                 ]
             ),
 
-            # Version
-            dash.html.P(
-                [
-                    constants.version,
-                    " Edition"
-                ]
-            ),
         ]
     )
     
