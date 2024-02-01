@@ -127,6 +127,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+cdiac-dashboard-environment
 
 # Spyder project settings
 .spyderproject

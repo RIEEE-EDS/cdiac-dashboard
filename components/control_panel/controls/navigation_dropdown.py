@@ -51,9 +51,9 @@ layout = dash.html.Div(
 
             options=[
 
-                {'label': 'About CDIAC at AppState', 'value': 'about'},
+                #{'label': 'About CDIAC at AppState', 'value': 'about'},
 
-                {'label': 'Inventory Methodology', 'value': 'methodology'},
+                #{'label': 'Inventory Methodology', 'value': 'methodology'},
 
                 {'label': 'Carbon Emissions Atlas', 'value': 'carbon-atlas'},
 
@@ -71,7 +71,7 @@ layout = dash.html.Div(
 
                 {'label': 'Data Browser', 'value': 'table'},
 
-                {'label': 'XLSX and CSV Download Links', 'value': 'download'},
+                {'label': 'XLSX Download Links', 'value': 'download'},
 
             ],
 

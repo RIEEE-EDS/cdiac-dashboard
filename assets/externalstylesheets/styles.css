@@ -152,7 +152,7 @@ body {
 #defaultbuttons {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
     text-align: center;
 
     margin-top: 20px;

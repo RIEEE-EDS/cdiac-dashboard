@@ -21,13 +21,22 @@ This Dash application was created using the template provided by the Research In
 
 """
 
-# !!! IMPORTANT: CHANGE TO FALSE BEFORE PUSHING !!!
-LOCAL_DEVELOPMENT = False
-# !!! IMPORTANT: CHANGE TO FALSE BEFORE PUSHING !!!
+import os 
 
-# !!! IMPORTANT: CHANGE TO FALSE BEFORE PUBLISHING !!!
-UNLISTED = True
-# !!! IMPORTANT: CHANGE TO FALSE BEFORE PUBLISHING !!!
+if 'REDIS_URL' in os.environ:
+
+    # RUNNING ON SERVER
+
+    LOCAL_DEVELOPMENT = False
+
+else:
+
+    # RUNNING ON A LOCAL MACHINE FOR DEVELOPMENT
+
+    # NOTE: MUST BE CONNECTED TO APP'S VPN FOR THIS TO ACTUALLY DELIVER
+    # THE APPLICATION'S CONTENTS TO THE BROWSER.
+
+    LOCAL_DEVELOPMENT = True
 
 # Import Dependencies
 import dash
@@ -140,7 +149,7 @@ def authorize(pathname, hash):
     # Application Authorization Token (for preventing memorization)
     authorizationToken = secrets.token_hex()
 
-    if UNLISTED or login.userIsAuthorized() or LOCAL_DEVELOPMENT:
+    if login.userIsAuthorized() or LOCAL_DEVELOPMENT:
         # If the user is authorized, or this is for local development:
         return mc.layout, authorizationToken
     else :
