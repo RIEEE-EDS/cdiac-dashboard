@@ -6,7 +6,7 @@ This dashboard and the data used to create it is licenced under the [the Creativ
 
 - To cite this **dashboard** or an **image** from it appropriately:
 
-
+``` M. W. Hefner. (2024). The CDIAC at AppState Dashboard (v1.0.0). Research Institute for Environment, Energy, and Economics. https://doi.org/10.5281/zenodo.10607882 ```
 
 - To cite the **1995-2020 sectoral data** on which it is based appropriately:
 

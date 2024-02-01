@@ -85,12 +85,20 @@ if constants.show_credit :
                 style={'display': 'block', 'margin': 'auto'}
             ),
 
-            # DOI
+            # Authorship Credit
             dash.html.P(
                 [
-                    "DOI: ",
-                    constants.app_doi
+                    "To cite this dashboard:"
                 ]
+            ),
+
+            # DOI
+            dash.html.A(
+                dash.html.Img(
+                    src='https://zenodo.org/badge/666200101.svg'
+                ), 
+                href = "https://zenodo.org/doi/10.5281/zenodo.10607881",
+                style={'display': 'block', 'margin': 'auto'}
             ),
 
             # Authorship Credit
