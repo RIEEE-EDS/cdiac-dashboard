@@ -67,10 +67,10 @@ if constants.show_credit :
                         href = "https://rieee.appstate.edu", 
                         style={"color" : "white"}
                     ),
-                    " at Appalachian State University through the RIEEE DataDash secure research web application platform. License information and source is avaiable ",
+                    " at Appalachian State University through the RIEEE DataDash secure research web application platform. License information and the python source code for this application is avaiable ",
                     dash.html.A(
                         "here on GitHub.", 
-                        href = "https://github.com/mwhefner/datadash-application-template", 
+                        href = "https://github.com/mwhefner/cdiac-dashboard", 
                         style={"color" : "white"}
                     ),
                 ]
