@@ -2,7 +2,7 @@
 
 ## Licence to Use this Data
 
-This dashboard and the data used to create it is licenced under the [the Creative Commons Attribution license](assets/data/global.1751_2020.xlsx) which allows re-distribution and re-use of a licensed work on the condition that the creator is appropriately credited.
+This dashboard and the data used to create it is licenced under the [the Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/legalcode) which allows re-distribution and re-use of a licensed work on the condition that the creator is appropriately credited.
 
 - To cite this **dashboard** or an **image** from it appropriately:
 
