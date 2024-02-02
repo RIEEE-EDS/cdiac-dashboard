@@ -59,7 +59,7 @@ layout = dash.html.Div(
 
                 {'label': 'Time Series by Political Geography', 'value': 'political-geography-time-series'},
 
-                {'label': 'Time Series by Emissions Source', 'value': 'source-time-series'},
+                #{'label': 'Time Series by Emissions Source', 'value': 'source-time-series'},
 
                 {'label': 'Sunburst Plot by Political Geography', 'value': 'political-geography-sunburst'},
 
