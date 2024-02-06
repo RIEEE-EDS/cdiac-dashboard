@@ -14,7 +14,7 @@ This dashboard and the data used to create it is licenced under the [the Creativ
 
 - To cite any of the **1751-2020 datasets** appropriately:
 
-```Hefner, M; Marland G; Boden T; Andres R (2022): Global, Regional, and National Fossil-Fuel CO2 Emissions: 1751-2020 CDIAC-FF, Research Institute for Environment, Energy, and Economics, Appalachian State University.```
+```Hefner, M; Marland G; (2023): Global, Regional, and National Fossil-Fuel CO2 Emissions: 1751-2020 CDIAC-FF, Research Institute for Environment, Energy, and Economics, Appalachian State University. https://energy.appstate.edu/research/work-areas/cdiac-appstate```
 
 ## Data Product Downloads
 
