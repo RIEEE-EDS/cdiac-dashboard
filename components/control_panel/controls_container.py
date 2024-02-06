@@ -41,6 +41,19 @@ layout = dash.html.Div(
     id = component_id,
 
     children = [
+
+        dash.html.P(
+            [
+                dash.html.A(
+                    "Click here", 
+                    href = "https://energy.appstate.edu/research/work-areas/cdiac-appstate", 
+                    style={"color" : "white"}
+                ),
+
+                " to read more about the Carbon Dioxide Information Analysis Center at Appalachian State University."
+            ],
+            style={"textAlign": "center"}
+        ),
         
         # NAVIGATION SELECTION
         navigation_dropdown.layout,
