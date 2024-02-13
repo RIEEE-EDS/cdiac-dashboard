@@ -96,6 +96,7 @@ app.layout = dash.html.Div(
             n_intervals=0
         )
     ],
+    id='main-content'  # Ensure this matches the ID used in js/adjust_height.js
 )
 
 # Create a page for Shibboleth Sign-On if the user is not authorized
@@ -161,6 +162,7 @@ app.index_string = '''
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
         {%metas%}
         <title>{%title%}</title>
         {%favicon%}
