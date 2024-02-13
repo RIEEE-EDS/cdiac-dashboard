@@ -170,6 +170,18 @@ app.index_string = '''
     </head>
     <body>
         {%app_entry%}
+        <script>
+        // JavaScript function to adjust the height of the application layout
+        function adjustHeight() {
+            const viewHeight = window.innerHeight + 'px';
+            // The application layout must have the ID 'main-content'
+            document.getElementById('main-content').style.height = viewHeight;
+        }
+
+        // Add event listeners to adjust height on page load and on window resize
+        window.addEventListener('resize', adjustHeight);
+        window.addEventListener('load', adjustHeight);
+        </script>
         <footer>
             {%config%}
             {%scripts%}
