@@ -1,24 +1,55 @@
 """
-Module/Script Name: country_timeseries.py
-Author: M. W. Hefner
+This module provides a function to create an interactive time-series chart visualizing
+CO₂ emissions trends across different sectors within a selected country. The visualization
+is based on the selected fuel type and can dynamically adjust to reflect various thematic
+settings.
 
-Created: 4/12/2023
-Last Modified: 7/16/2023
+Functions
+---------
+country_timeseries(fuel_type, political_geography, theme)
+    Generates a plotly express area chart that layers CO₂ emission data from multiple sectors
+    over time, enhanced with additional line plots to compare various data categories like
+    supplied versus consumed fossil fuels.
 
-Project: CDIAC at AppState
+Parameters
+----------
+fuel_type : str
+    The type of fuel for which emissions data is visualized (e.g., solids, liquids, gases, or total).
+political_geography : str
+    The country or region for which the emissions data is being visualized.
+theme : str
+    The theme setting (e.g., 'light', 'dark') which affects the color scheme of the chart.
 
-Script Description: This script defines the country-view plotly figure.
+Returns
+-------
+plotly.graph_objects.Figure
+    A Plotly Figure object representing the time-series chart, configured according to the specified
+    parameters and ready for display in a web or mobile interface.
 
-Exceptional notes about this script:
-(none)
+Examples
+--------
+To generate a time-series chart for CO₂ emissions from gas fuels in Germany with a dark theme:
 
-Callback methods: N/A
+>>> fig = country_timeseries('gases', 'Germany', 'dark')
+>>> fig.show()
 
-~~~
+Notes
+-----
+The visualization integrates data from multiple sources to create a comprehensive view of emission trends,
+highlighting the role of different sectors. The chart is highly customizable, allowing users to explore
+the impact of various types of fuel use on national CO₂ emissions over time. 
 
-This figure was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+Each fuel type is associated with a unique color scale, which helps in distinguishing the data easily in
+a stacked area format. The addition of line plots for key metrics like statistical differences and supplied
+energy offers a deeper analytical perspective.
 
+See Also
+--------
+plotly.express : High-level interface for creating expressive data visualizations.
+plotly.graph_objects : For lower-level interface for creating complex visualizations.
+components.utils.constants : Module where global constants and data sources are defined.
 """
+
 
 # Import needed libraries
 import plotly.express as px

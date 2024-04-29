@@ -1,24 +1,57 @@
 """
-Module/Script Name: display_container.py
+This module defines the display container for the CDIAC Dashboard application,
+managing the dynamic display of content based on user interactions. It integrates
+Plotly graphs, markdown documents, and other interactive elements into the user interface.
 
-Author(s): M. W. Hefner
+Functions
+---------
+update_container(nav_opt, theme, source, fuel_type, nation, source_a, source_b, grouping)
+    Updates the content of the display container based on user-selected navigation options,
+    applying filters and themes to dynamically generate and display content.
 
-Initially Created: 7/01/2023
+Attributes
+----------
+layout : dash.html.Div
+    The primary HTML container that holds the content being displayed, identified by a unique component ID.
 
-Last Modified: 10/29/2023
+component_id : str
+    The identifier for the display container, used for targeting with callbacks and styling.
 
-Script Description: This is the display container that holds the content being displayed by the application.  It calls different plotly figures, markdowns and tables as selected by the navigation dropdown menu.
+config : dict
+    Configuration settings for Plotly graphs, detailing aspects like interaction options and image export settings.
 
-Exceptional notes about this script:
-(none)
+sunburst_config : dict
+    Special configuration for sunburst graphs to adjust visual settings and interaction behaviors.
 
-Callback methods: 0
+See Also
+--------
+components.figures.* : Modules that generate specific Plotly graphs for the dashboard.
+components.tables.browse : Module handling the data table display within the dashboard.
 
-~~~
+Notes
+-----
+This module plays a critical role in rendering the visual and textual content of the dashboard.
+It responds to user inputs from various controls and toggles, updating the display in real time.
 
-This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+Examples
+--------
+The layout is a simple container that gets populated dynamically based on callbacks:
+
+>>> layout = dash.html.Div(id=component_id)
+
+Content updates are managed by a callback function that renders different components based on
+navigation options selected by the user:
+
+>>> @dash.callback(
+        dash.dependencies.Output(component_id, 'children'),
+        [dash.dependencies.Input('navigation-dropdown-controler', 'value')]
+    )
+    def update_container(nav_opt):
+        # Content updating logic goes here
+        pass
 
 """
+
 
 # Component ID (Should be the same as the title of this file)
 component_id = "display_container"
@@ -79,6 +112,51 @@ sunburst_config = {
     dash.dependencies.Input('nation-group-dropdown-controler', 'value'),
 )
 def update_container(nav_opt, theme, source, fuel_type, nation, source_a, source_b, grouping):
+    """
+    Dynamically updates the content within the display container based on user interactions
+    with the dashboard's navigation controls.
+
+    Parameters
+    ----------
+    nav_opt : str
+        The navigation option selected by the user, which determines the type of content
+        to be displayed (e.g., "about", "methodology", "download", or various data visualizations).
+    theme : str
+        The current theme setting (e.g., "light" or "dark") which affects the styling of
+        the plotly content.
+    source : str
+        Selected data source filter for generating specific plots.
+    fuel_type : str
+        Selected fuel type filter for generating specific plots.
+    nation : str
+        Selected nation filter for generating specific plots involving geographic data.
+    source_a : str
+        Selected first source filter for ternary plot comparisons.
+    source_b : str
+        Selected second source filter for ternary plot comparisons.
+    grouping : str
+        Selected grouping option for plots that aggregate data by certain categories.
+
+    Returns
+    -------
+    list of dash.development.base_component.Component
+        A list containing Dash components to be rendered in the display container. This can
+        include Plotly graphs, Markdown content, or other interactive elements depending on
+        the navigation option selected.
+
+    Notes
+    -----
+    The function leverages conditional logic to determine the appropriate content to render.
+    Depending on the 'nav_opt', different functions from the figures and tables modules are
+    called to generate the content. Styling and specific configurations are applied to ensure
+    the content aligns with the selected theme and user preferences.
+
+    Examples
+    --------
+    >>> update_container("about", "light", None, None, None, None, None, None)
+    Returns a Markdown component displaying the about page content with light theme styling.
+    """
+
     
     # for displaying all non-plotly figure navigation options
     if nav_opt == "about" :

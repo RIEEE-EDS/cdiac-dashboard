@@ -1,25 +1,46 @@
 """
-Module/Script Name: application.py
+Initializes the Dash application, manages user authorization, and defines the application layout.
+This script loads necessary libraries, reads data server configuration, initializes the server,
+and handles user authentication and authorization.
 
-Author(s): M. W. Hefner
+Functions
+---------
+authorize(pathname: str, hash: str) -> Tuple[dash.html.Div, str]
+    Checks if the user is authorized to access the application based on the current pathname.
+    Returns the main container layout if authorized; otherwise, redirects to the Shibboleth sign-on page.
+    Updates the state to prevent memorization.
 
-Initially Created: 6/28/2023
+Notes
+-----
+- This script serves as the entry point for the Dash application, defining the application layout
+  and managing user authorization.
+- Local development mode is enabled if the `REDIS_URL` environment variable is not present,
+  allowing the application to run on localhost for development purposes.
+- The `authorize` function is used as a callback to dynamically update the application layout
+  based on the user's authorization status.
+- The application layout is updated dynamically without page reloads, providing a seamless user experience.
+- The index HTML template includes JavaScript code to adjust the height of the application layout
+  dynamically based on the window size.  You can find accomp. javascript over in assets/js
+- Error handling for database connections, user authorization, and server initialization is essential
+  for ensuring the reliability and security of the application.
 
-Last Modified: 10/29/2023
+Dependencies
+------------
+dash : The main web application framework used for building the Dash application.
+secrets : Provides access to cryptographically secure random numbers for generating authorization tokens.
+configparser : Parses configuration files to read data server configuration settings.
+components.main_container : Provides the layout for the main content container of the Dash application.
+components.utils.login : Contains functions for user authorization and authentication.
+components.utils.constants : Contains application-specific constants such as application_title and repo_title.
+os : Provides access to operating system functionalities, used for environment variable detection.
 
-Script Description: This script initializes the dash application. It loads in needed libraries, reads the data server configuration, loads style sheets, and initializes the server.  It also contains the scripting that authorizes a user to access the application.
-
-Exceptional notes about this script:
-
-1. Using this script for development on a local machine: after loading into a python environment with the dependencies in requirements.txt, found in this directory, installed, run this script to run the application server on local host at port 8050.
-
-Callback methods: 0
-
-~~~
-
-This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
-
+See Also
+--------
+dash : The official Dash documentation for more information on building web applications with Dash.
+secrets : Python documentation on the secrets module for generating secure random numbers.
+configparser : Python documentation on the configparser module for reading configuration files.
 """
+
 
 import os 
 
@@ -195,7 +216,7 @@ app.index_string = '''
 # Corresponds to application:server (thisScript:app.server) in the docker file
 server = app.server
 
-# Main script execution for (local development only)
+# Main script execution (for local development)
 if __name__ == '__main__' and LOCAL_DEVELOPMENT:
     # True for hot reloading (leave True)
     app.run_server(debug = True)

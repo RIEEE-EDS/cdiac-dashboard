@@ -1,24 +1,57 @@
 """
-Module/Script Name: source_ternary.py
-Author: M. W. Hefner
+This module generates a ternary plot for analyzing the distribution of CO₂ emissions among
+three different sources within various geopolitical regions, depending on user-selected filters.
+The plot is dynamically adjustable based on fuel type, emission source, and theme.
 
-Created: 4/12/2023
-Last Modified: 10/30/2023
+Functions
+---------
+source_ternary(source_a, source_b, fuel_type, grouping, theme)
+    Constructs a ternary plot that visualizes the proportional relationships between two primary
+    CO₂ emission sources and all other sources combined. The plot's appearance and data are
+    configured according to user-selected criteria such as fuel type, grouping, and color theme.
 
-Project: CDIAC at AppState
+Parameters
+----------
+source_a : str
+    The first primary source of CO₂ emissions to be analyzed (e.g., 'Fossil Fuel Energy (Consumed)').
+source_b : str
+    The second primary source of CO₂ emissions to be analyzed.
+fuel_type : str
+    The type of fuel for which emissions data is visualized (e.g., solids, liquids, gases, or total).
+grouping : str
+    The geopolitical grouping for the analysis (e.g., 'region', 'world', 'annex').
+theme : str
+    The theme setting (e.g., 'light', 'dark') which affects the color scheme of the ternary plot.
 
-Script Description: This script defines the source ternary analysis plotly figure.
+Returns
+-------
+plotly.graph_objects.Figure
+    A Plotly Figure object representing the ternary plot, configured with interactive capabilities
+    and ready for display in a web or mobile interface.
 
-Exceptional notes about this script:
-(none)
+Examples
+--------
+To generate a ternary plot for CO₂ emissions comparing 'Fossil Fuel Energy (Consumed)' and
+'Electric, CHP, Heat Plants' within European countries using solid fuels with a dark theme:
 
-Callback methods: N/A
+>>> fig = source_ternary('Fossil Fuel Energy (Consumed)', 'Electric, CHP, Heat Plants', 'solids', 'region', 'dark')
+>>> fig.show()
 
-~~~
+Notes
+-----
+The plot utilizes a three-dimensional representation to show the proportional contributions
+of two main sources against all other sources combined. This visualization helps in understanding
+the dominant emission sources and their relative significance in different geopolitical contexts.
 
-This figure was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+The function handles complex data preprocessing to ensure accurate and meaningful visual output,
+including dynamic adjustments for different geopolitical groupings and emission sources.
 
+See Also
+--------
+plotly.graph_objects : Used for constructing complex interactive visualizations.
+components.utils.constants : Provides access to global constants and data sources used in the visualization.
 """
+
 
 # Import needed libraries
 import plotly.graph_objects as go

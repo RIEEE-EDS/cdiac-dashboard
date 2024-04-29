@@ -1,20 +1,17 @@
 """
-Module/Script Name: figures
+figures/__init__.py
+==========
 
-Author(s): M. W. Hefner
+This module contains scripts that define various Plotly figures. These figures are called by the display container in the content display based on the value of the navigation dropdown. Each script within this module defines a specific Plotly figure, which is then used to visualize data within the Dash application.
 
-Initially Created: 06/28/2023
+Author(s):
+- M. W. Hefner
 
-Last Modified: 10/29/2023
+Date Created:
+- 06/28/2023
 
-Script Description: This module has scripts that define different plotly figures.  These are called by the display container in the content display based on the value of the navigation dropdown.
-
-Exceptional notes about this script:
-(none)
-
-Callback methods: 0
-
-~~~
+Date Last Modified:
+- 10/29/2023
 
 This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
 

@@ -1,24 +1,62 @@
 """
-Module/Script Name: source_sunburst.py
-Author: M. W. Hefner
+This module generates a sunburst chart visualizing CO₂ emissions by region and fuel type,
+highlighting global distributions and emphasizing specific source contributions within a year.
 
-Created: 4/12/2023
-Last Modified: 10/30/2023
+Functions
+---------
+build_sunburst_data(source, fuel_type, year, bg)
+    Prepares the necessary data structure for a single year sunburst visualization, including
+    adjustments based on the fuel type and geographical aggregation.
 
-Project: CDIAC at AppState
+source_sunburst(source, fuel_type, theme)
+    Constructs a full sunburst chart animated over multiple years, reflecting changes in
+    CO₂ emissions distribution worldwide according to a specified source and fuel type.
 
-Script Description: This script defines the country-view plotly figure.
+Parameters
+----------
+source : str
+    The specific source of CO₂ emissions to visualize (e.g., "Total Emissions").
+fuel_type : str
+    The type of fuel (solids, liquids, gases, or total) to filter data by for the visualization.
+year : int
+    The year for which the data snapshot is to be visualized.
+bg : str
+    Background color for the chart, derived from the theme, influencing visibility and aesthetics.
+theme : str
+    The theme setting (e.g., 'light', 'dark') which affects the color scheme of the sunburst chart.
 
-Exceptional notes about this script:
-(none)
+Returns
+-------
+plotly.graph_objects.Figure
+    A Plotly Figure object that represents the sunburst chart with animation capabilities,
+    configured according to the specified parameters and ready for display.
 
-Callback methods: N/A
+Examples
+--------
+To generate a sunburst chart for total CO₂ emissions from solid fuels with a dark theme:
 
-~~~
+>>> fig = source_sunburst('Total Emissions', 'solids', 'dark')
+>>> fig.show()
 
-This figure was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+Notes
+-----
+The visualization is particularly effective in illustrating the contribution of different regions
+to global CO₂ emissions, with interactive elements allowing users to explore trends over time.
+The chart leverages detailed hierarchical data that connects regional emissions data to global
+aggregates, providing an insightful visualization of how emissions are distributed across different
+geopolitical regions.
 
+The function dynamically adjusts colors, animations, and data visibility based on user-selected
+theme and fuel type, incorporating detailed data preparation steps to ensure accurate and meaningful
+visualizations.
+
+See Also
+--------
+plotly.graph_objects : Used for constructing the sunburst chart.
+datetime : Used to handle year annotations within the chart.
+components.utils.constants : Provides access to global constants and data used in the visualization.
 """
+
 
 # Import needed libraries
 import plotly.graph_objects as go

@@ -93,13 +93,7 @@ if constants.show_credit :
             ),
 
             # DOI
-            dash.html.A(
-                dash.html.Img(
-                    src='https://zenodo.org/badge/666200101.svg'
-                ), 
-                href = "https://zenodo.org/doi/10.5281/zenodo.10607881",
-                style={'display': 'block', 'margin': 'auto'}
-            ),
+            constants.zonodo_doi_badge,
 
             # Authorship Credit
             dash.html.P(

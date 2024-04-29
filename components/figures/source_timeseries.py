@@ -1,24 +1,55 @@
 """
-Module/Script Name: source_timeseries.py
-Author: M. W. Hefner
+This module generates a time-series line chart for analyzing CO₂ emissions from a specified source
+across multiple geopolitical regions. The plot can dynamically adjust based on user-selected criteria
+such as fuel type, region, and visual theme.
 
-Created: 4/12/2023
-Last Modified: 10/30/2023
+Functions
+---------
+source_timeseries(source, fuel_type, nation, theme)
+    Constructs a line chart that visualizes the trends of CO₂ emissions from a particular source,
+    filtered by fuel type and region, and styled according to the specified theme.
 
-Project: CDIAC at AppState
+Parameters
+----------
+source : str
+    The specific source of CO₂ emissions to be analyzed (e.g., 'Total Emissions').
+fuel_type : str
+    The type of fuel for which emissions data is visualized (e.g., solids, liquids, gases, or total).
+nation : list
+    A list of countries or regions for which the emissions data is being visualized.
+theme : str
+    The theme setting (e.g., 'light', 'dark') which affects the color scheme of the chart.
 
-Script Description: This script defines the source-view plotly figure.
+Returns
+-------
+plotly.graph_objects.Figure
+    A Plotly Figure object representing the time-series chart, configured with interactive capabilities
+    and ready for display in a web or mobile interface.
 
-Exceptional notes about this script:
-(none)
+Examples
+--------
+To generate a time-series chart for CO₂ emissions from 'Total Emissions' using total fuels in Germany
+with a dark theme:
 
-Callback methods: N/A
+>>> fig = source_timeseries('Total Emissions', 'total', ['Germany'], 'dark')
+>>> fig.show()
 
-~~~
+Notes
+-----
+The visualization provides a comprehensive view of emission trends, emphasizing changes over time
+within selected regions. The chart uses custom color and line styles to distinguish between regions,
+enhancing readability and user engagement.
 
-This figure was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+The function handles complex data preprocessing to ensure accurate and meaningful visual output,
+including dynamic adjustments for different geopolitical regions and emission sources.
 
+See Also
+--------
+plotly.express : High-level interface for creating expressive data visualizations.
+plotly.graph_objects : For lower-level interface for creating complex visualizations.
+components.utils.constants : Module where global constants and data sources are defined.
 """
+
 
 # Import needed libraries
 import plotly.express as px

@@ -1,6 +1,6 @@
 # About CDIAC at AppState
 
-**THIS PAGE IS PRE-PUBLICATION AND IS UNFINISHED. 11/16/23**
+**THIS PAGE IS PRE-PUBLICATION AND IS UNFINISHED. TO BE UPDATED 11/16/23**
 
 Climate change is occurring as a result of changes in the chemistry of the Earth's atmosphere. These changes are being driven primarily by the release of carbon dioxide ($\mathrm{CO}_2$) from fossil fuel combustion and other industrial processes. Monitoring fossil fuel $\mathrm{CO}_2$ emissions is essential as the need and prospects for reducing emissions become critical and the obligation to monitor the success of mitigation actions looms. These inventories are powerful tools as nations, corporations, and individuals grapple with appropriate reduction targets, and as verification that these parties are meeting their objectives.
 

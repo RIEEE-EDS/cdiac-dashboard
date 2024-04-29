@@ -1,21 +1,19 @@
 """
-Module/Script Name: content_display
+content_display/__init__.py
+============================
 
-Author(s): M. W. Hefner
+A module containing components for displaying content in the Dash application.
 
-Initially Created: 6/28/2023
+Author(s):
+- M. W. Hefner
 
-Last Modified: 10/29/2023
+Date Created:
+- 6/28/2023
 
-Script Description: This module contains the content_display components of this Dash application.
+Date Last Modified:
+- 10/29/2023
 
-Exceptional notes about this script:
-(none)
-
-Callback methods: 0
-
-~~~
+This module holds components responsible for displaying content within the Dash application. These components may include text display, data visualization elements, images, and other elements used to present information to the user.
 
 This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
-
 """

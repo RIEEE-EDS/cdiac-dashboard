@@ -1,24 +1,56 @@
 """
-Module/Script Name: type_ternary.py
-Author: M. W. Hefner
+This module generates a ternary plot for visualizing the proportional distribution of CO₂ emissions
+from solid, liquid, and gas fossil fuels within various geopolitical regions. It allows exploration
+of fuel usage patterns and their environmental impact based on user-selected criteria such as source,
+geopolitical grouping, and theme.
 
-Created: 11/13/2023
-Last Modified: 11/13/2023
+Functions
+---------
+type_ternary(source, grouping, theme)
+    Constructs a ternary plot that visualizes the relative contributions of solid, liquid, and gas
+    fuels to total CO₂ emissions, filtered by geopolitical grouping and styled according to the
+    specified theme.
 
-Project: CDIAC at AppState
+Parameters
+----------
+source : str
+    The specific source of CO₂ emissions to be analyzed (e.g., 'Total Emissions', 'Fossil Fuel Energy (Consumed)').
+grouping : str
+    The geopolitical grouping for the analysis (e.g., 'region', 'world', 'annex'), which determines
+    the scope of the data included in the plot.
+theme : str
+    The theme setting (e.g., 'light', 'dark') which affects the color scheme of the ternary plot.
 
-Script Description: This script defines a solid/liquid/gas ternary analysis plotly figure.
+Returns
+-------
+plotly.graph_objects.Figure
+    A Plotly Figure object representing the ternary plot, configured with interactive capabilities
+    and ready for display in a web or mobile interface.
 
-Exceptional notes about this script:
-(none)
+Examples
+--------
+To generate a ternary plot for CO₂ emissions from total fossil fuels within European countries using
+a light theme:
 
-Callback methods: N/A
+>>> fig = type_ternary('Total Emissions', 'region', 'light')
+>>> fig.show()
 
-~~~
+Notes
+-----
+The ternary plot provides a unique visual representation of how different types of fossil fuels contribute
+to total emissions in selected regions or globally. This visualization helps stakeholders and policymakers
+to understand the impact of various energy sources on carbon outputs.
 
-This figure was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+The visualization dynamically adjusts based on the user-selected theme, enhancing readability and user
+engagement. Each geopolitical region or group is represented in the plot, allowing for comparisons and
+deeper analysis of regional differences in fuel consumption patterns.
 
+See Also
+--------
+plotly.graph_objects : Used for constructing complex interactive visualizations.
+components.utils.constants : Provides access to global constants and data sources used in the visualization.
 """
+
 
 # Import needed libraries
 import plotly.graph_objects as go

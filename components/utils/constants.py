@@ -1,28 +1,69 @@
 """
-Module/Script Name: constants.py
+This module provides centralized management of constants used across the Dash application,
+including predefined paths, data file names, application metadata, and utility functions for data processing.
+It facilitates consistent access to these constants throughout the application, ensuring that changes in one place
+reflect across all components that use them.
 
-Author(s): M. W. Hefner
+Attributes
+----------
+application_title : str
+    The title of the application displayed in the browser's title bar and possibly within the app.
+app_id : int
+    A unique identifier for the application, used for internal management and possibly for authorization checks.
+repo_title : str
+    A short identifier or name for the repository or project associated with this application.
+app_doi : str
+    Digital Object Identifier (DOI) for referencing the application, often used for citation or version control.
+developers : str
+    Names of the developers or contributors to the application, used for credits or debug information.
+version : str
+    Version identifier of the application, helpful for tracking updates and changes.
+data_file : str
+    Name of the primary data file containing CO₂ emissions data, used throughout the application to load data.
+zonodo_doi_badge : dash.html.A
+    An HTML component displaying a DOI badge linking to the application's DOI page, providing citation information.
+show_credit : bool
+    A flag determining whether to show developer credits in the application, useful for presentations or anonymous usage.
+location_mapping : dict
+    A dictionary mapping geographical locations to their short codes, facilitating data handling and visualization.
+df_total : pandas.DataFrame
+    DataFrame loaded with total CO₂ emissions data from the specified Excel sheet.
+df_solid : pandas.DataFrame
+    DataFrame loaded with solid fuel CO₂ emissions data.
+df_liquid : pandas.DataFrame
+    DataFrame loaded with liquid fuel CO₂ emissions data.
+df_gas : pandas.DataFrame
+    DataFrame loaded with gas fuel CO₂ emissions data.
+regionLookup : pandas.DataFrame
+    DataFrame containing mappings of countries to their respective regions, used for regional analysis and filtering.
+about_content : str
+    Content of the 'About' page, loaded from a markdown file.
+methodology_content : str
+    Content of the 'Methodology' page, detailing the methods used in the application, loaded from a markdown file.
+download_content : str
+    Content of the 'Download' page, providing download options and information, loaded from a markdown file.
 
-Initially Created: 06/28/2023
+Examples
+--------
+To access the application title within another module of the application:
 
-Last Modified: 10/29/2023
+>>> from constants import application_title
+>>> print(application_title)
 
-Script Description: this script contains constants and calls for locally stored (on the application server) data.
+This module plays a crucial role in maintaining the integrity and consistency of application-wide settings and data,
+thereby reducing redundancy and potential errors from mismanaged constants or repeated code segments.
 
-Exceptional notes about this script:
-(none)
-
-Callback methods: 0
-
-~~~
-
-This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
-
+See Also
+--------
+pandas : For managing data in DataFrame formats.
+dash.html : For creating HTML components in the Dash application.
 """
+
 
 # Import Dependencies
 import pandas as pd
 import math
+import dash.html
 
 # IN-LINE APPLICATION METADATA----------------------------------------
 
@@ -39,7 +80,25 @@ app_doi = "FINAL PRE-PUBLICATION"
 
 developers = "Matt Hefner"
 
+# 1. Update the version
 version = "2023"
+
+# 2. Update the data file name
+data_file = "CDIAC_Sectoral_Inventory_1995_2020.xlsx"
+
+zonodo_doi_badge = dash.html.A(
+    dash.html.Img(
+
+        # 4. a) Update the badge SVG
+
+        src='https://zenodo.org/badge/666200101.svg'
+    ), 
+
+    # 4. b) Update the badge DOI
+    href = "https://zenodo.org/doi/10.5281/zenodo.10607881",
+
+    style={'display': 'block', 'margin': 'auto'}
+)
 
 # For showing in conexts where you do not wish to be doxed
 # i.e. presentations in anonymous contexts
@@ -315,25 +374,29 @@ def round_down(x):
         return x
     
 # Load TOTAL sheet
-df_total = pd.read_excel('assets/data/CDIAC_Sectoral_Inventory_1995_2020.xlsx', sheet_name='TOTALS')
+df_total = pd.read_excel('assets/data/' + data_file, sheet_name='TOTALS')
 
+# Rounding Down
+#
+# Something that was briefly considered during development. Still unsure.
+#
 # Round down
 #df_total = df_total.applymap(round_down)
 
 # Load SOLID FUELS sheet (also used for LIQUID FUELS sheet)
-df_solid = pd.read_excel('assets/data/CDIAC_Sectoral_Inventory_1995_2020.xlsx', sheet_name='SOLID FUELS')
+df_solid = pd.read_excel('assets/data/' + data_file, sheet_name='SOLID FUELS')
 
 # Round down
 #df_solid = df_solid.applymap(round_down)
 
 # Load LIQUID FUELS sheet (also used for LIQUID FUELS sheet)
-df_liquid = pd.read_excel('assets/data/CDIAC_Sectoral_Inventory_1995_2020.xlsx', sheet_name='LIQUID FUELS')
+df_liquid = pd.read_excel('assets/data/' + data_file, sheet_name='LIQUID FUELS')
 
 # Round down
 #df_liquid = df_liquid.applymap(round_down)
 
 # Load GAS FUELS sheet (also used for LIQUID FUELS sheet)
-df_gas = pd.read_excel('assets/data/CDIAC_Sectoral_Inventory_1995_2020.xlsx', sheet_name='GAS FUELS')
+df_gas = pd.read_excel('assets/data/' + data_file, sheet_name='GAS FUELS')
 
 # Load region lookup
 regionLookup = pd.read_excel('assets/data/Region_Lookup.xlsx')

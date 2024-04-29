@@ -1,26 +1,57 @@
 """
-Module/Script Name: carbon_atlas.py
+This module provides a function to create a choropleth map visualizing CO₂ emissions
+from various fuel types across different nations, based on user-selected filters for
+data source, fuel type, and UI theme.
 
-Author: M. W. Hefner
+Functions
+---------
+carbon_atlas(source, fuel_type, theme)
+    Generates a choropleth map for CO₂ emissions using the specified source, fuel type,
+    and theme. The color scale and other visual elements of the map adjust according to the theme.
 
-Created: 4/12/2023
+Parameters
+----------
+source : str
+    The specific data source for CO₂ emission values (e.g., total emissions, per capita).
+fuel_type : str
+    The type of fuel for which emissions data is visualized (e.g., solids, liquids, gases).
+theme : str
+    The theme setting (e.g., 'light', 'dark') which affects the color scheme of the choropleth map.
 
-Last Modified: 10/30/2023
+Returns
+-------
+plotly.graph_objs._figure.Figure
+    A Plotly Figure object representing the choropleth map, configured according to the specified
+    parameters and ready for display in a Dash application.
 
-Project: CDIAC at AppState
+Examples
+--------
+To generate a choropleth map for solid fuel CO₂ emissions with a dark theme:
 
-Script Description: This script defines the carbon atlas choropleth figure.
+>>> fig = carbon_atlas('Total Emissions', 'solids', 'dark')
+>>> fig.show()
 
-Exceptional notes about this script:
-(none)
+Notes
+-----
+The function first filters the dataset based on the `fuel_type` to get the relevant subset of the data.
+It then applies a color scale based on the `theme`, where each theme inverses the colors for better
+visibility depending on the background. The function also dynamically adjusts the maximum value
+on the color scale to match the highest emission value present in the filtered dataset.
 
-Callback methods: N/A
+The map differentiates between various geopolitical regions using a color scale that reflects
+the magnitude of emissions. The function dynamically filters data to exclude certain global
+aggregations like 'WORLD' or 'EUROPE' to provide a more detailed view at the national level.
 
-~~~
+The layout includes a subtitle annotation that dynamically updates with the current year, providing
+a watermark styled as a citation to the CDIAC at AppState Dashboard.
 
-This figure was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
-
+See Also
+--------
+plotly.graph_objects : Plotly's graph object module for constructing figures.
+plotly.express : Plotly's high-level interface for building figures.
+components.utils.constants : Module where various constants like data frames and mappings are defined.
 """
+
 
 # Import needed libraries
 import plotly.graph_objects as go

@@ -1,20 +1,17 @@
 """
-Module/Script Name: utils
+utils/__init__.py
+=================
 
-Author(s): M. W. Hefner
+A module containing utility functions for handling application metadata and research data within a Dash application, including defining constants, communicating with the data server, and updating data.
 
-Initially Created: 06/28/2023
+Author(s):
+- M. W. Hefner
 
-Last Modified: 10/29/2023
+Date Created:
+- 06/28/2023
 
-Script Description: this module contains scripting for application metadata and research data, such as defining constants, communicating with the data server, updating data.
-
-Exceptional notes about this script:
-(none)
-
-Callback methods: 0
-
-~~~
+Date Last Modified:
+- 10/29/2023
 
 This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
 

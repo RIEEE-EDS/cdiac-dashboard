@@ -1,24 +1,57 @@
 """
-Module/Script Name: country_sunburst.py
-Author: M. W. Hefner
+This module creates a dynamic sunburst chart visualizing the distribution of CO₂ emissions by different sectors
+within a selected country, adjusted by the fuel type and displayed over a range of years.
 
-Created: 4/12/2023
-Last Modified: 10/30/2023
+Functions
+---------
+build_country_sunburst(nation, fuel_type, bg, year)
+    Constructs the data structure necessary for a single snapshot of the sunburst chart,
+    representing CO₂ emissions for a given year and country.
 
-Project: CDIAC at AppState
+country_sunburst(nation, fuel_type, theme)
+    Generates a complete sunburst chart with animation over multiple years, showing changes
+    in CO₂ emissions distribution within a country.
 
-Script Description: This script defines the country-view plotly figure.
+Parameters
+----------
+nation : str
+    The country for which the data will be visualized.
+fuel_type : str
+    The type of fuel (solids, liquids, gases, or total) to visualize emissions from.
+bg : str
+    Background color for the chart, derived from the theme.
+year : int
+    The year for which the data snapshot is to be visualized.
+theme : str
+    The theme setting (e.g., 'light', 'dark') which affects the color scheme of the sunburst chart.
 
-Exceptional notes about this script:
-(none)
+Returns
+-------
+plotly.graph_objects.Figure
+    A Plotly Figure object that represents the animated sunburst chart, ready for integration
+    into a web interface.
 
-Callback methods: N/A
+Examples
+--------
+To generate an animated sunburst chart for CO₂ emissions from solid fuels in the USA with a dark theme:
 
-~~~
+>>> fig = country_sunburst('USA', 'solids', 'dark')
+>>> fig.show()
 
-This figure was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+Notes
+-----
+The chart integrates complex hierarchical data that spans multiple sectors and fuel types,
+providing an insightful visualization of how CO₂ emissions are distributed across different
+economic activities within a country. The function dynamically adjusts colors, animations, and
+data visibility based on the user-selected theme and fuel type.
 
+See Also
+--------
+plotly.graph_objects : Used for constructing the sunburst chart.
+datetime : Used to handle year annotations within the chart.
+components.utils.constants : Provides access to global constants and data used in the visualization.
 """
+
 
 # Import needed libraries
 import plotly.graph_objects as go

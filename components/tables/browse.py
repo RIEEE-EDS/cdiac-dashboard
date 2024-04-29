@@ -1,24 +1,56 @@
 """
-Module/Script Name: browse.py
+This module facilitates the creation of an upload component and Dash datatable for displaying CSV or Excel data. 
+It dynamically generates a datatable based on the uploaded file and allows users to interact with the data through sorting,
+filtering, and pagination functionalities.
 
-Author(s): M. W. Hefner
+Functions
+---------
+browse_table()
+    Creates and returns a Div containing an empty placeholder for the datatable where uploaded data will be displayed.
 
-Initially Created: 7/15/2023
+parse_contents(theme, fuel_type)
+    Generates a datatable based on predefined data sources filtered by fuel type. Styles the datatable according to 
+    the specified theme.
 
-Last Modified: 10/29/2023
+update_output(theme, fuel_type)
+    Callback function that updates the content of the datatable based on user interactions such as theme changes or 
+    fuel type selections.
 
-Script Description: This script defines the upload csv/excel component and dash datatable.
+Parameters
+----------
+theme : str
+    The theme setting (e.g., 'light', 'dark') which affects the visual styling of the datatable.
+fuel_type : str
+    The type of fuel (solids, liquids, gases, or total) that filters the data to be displayed in the datatable.
 
-Exceptional notes about this script:
-(none)
+Returns
+-------
+dash.html.Div
+    A Div containing the datatable for displaying data. The datatable is styled and configured to be interactive, 
+    allowing users to sort, filter, and paginate through the data.
 
-Callback methods: 0
+Examples
+--------
+To create and display a datatable within a Dash application:
 
-~~~
+>>> table_container = browse_table()
+>>> app.layout = dash.html.Div(children=[table_container])
 
-This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
+This module is designed to be used within a larger Dash application where it contributes to the user's ability to 
+interactively explore data related to CO₂ emissions from various fuel sources.
 
+Notes
+-----
+The module is part of a Dash application designed for environmental data analysis. It utilizes Dash's capabilities 
+to render interactive data tables from CSV or Excel files uploaded by the user.
+
+See Also
+--------
+dash.dash_table.DataTable : Used to create interactive tables in Dash applications.
+pandas : Used for data manipulation and analysis.
+components.utils.constants : Provides access to shared constants and utility functions used across the application.
 """
+
 
 # Component ID (Should be the same as the title of this file)
 component_id = "browse"

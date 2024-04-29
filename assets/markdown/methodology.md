@@ -1,6 +1,6 @@
 # Methodology
 
-**THIS PAGE IS PRE-PUBLICATION AND IS UNFINISHED. 11/16/23**
+**THIS PAGE IS PRE-PUBLICATION AND IS UNFINISHED. TO BE REWRITTEN TO INCORP SECTORAL METHOD 11/16/23**
 
 Global fossil-fuel related emissions of $\mathrm{CO}_2$ to the atmosphere (FF$\mathrm{CO}_2$) are not measured directly, except in recent years at some power plants and other large industrial point sources[^1^]. Estimating and monitoring anthropogenic $\mathrm{CO}_2$ emissions thus relies largely on inventories based on statistics of fuel use and industrial activity. Data concerning production, processing, trade, and consumption of fossil fuels are assembled by the United Nations (UN) Statistics Division, and these data form the foundation of our inventories of $\mathrm{CO}_2$ emissions. Our inventories also include the most important of the industrial processes, cement manufacture, that emit $\mathrm{CO}_2$ from the calcining of carbonate rocks, and emissions from the flaring of natural gas[^2^]. The energy used for calcining limestone is counted in the fossil-fuel part of the inventory. Natural gas flaring occurs as a byproduct of petroleum and natural gas extraction and processing, such as at oil fields that are not well connected to natural gas markets.
 

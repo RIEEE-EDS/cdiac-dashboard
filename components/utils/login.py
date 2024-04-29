@@ -1,24 +1,50 @@
 """
-Module/Script Name: login.py
+Provides mechanisms for handling user authentication and authorization within the Dash application,
+leveraging Shibboleth for Single Sign-On (SSO) authentication and checking user permissions against an
+application-specific metadata stored on a SQL server.
 
-Author(s): M. W. Hefner
+This module includes functions to verify whether a user is authenticated and authorized to access the application,
+based on whether the application is marked as public or restricted in the metadata and the user's permissions.
 
-Initially Created: 06/28/2023
+Functions
+---------
+authenticaedLogin() -> list[bool, str | None]
+    Checks if the user is authenticated via Shibboleth SSO by looking for a 'Uid' in the request headers.
+    Returns a list where the first element is a boolean indicating authentication status, and the second element
+    is the username if authenticated.
 
-Last Modified: 10/29/2023
+userIsAuthorized() -> bool
+    Determines if the current user is authorized to access the application. It first checks if the application is public;
+    if not, it further checks the user's permissions based on the SQL server's metadata.
+    Returns True if the user is authorized, otherwise False.
 
-Script Description: this script provides authorization based on (1) application metadata (is the application public?  if not, does the user have access to the application?) and (2) shibb authorization.
+Examples
+--------
+>>> login_status = authenticaedLogin()
+>>> if login_status[0]:
+...     print(f"User {login_status[1]} is authenticated.")
+... else:
+...     print("User is not authenticated.")
 
-Exceptional notes about this script:
-(none)
+>>> if userIsAuthorized():
+...     print("Access granted.")
+... else:
+...     print("Access denied.")
 
-Callback methods: 0
+This module is critical for enforcing security and access control within the application, ensuring that only authorized
+users can access specific features or data sets based on the application's operational requirements.
 
-~~~
+Notes
+-----
+- The module assumes the presence of a valid Flask request context to access request headers.
+- It interfaces with a SQL server managed by 'sqlconnection.py' for reading application and user-specific metadata.
 
-This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
-
+See Also
+--------
+flask : For handling HTTP request contexts.
+components.utils.sqlconnection : For interactions with the SQL server managing application metadata.
 """
+
 
 import flask
 import components.utils.sqlconnection as dataserver

@@ -1,21 +1,19 @@
 """
-Module/Script Name: components
+components/__init__.py
+======================
 
-Author(s): M. W. Hefner
+A module containing reusable components and layouts for a Dash application.
 
-Initially Created: 06/28/2023
+Author(s):
+- M. W. Hefner
 
-Last Modified: 10/29/2023
+Date Created:
+- 06/28/2023
 
-Script Description: this scripts contains all of the components that populate the application's layout and perform its functionality.
+Date Last Modified:
+- 10/29/2023
 
-Exceptional notes about this script:
-(none)
-
-Callback methods: 0
-
-~~~
+This module serves as a collection of components that populate the layout and perform functionality within the Dash application. It houses various reusable components, utility functions, and layouts for different sections of the application.
 
 This Dash application was created using the template provided by the Research Institute for Environment, Energy, and Economics at Appalachian State University.
-
 """
