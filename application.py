@@ -42,6 +42,15 @@ configparser : Python documentation on the configparser module for reading confi
 """
 
 
+
+#TODO: Things to update:
+# In the sectoral data file, change the tab name from "SOLID FUELS" to "SOLIDS". Same for liquids and gases.
+# Use the new lookup file
+# In the lookup file, there are columns named "Region" and "REGION". The only difference seems to be capitalization. Is this important?
+# In the lookup file, the country names are different. Do I have to do anything about this?
+# In the code, use the iso region names from the lookup file instead of specifying them manually. Are the ones that are missing names going to cause any problems?
+
+
 import os 
 
 if 'REDIS_URL' in os.environ:
